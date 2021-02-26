@@ -31,6 +31,7 @@ public class DrawerActivity extends AppCompatActivity {
 
         // Need to put it just for the history fragment
         toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.baseline_sort_24));
+        toolbar.hideOverflowMenu();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
