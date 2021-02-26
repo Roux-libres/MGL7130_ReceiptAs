@@ -1,6 +1,8 @@
 package com.example.receiptas;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
@@ -26,6 +28,10 @@ public class DrawerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_drawer);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // Need to put it just for the history fragment
+        toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.baseline_sort_24));
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,7 +45,7 @@ public class DrawerActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_history, R.id.nav_scan_receipt, R.id.nav_settings)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

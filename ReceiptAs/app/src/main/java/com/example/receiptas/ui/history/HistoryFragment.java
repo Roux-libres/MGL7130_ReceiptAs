@@ -1,4 +1,4 @@
-package com.example.receiptas.ui.gallery;
+package com.example.receiptas.ui.history;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,22 +14,23 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.receiptas.R;
 
-public class GalleryFragment extends Fragment {
+public class HistoryFragment extends Fragment {
 
-    private GalleryViewModel galleryViewModel;
+    private HistoryViewModel historyViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        galleryViewModel =
-                new ViewModelProvider(this).get(GalleryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_gallery, container, false);
+        historyViewModel =
+                new ViewModelProvider(this).get(HistoryViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_scan_receipt, container, false);
         final TextView textView = root.findViewById(R.id.text_gallery);
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        historyViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);
             }
         });
+
         return root;
     }
 }
