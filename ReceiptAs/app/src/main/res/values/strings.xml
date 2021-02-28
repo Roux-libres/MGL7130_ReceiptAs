@@ -6,13 +6,21 @@
     <string name="nav_header_title">Menu</string>
     <string name="nav_header_desc">Navigation header</string>
 
+
+    <string name="menu_history">History</string>
+
     <string name="sort_receipt_alphabetical">Alphabetical (A - Z)</string>
     <string name="sort_receipt_date_recent_first">Date (Recent first)</string>
     <string name="sort_receipt_date_older_first">Date (Older first)</string>
     <string name="sort_receipt_price_ascending">Price (Ascending)</string>
     <string name="sort_receipt_price_descending">Price (Descending)</string>
 
-    <string name="menu_history">History</string>
+
     <string name="menu_scan_receipt">Scan receipt</string>
+
+    <string name="scan_receipt_title">Receipt title</string>
+    <string name="scan_receipt_price">Receipt price</string>
+
+
     <string name="menu_settings">Settings</string>
 </resources>
