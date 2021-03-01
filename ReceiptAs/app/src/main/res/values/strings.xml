@@ -15,4 +15,6 @@
     <string name="menu_history">History</string>
     <string name="menu_scan_receipt">Scan receipt</string>
     <string name="menu_settings">Settings</string>
+
+    <string name="item_text_placeholder">Item</string>
 </resources>
