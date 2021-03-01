@@ -76,16 +76,17 @@
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <shape
+    <ImageView
         android:id="@+id/gallery_recycler_view_mask"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:shape="rectangle"
-        app:layout_constraintBottom_toTopOf="@+id/gallery_recycler_view"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <solid android:color="#CC000000" />
-    </shape>
+        android:src="@drawable/grey_background"
+        android:visibility="invisible"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/gallery_recycler_view" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gallery_recycler_view"

@@ -56,7 +56,14 @@ public class MainActivity extends AppCompatActivity {
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        navController.addOnDestinationChangedListener(new NavigationControllerListener(this));
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener(){
+            @Override
+            public void onDestinationChanged(@NonNull NavController controller,
+                                             @NonNull NavDestination destination, @Nullable Bundle arguments) {
+                currentActivityId = destination.getId();
+                invalidateOptionsMenu();
+            }
+        });
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);

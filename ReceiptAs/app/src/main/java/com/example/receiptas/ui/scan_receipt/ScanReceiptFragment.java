@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -29,7 +30,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
 
     private ScanReceiptViewModel scanReceiptViewModel;
     RecyclerView recyclerView;
-    View shape;
+    ImageView shape;
     GalleryAdapter galleryAdapter;
     List<String> images;
 
@@ -52,8 +53,6 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         recyclerView = root.findViewById(R.id.gallery_recycler_view);
         recyclerView.setVisibility(View.INVISIBLE);
         shape = root.findViewById(R.id.gallery_recycler_view_mask);
-        shape.setVisibility(View.INVISIBLE);
-
 
         if(ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
@@ -82,10 +81,23 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         images = ImagesGallery.listOfImages(getContext());
         galleryAdapter = new GalleryAdapter(getContext(), images, new GalleryAdapter.PhotoListener() {
             @Override
-            public void onPhotoClick(String path) {
+            public void onPhotoClick(GalleryAdapter.ViewHolder holder, String path) {
+                System.out.println("_____________ScanReceiptFragment_____________");
+                System.out.println(holder);
+                System.out.println(path);
+                System.out.println(holder.image);
+                System.out.println(holder.image.getBackground());
+
+                if(holder.image.getBackground().getConstantState() ==
+                        getResources().getDrawable(R.drawable.gallery_border_unselected).getConstantState()){
+                    holder.image.setBackgroundResource(R.drawable.gallery_border_selected);
+                } else {
+                    holder.image.setBackgroundResource(R.drawable.gallery_border_unselected);
+                }
+
                 Toast.makeText(getContext(), ""+path, Toast.LENGTH_SHORT).show();
-                recyclerView.setVisibility(View.INVISIBLE);
-                shape.setVisibility(View.INVISIBLE);
+                //recyclerView.setVisibility(View.INVISIBLE);
+                //shape.setVisibility(View.INVISIBLE);
             }
         });
 

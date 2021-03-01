@@ -46,7 +46,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                photoListener.onPhotoClick(image);
+                System.out.println(holder);
+                System.out.println(image);
+                System.out.println(holder.image);
+                System.out.println(holder.image.getBackground());
+                photoListener.onPhotoClick(holder, image);
             }
         });
     }
@@ -60,7 +64,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         return 0;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView image;
 
         public ViewHolder(@NonNull View itemView){
@@ -71,6 +75,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     }
 
     public interface PhotoListener {
-        void onPhotoClick(String path);
+        void onPhotoClick(ViewHolder holder, String path);
     }
 }
