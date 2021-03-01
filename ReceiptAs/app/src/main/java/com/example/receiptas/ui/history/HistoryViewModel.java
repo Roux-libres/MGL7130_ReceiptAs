@@ -14,7 +14,7 @@ public class HistoryViewModel extends ViewModel {
         receipts = new MutableLiveData<>();
     }
 
-    public LiveData<List<String>> getReceipts() {
+    public MutableLiveData<List<String>> getReceipts() {
         return receipts;
     }
 }

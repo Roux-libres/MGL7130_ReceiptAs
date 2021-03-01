@@ -37,6 +37,12 @@ public class HistoryFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //TODO maybe
+    }
+
     private void configureRecyclerView() {
         adapter = new ReceiptAdapter(new ArrayList<String>());
         historyRecyclerView.setAdapter(adapter);
@@ -46,7 +52,7 @@ public class HistoryFragment extends Fragment {
     private Observer<List<String>> receiptListUpdateObserver = new Observer<List<String>>() {
         @Override
         public void onChanged(List<String> strings) {
-            adapter = new ReceiptAdapter(strings);
+            historyRecyclerView.setAdapter(new ReceiptAdapter(strings));
         }
     };
 }
