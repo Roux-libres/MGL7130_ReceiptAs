@@ -8,7 +8,7 @@ import java.util.List;
 
 public class HistoryViewModel extends ViewModel {
 
-    private MutableLiveData<List<String>> receipts;
+    private LiveData<List<String>> receipts;
 
     public HistoryViewModel() {
         receipts = new MutableLiveData<>();

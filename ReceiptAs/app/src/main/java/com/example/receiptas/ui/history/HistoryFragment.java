@@ -37,6 +37,13 @@ public class HistoryFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        historyViewModel.getReceipts().getValue().add("test");
+    }
+
     private void configureRecyclerView() {
         adapter = new ReceiptAdapter(new ArrayList<String>());
         historyRecyclerView.setAdapter(adapter);
