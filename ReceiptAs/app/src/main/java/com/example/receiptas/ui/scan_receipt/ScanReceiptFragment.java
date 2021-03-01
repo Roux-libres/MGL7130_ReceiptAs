@@ -23,6 +23,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.receiptas.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -31,6 +33,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
     private ScanReceiptViewModel scanReceiptViewModel;
     RecyclerView recyclerView;
     ImageView shape;
+    FloatingActionButton validation;
     GalleryAdapter galleryAdapter;
     List<String> images;
 
@@ -51,8 +54,17 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         buttonLoadImage.setOnClickListener(this);
 
         recyclerView = root.findViewById(R.id.gallery_recycler_view);
-        recyclerView.setVisibility(View.INVISIBLE);
         shape = root.findViewById(R.id.gallery_recycler_view_mask);
+        shape.setOnClickListener(this);
+        validation = root.findViewById(R.id.fab_validation);
+
+        validation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
 
         if(ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
@@ -69,10 +81,25 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_add_image:
-                recyclerView.setVisibility(View.VISIBLE);
-                shape.setVisibility(View.VISIBLE);
+                showGalleryOverlay();
+                break;
+            case R.id.gallery_recycler_view_mask:
+                hideGalleryOverlay();
+                galleryAdapter.resetImageViewBackground();
                 break;
         }
+    }
+
+    private void hideGalleryOverlay(){
+        recyclerView.setVisibility(View.INVISIBLE);
+        shape.setVisibility(View.INVISIBLE);
+        validation.setVisibility(View.INVISIBLE);
+    }
+
+    private void showGalleryOverlay(){
+        recyclerView.setVisibility(View.VISIBLE);
+        shape.setVisibility(View.VISIBLE);
+        validation.setVisibility(View.VISIBLE);
     }
 
     private void loadImages(){
@@ -82,12 +109,6 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         galleryAdapter = new GalleryAdapter(getContext(), images, new GalleryAdapter.PhotoListener() {
             @Override
             public void onPhotoClick(GalleryAdapter.ViewHolder holder, String path) {
-                System.out.println("_____________ScanReceiptFragment_____________");
-                System.out.println(holder);
-                System.out.println(path);
-                System.out.println(holder.image);
-                System.out.println(holder.image.getBackground());
-
                 if(holder.image.getBackground().getConstantState() ==
                         getResources().getDrawable(R.drawable.gallery_border_unselected).getConstantState()){
                     holder.image.setBackgroundResource(R.drawable.gallery_border_selected);
@@ -95,9 +116,8 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                     holder.image.setBackgroundResource(R.drawable.gallery_border_unselected);
                 }
 
-                Toast.makeText(getContext(), ""+path, Toast.LENGTH_SHORT).show();
-                //recyclerView.setVisibility(View.INVISIBLE);
-                //shape.setVisibility(View.INVISIBLE);
+                //Toast.makeText(getContext(), ""+path, Toast.LENGTH_SHORT).show();
+
             }
         });
 

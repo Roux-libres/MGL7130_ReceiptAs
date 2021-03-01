@@ -14,6 +14,7 @@ import com.example.receiptas.R;
 
 //import com.bumptech.glide.glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
@@ -21,11 +22,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     private Context context;
     private List<String> images;
     protected PhotoListener photoListener;
+    private ArrayList<ViewHolder> holders;
 
     public GalleryAdapter(Context context, List<String> images, PhotoListener photoListener) {
         this.context = context;
         this.images = images;
         this.photoListener = photoListener;
+        this.holders = new ArrayList<>();
     }
 
     @NonNull
@@ -46,13 +49,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println(holder);
-                System.out.println(image);
-                System.out.println(holder.image);
-                System.out.println(holder.image.getBackground());
                 photoListener.onPhotoClick(holder, image);
             }
         });
+
+        holders.add(holder);
     }
 
     @Override
@@ -62,6 +63,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         }
 
         return 0;
+    }
+
+    public void resetImageViewBackground(){
+        for(ViewHolder holder : holders){
+            holder.image.setBackgroundResource(R.drawable.gallery_border_unselected);
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
