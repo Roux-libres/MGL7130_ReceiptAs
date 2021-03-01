@@ -9,7 +9,11 @@
         android:id="@+id/nav_history"
         android:name="com.example.receiptas.ui.history.HistoryFragment"
         android:label="@string/menu_history"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_history" >
+        <action
+            android:id="@+id/action_nav_history_to_receiptDetailFragment"
+            app:destination="@id/receiptDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_scan_receipt"
@@ -22,4 +26,7 @@
         android:name="com.example.receiptas.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/receiptDetailFragment"
+        tools:layout="@layout/receipt_detail_fragment" />
 </navigation>

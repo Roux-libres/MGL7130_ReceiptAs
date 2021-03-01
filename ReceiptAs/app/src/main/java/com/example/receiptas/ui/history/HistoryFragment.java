@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,15 +45,23 @@ public class HistoryFragment extends Fragment {
     }
 
     private void configureRecyclerView() {
-        adapter = new ReceiptAdapter(new ArrayList<String>());
+        adapter = new ReceiptAdapter(new ArrayList<String>(), onReceiptClicked);
         historyRecyclerView.setAdapter(adapter);
         historyRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    private Observer<List<String>> receiptListUpdateObserver = new Observer<List<String>>() {
+    private final  OnRecyclerViewItemClickListener onReceiptClicked  = new OnRecyclerViewItemClickListener() {
         @Override
-        public void onChanged(List<String> strings) {
-            historyRecyclerView.setAdapter(new ReceiptAdapter(strings));
+        public void onItemClick(String item) {
+            //TODO navigate to receipt details
+            //NavDirections action = HistoryFragmentDirections
+        }
+    };
+
+    private final Observer<List<String>> receiptListUpdateObserver = new Observer<List<String>>() {
+        @Override
+        public void onChanged(List<String> receipts) {
+            historyRecyclerView.setAdapter(new ReceiptAdapter(receipts, onReceiptClicked));
         }
     };
 }

@@ -13,10 +13,12 @@ import java.util.List;
 
 public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptViewHolder> {
 
-    private List<String> localDataSet;
+    private final List<String> localDataSet;
+    private final OnRecyclerViewItemClickListener listener;
 
-    public ReceiptAdapter (List<String> dataSet) {
-        localDataSet = dataSet;
+    public ReceiptAdapter (List<String> dataSet, OnRecyclerViewItemClickListener listener) {
+        this.localDataSet = dataSet;
+        this.listener = listener;
     }
 
     @NonNull
@@ -30,6 +32,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptViewHolder> {
     public void onBindViewHolder(@NonNull ReceiptViewHolder holder, int position) {
         holder.getLeftTextView().setText(localDataSet.get(position));
         holder.getRightTextView().setText(localDataSet.get(position));
+        holder.bindListener(localDataSet.get(position), this.listener);
     }
 
     @Override
