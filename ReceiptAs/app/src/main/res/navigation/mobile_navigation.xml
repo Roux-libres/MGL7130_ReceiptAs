@@ -15,7 +15,17 @@
         android:id="@+id/nav_scan_receipt"
         android:name="com.example.receiptas.ui.scan_receipt.ScanReceiptFragment"
         android:label="@string/menu_scan_receipt"
-        tools:layout="@layout/fragment_scan_receipt" />
+        tools:layout="@layout/fragment_scan_receipt" >
+        <action
+            android:id="@+id/action_nav_scan_receipt_to_nav_scan_receipt_image_process"
+            app:destination="@id/nav_scan_receipt_image_process" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_scan_receipt_image_process"
+        android:name="com.example.receiptas.ui.scan_receipt.ScanReceiptFragment"
+        android:label="@string/scan_receipt_process_image_product_name"
+        tools:layout="@layout/fragment_scan_receipt_process_image" />
 
     <fragment
         android:id="@+id/nav_settings"

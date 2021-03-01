@@ -17,6 +17,8 @@
 
 
     <string name="menu_scan_receipt">Scan receipt</string>
+    <string name="scan_receipt_process_image_product_name">Select products name</string>
+    <string name="scan_receipt_process_image_product_price">Select products price</string>
 
     <string name="scan_receipt_title">Receipt title</string>
     <string name="scan_receipt_price">Receipt price</string>

@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,10 +27,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class ScanReceiptFragment extends Fragment implements View.OnClickListener {
 
     private ScanReceiptViewModel scanReceiptViewModel;
-    RecyclerView recyclerView;
-    ImageView shape;
-    FloatingActionButton validation;
-    GalleryAdapter galleryAdapter;
+    private RecyclerView recyclerView;
+    private ImageView shape;
+    private FloatingActionButton validation;
+    private GalleryAdapter galleryAdapter;
 
     private static final int MY_READ_PERMISSION_CODE = 101;
 
@@ -65,8 +66,8 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.button_add_image:
                 this.showGalleryOverlay();
                 break;
@@ -76,6 +77,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                 this.scanReceiptViewModel.clearSelectedImages();
                 break;
             case R.id.fab_validation:
+                Navigation.findNavController(view).navigate(R.id.action_nav_scan_receipt_to_nav_scan_receipt_image_process);
                 this.hideGalleryOverlay();
                 break;
         }
