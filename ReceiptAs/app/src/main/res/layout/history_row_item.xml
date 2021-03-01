@@ -1,21 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/recycler_view_item_height"
     android:gravity="center_vertical"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingStart="25dp"
+    android:paddingEnd="25dp">
 
     <TextView
         android:id="@+id/leftTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:text="@string/item_text_placeholder" />
+        android:layout_weight="0.65"
+        android:drawablePadding="10dp"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingEnd="20dp"
+        android:text="@string/item_text_placeholder"
+        android:textAlignment="textStart"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/rightTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:text="@string/item_text_placeholder" />
-</RelativeLayout>
+        android:layout_weight="0.35"
+        android:drawablePadding="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:gravity="center_vertical"
+        android:text="@string/item_text_placeholder"
+        android:textAlignment="textEnd"
+        android:textSize="18sp" />
+</LinearLayout>
