@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -41,7 +42,9 @@ public class HistoryFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //TODO maybe
+        List<String> list = new ArrayList<>();
+        list.add("test");
+        historyViewModel.getReceipts().setValue(list);
     }
 
     private void configureRecyclerView() {
@@ -53,8 +56,8 @@ public class HistoryFragment extends Fragment {
     private final  OnRecyclerViewItemClickListener onReceiptClicked  = new OnRecyclerViewItemClickListener() {
         @Override
         public void onItemClick(String item) {
-            //TODO navigate to receipt details
-            //NavDirections action = HistoryFragmentDirections
+            NavDirections action = HistoryFragmentDirections.actionNavHistoryToReceiptDetailFragment();
+            Navigation.findNavController(getView()).navigate(action);
         }
     };
 
