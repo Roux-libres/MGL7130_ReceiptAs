@@ -32,11 +32,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/button_add_image"
         app:layout_constraintEnd_toStartOf="@+id/button_add_image"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_add_image">
+        app:layout_constraintTop_toTopOf="@+id/button_add_image"
+        app:counterEnabled="true"
+        app:counterMaxLength="100" >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:inputType="textShortMessage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLength="100"
+            android:maxLines="1"
+            android:lines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout

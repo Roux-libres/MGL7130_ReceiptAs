@@ -33,7 +33,5 @@ public class ScanReceiptViewModel extends ViewModel {
         this.selectedImages.clear();
     }
 
-    public int getLengthSelectedImages(){
-        return this.selectedImages.size();
-    }
+    public ArrayList<String> getSelectedImage(){ return this.selectedImages; }
 }

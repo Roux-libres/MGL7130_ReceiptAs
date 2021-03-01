@@ -77,8 +77,21 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                 this.scanReceiptViewModel.clearSelectedImages();
                 break;
             case R.id.fab_validation:
-                Navigation.findNavController(view).navigate(R.id.action_nav_scan_receipt_to_nav_scan_receipt_image_process);
-                this.hideGalleryOverlay();
+                /*
+                for(String image_path : scanReceiptViewModel.getSelectedImage()){
+                    ScanReceiptFragmentDirections.ActionNavScanReceiptToNavScanReceiptProcessImage action =
+                            ScanReceiptFragmentDirections.actionNavScanReceiptToNavScanReceiptProcessImage();
+                    action.setImagePath(image_path);
+                    Navigation.findNavController(view).navigate(action);
+                }
+                */
+
+                String image_path = scanReceiptViewModel.getSelectedImage().get(0);
+                ScanReceiptFragmentDirections.ActionNavScanReceiptToNavScanReceiptProcessImage action =
+                        ScanReceiptFragmentDirections.actionNavScanReceiptToNavScanReceiptProcessImage();
+                action.setImagePath(image_path);
+                Navigation.findNavController(view).navigate(action);
+
                 break;
         }
     }
@@ -107,6 +120,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                     holder.image.setBackgroundResource(R.drawable.gallery_border_selected);
                     scanReceiptViewModel.addSelectedImage(path);
                 } else {
+                    //HIDE FAB
                     holder.image.setBackgroundResource(R.drawable.gallery_border_unselected);
                     scanReceiptViewModel.removeSelectedImage(path);
                 }
