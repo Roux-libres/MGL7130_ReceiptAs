@@ -8,13 +8,13 @@ import java.util.List;
 
 public class HistoryViewModel extends ViewModel {
 
-    private LiveData<List<String>> receipts;
+    private MutableLiveData<List<String>> receipts;
 
     public HistoryViewModel() {
         receipts = new MutableLiveData<>();
     }
 
-    public LiveData<List<String>> getReceipts() {
+    public MutableLiveData<List<String>> getReceipts() {
         return receipts;
     }
 }
