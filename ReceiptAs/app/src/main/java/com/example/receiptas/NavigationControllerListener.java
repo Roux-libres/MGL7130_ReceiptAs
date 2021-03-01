@@ -8,16 +8,16 @@ import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 
 public class NavigationControllerListener implements NavController.OnDestinationChangedListener {
-    private DrawerActivity drawerActivity;
+    private MainActivity mainActivity;
 
-    public NavigationControllerListener(DrawerActivity drawerActivity){
-        this.drawerActivity = drawerActivity;
+    public NavigationControllerListener(MainActivity mainActivity){
+        this.mainActivity = mainActivity;
     }
 
     @Override
     public void onDestinationChanged(@NonNull NavController controller,
                                      @NonNull NavDestination destination, @Nullable Bundle arguments) {
-        this.drawerActivity.currentActivityId = destination.getId();
-        this.drawerActivity.invalidateOptionsMenu();
+        this.mainActivity.currentActivityId = destination.getId();
+        this.mainActivity.invalidateOptionsMenu();
     }
 }

@@ -24,7 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import java.util.List;
 
-public class DrawerActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private Toolbar toolbar;
@@ -56,7 +56,6 @@ public class DrawerActivity extends AppCompatActivity {
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-
         navController.addOnDestinationChangedListener(new NavigationControllerListener(this));
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);

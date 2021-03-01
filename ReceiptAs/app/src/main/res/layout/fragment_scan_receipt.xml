@@ -6,20 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.history.HistoryFragment">
 
-    <TextView
-        android:id="@+id/text_scan_receipt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageButton
         android:id="@+id/button_add_image"
         style="@style/Widget.AppCompat.ImageButton"
@@ -55,12 +41,12 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editTextNumberDecimal"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
         android:ems="10"
         android:hint="@string/scan_receipt_price"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="@+id/edit_scan_receipt_name"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/edit_scan_receipt_name"
@@ -89,5 +75,24 @@
             android:layout_height="wrap_content"
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <shape
+        android:id="@+id/gallery_recycler_view_mask"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:shape="rectangle"
+        app:layout_constraintBottom_toTopOf="@+id/gallery_recycler_view"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <solid android:color="#CC000000" />
+    </shape>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gallery_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextNumberDecimal"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
