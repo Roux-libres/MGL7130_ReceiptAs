@@ -1,19 +1,39 @@
 package com.example.receiptas.ui.scan_receipt;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import java.util.ArrayList;
 
 public class ScanReceiptViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private ArrayList<String> images;
+    private ArrayList<String> selectedImages;
 
     public ScanReceiptViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is Scan Receipt fragment");
+        this.selectedImages = new ArrayList<>();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public void setImages(ArrayList<String> images){
+        this.images = images;
+    }
+
+    public ArrayList<String> getImages(){
+        return this.images;
+    }
+
+    public void addSelectedImage(String image){
+        this.selectedImages.add(image);
+    }
+
+    public void removeSelectedImage(String image){
+        this.selectedImages.remove(image);
+    }
+
+    public void clearSelectedImages(){
+        this.selectedImages.clear();
+    }
+
+    public int getLengthSelectedImages(){
+        return this.selectedImages.size();
     }
 }

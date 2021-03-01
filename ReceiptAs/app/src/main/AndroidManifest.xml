@@ -2,16 +2,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.receiptas">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ReceiptAs">
+        android:theme="@style/Theme.ReceiptAs"
+        android:requestLegacyExternalStorage="true">
         <activity
-            android:name=".DrawerActivity"
-            android:label="@string/title_activity_drawer"
+            android:name=".MainActivity"
+            android:label="@string/title_activity"
             android:theme="@style/Theme.ReceiptAs.NoActionBar">
 
             <intent-filter>
