@@ -4,16 +4,17 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import java.util.List;
+
 public class HistoryViewModel extends ViewModel {
 
-    private MutableLiveData<String> mText;
+    private MutableLiveData<List<String>> receipts;
 
     public HistoryViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is History fragment");
+        receipts = new MutableLiveData<>();
     }
 
-    public LiveData<String> getText() {
-        return mText;
+    public MutableLiveData<List<String>> getReceipts() {
+        return receipts;
     }
 }
