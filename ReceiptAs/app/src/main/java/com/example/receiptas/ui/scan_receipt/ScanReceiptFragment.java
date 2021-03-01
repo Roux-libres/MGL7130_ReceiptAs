@@ -2,14 +2,12 @@ package com.example.receiptas.ui.scan_receipt;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.shapes.Shape;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -24,9 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.receiptas.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
-import java.util.List;
 
 public class ScanReceiptFragment extends Fragment implements View.OnClickListener {
 
@@ -35,7 +30,6 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
     ImageView shape;
     FloatingActionButton validation;
     GalleryAdapter galleryAdapter;
-    List<String> images;
 
     private static final int MY_READ_PERMISSION_CODE = 101;
 
@@ -53,26 +47,19 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         ImageButton buttonLoadImage = root.findViewById(R.id.button_add_image);
         buttonLoadImage.setOnClickListener(this);
 
-        recyclerView = root.findViewById(R.id.gallery_recycler_view);
-        shape = root.findViewById(R.id.gallery_recycler_view_mask);
-        shape.setOnClickListener(this);
-        validation = root.findViewById(R.id.fab_validation);
-
-        validation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        this.recyclerView = root.findViewById(R.id.gallery_recycler_view);
+        this.shape = root.findViewById(R.id.gallery_recycler_view_mask);
+        this.shape.setOnClickListener(this);
+        this.validation = root.findViewById(R.id.fab_validation);
+        this.validation.setOnClickListener(this);
 
         if(ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_READ_PERMISSION_CODE);
+        } else {
+            this.loadImages();
         }
-
-        loadImages();
 
         return root;
     }
@@ -81,47 +68,51 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_add_image:
-                showGalleryOverlay();
+                this.showGalleryOverlay();
                 break;
             case R.id.gallery_recycler_view_mask:
-                hideGalleryOverlay();
-                galleryAdapter.resetImageViewBackground();
+                this.hideGalleryOverlay();
+                this.galleryAdapter.resetImageViewBackground();
+                this.scanReceiptViewModel.clearSelectedImages();
+                break;
+            case R.id.fab_validation:
+                this.hideGalleryOverlay();
                 break;
         }
     }
 
     private void hideGalleryOverlay(){
-        recyclerView.setVisibility(View.INVISIBLE);
-        shape.setVisibility(View.INVISIBLE);
-        validation.setVisibility(View.INVISIBLE);
+        this.recyclerView.setVisibility(View.INVISIBLE);
+        this.shape.setVisibility(View.INVISIBLE);
+        this.validation.setVisibility(View.INVISIBLE);
     }
 
     private void showGalleryOverlay(){
-        recyclerView.setVisibility(View.VISIBLE);
-        shape.setVisibility(View.VISIBLE);
-        validation.setVisibility(View.VISIBLE);
+        this.recyclerView.setVisibility(View.VISIBLE);
+        this.shape.setVisibility(View.VISIBLE);
     }
 
     private void loadImages(){
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
-        images = ImagesGallery.listOfImages(getContext());
-        galleryAdapter = new GalleryAdapter(getContext(), images, new GalleryAdapter.PhotoListener() {
+        this.recyclerView.setHasFixedSize(true);
+        this.recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        this.scanReceiptViewModel.setImages(ImagesGallery.listOfImages(getContext()));
+        this.galleryAdapter = new GalleryAdapter(getContext(), scanReceiptViewModel.getImages(), new GalleryAdapter.PhotoListener() {
             @Override
             public void onPhotoClick(GalleryAdapter.ViewHolder holder, String path) {
                 if(holder.image.getBackground().getConstantState() ==
                         getResources().getDrawable(R.drawable.gallery_border_unselected).getConstantState()){
+                    validation.setVisibility(View.VISIBLE);
                     holder.image.setBackgroundResource(R.drawable.gallery_border_selected);
+                    scanReceiptViewModel.addSelectedImage(path);
                 } else {
                     holder.image.setBackgroundResource(R.drawable.gallery_border_unselected);
+                    scanReceiptViewModel.removeSelectedImage(path);
                 }
-
-                //Toast.makeText(getContext(), ""+path, Toast.LENGTH_SHORT).show();
 
             }
         });
 
-        recyclerView.setAdapter(galleryAdapter);
+        this.recyclerView.setAdapter(galleryAdapter);
     }
 
     @Override
