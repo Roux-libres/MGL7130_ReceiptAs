@@ -1,5 +1,7 @@
 package com.example.receiptas.ui.scan_receipt;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -8,9 +10,12 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.receiptas.R;
+
+import java.io.File;
 
 public class ScanReceiptProcessImageFragment extends Fragment {
     
@@ -23,8 +28,14 @@ public class ScanReceiptProcessImageFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        TextView tv = view.findViewById(R.id.text);
         String image_path = ScanReceiptProcessImageFragmentArgs.fromBundle(getArguments()).getImagePath();
-        tv.setText(image_path);
+        File imageFile = new File(image_path);
+
+        if(imageFile.exists()){
+            Bitmap imageBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+            ImageView image = view.findViewById(R.id.image);
+            image.setImageBitmap(imageBitmap);
+        }
+
     }
 }
