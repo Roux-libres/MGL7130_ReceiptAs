@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -25,6 +27,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.receiptas.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ScanReceiptFragment extends Fragment implements View.OnClickListener {
 
@@ -56,16 +62,20 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
             this.inputReceiptPrice.setText(String.valueOf(scanReceiptViewModel.getReceiptPrice()));
         }
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
                 R.array.currencies_array, R.layout.list_item);
         this.receiptCurrency = root.findViewById(R.id.currency_menu_text_view);
         if(scanReceiptViewModel.hasReceiptCurrency()){
             this.receiptCurrency.setText(adapter.getItem(
-                    adapter.getPosition(scanReceiptViewModel.getReceiptCurrency())), false);
+                    adapter.getPosition(scanReceiptViewModel.getReceiptCurrency())).toString(), null);
+            System.out.println(this.receiptCurrency.getText().toString());
         } else {
-            this.receiptCurrency.setText(adapter.getItem(0), false);
+            this.receiptCurrency.setText(adapter.getItem(0).toString(), null);
         }
+
+
         this.receiptCurrency.setAdapter(adapter);
+        System.out.println(this.receiptCurrency.getText().toString());
 
         root.findViewById(R.id.currency_menu).setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override

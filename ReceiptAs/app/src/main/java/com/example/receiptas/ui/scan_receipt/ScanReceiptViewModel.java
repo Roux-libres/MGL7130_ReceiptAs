@@ -1,5 +1,7 @@
 package com.example.receiptas.ui.scan_receipt;
 
+import android.widget.ArrayAdapter;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
