@@ -25,11 +25,6 @@ public class ReceiptViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindListener(final String item, final OnRecyclerViewItemClickListener listener) {
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listener.onItemClick(item);
-            }
-        });
+        itemView.setOnClickListener(view -> listener.onItemClick(item));
     }
 }

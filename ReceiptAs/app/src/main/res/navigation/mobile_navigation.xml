@@ -11,7 +11,7 @@
         android:label="@string/menu_history"
         tools:layout="@layout/fragment_scan_receipt">
         <action
-            android:id="@+id/action_nav_history_to_receiptDetailFragment"
+            android:id="@+id/show_receipt_detail"
             app:destination="@id/receiptDetailFragment" />
     </fragment>
 
@@ -39,5 +39,15 @@
     <fragment
         android:id="@+id/receiptDetailFragment"
         android:name="com.example.receiptas.ui.history.receipt_detail.ReceiptDetailFragment"
-        tools:layout="@layout/receipt_detail_fragment" />
+        android:label="{receipt_name}"
+        tools:layout="@layout/receipt_detail_fragment" >
+        <argument
+            android:name="receipt"
+            app:argType="string"
+            android:defaultValue=" " />
+        <argument
+            android:name="receipt_name"
+            app:argType="string"
+            android:defaultValue="Receipt name" />
+    </fragment>
 </navigation>

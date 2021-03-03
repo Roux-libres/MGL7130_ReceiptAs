@@ -43,22 +43,21 @@ public class HistoryFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         List<String> list = new ArrayList<>();
-        list.add("test");
+        list.add("coucou les amis");
         historyViewModel.getReceipts().setValue(list);
     }
 
     private void configureRecyclerView() {
-        adapter = new ReceiptAdapter(new ArrayList<String>(), onReceiptClicked);
+        adapter = new ReceiptAdapter(new ArrayList<>(), onReceiptClicked);
         historyRecyclerView.setAdapter(adapter);
         historyRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    private final  OnRecyclerViewItemClickListener onReceiptClicked  = new OnRecyclerViewItemClickListener() {
-        @Override
-        public void onItemClick(String item) {
-            NavDirections action = HistoryFragmentDirections.actionNavHistoryToReceiptDetailFragment();
-            Navigation.findNavController(getView()).navigate(action);
-        }
+    private final OnRecyclerViewItemClickListener onReceiptClicked  = item -> {
+        HistoryFragmentDirections.ShowReceiptDetail action = HistoryFragmentDirections.showReceiptDetail();
+        action.setReceipt(item);
+        action.setReceiptName(item);
+        Navigation.findNavController(getView()).navigate(action);
     };
 
     private final Observer<List<String>> receiptListUpdateObserver = new Observer<List<String>>() {
