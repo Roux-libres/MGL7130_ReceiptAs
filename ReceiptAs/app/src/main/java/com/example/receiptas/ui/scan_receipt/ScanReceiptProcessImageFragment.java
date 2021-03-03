@@ -11,9 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.receiptas.R;
+import com.example.receiptas.ui.scan_receipt.drawview.DrawView;
 
 import java.io.File;
 
@@ -36,6 +36,8 @@ public class ScanReceiptProcessImageFragment extends Fragment {
             ImageView image = view.findViewById(R.id.image);
             image.setImageBitmap(imageBitmap);
         }
+
+        DrawView drawView = view.findViewById(R.id.draw_view);
 
     }
 }

@@ -8,11 +8,11 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
-public class MaterialSpinnerArrayAdapter extends ArrayAdapter {
+public class MaterialDropdownMenuArrayAdapter extends ArrayAdapter {
 
     private Filter filter;
 
-    public MaterialSpinnerArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<String> values) {
+    public MaterialDropdownMenuArrayAdapter(@NonNull Context context, int resource, @NonNull ArrayList<String> values) {
         super(context, resource, values);
 
         this.filter = new Filter() {

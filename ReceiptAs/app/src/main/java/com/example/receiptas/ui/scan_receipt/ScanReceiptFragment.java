@@ -8,8 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -17,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -26,14 +23,13 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.receiptas.MaterialSpinnerArrayAdapter;
+import com.example.receiptas.MaterialDropdownMenuArrayAdapter;
 import com.example.receiptas.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class ScanReceiptFragment extends Fragment implements View.OnClickListener {
 
@@ -68,7 +64,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         this.receiptCurrency = root.findViewById(R.id.currency_menu_text_view);
         ArrayList<String> currencyArray = new ArrayList<String>(
                 Arrays.asList(getResources().getStringArray(R.array.currencies_array)));
-        MaterialSpinnerArrayAdapter adapter = new MaterialSpinnerArrayAdapter(getContext(),
+        MaterialDropdownMenuArrayAdapter adapter = new MaterialDropdownMenuArrayAdapter(getContext(),
                 R.layout.list_item, currencyArray);
         this.receiptCurrency.setAdapter(adapter);
 

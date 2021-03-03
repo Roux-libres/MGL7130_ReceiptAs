@@ -1,12 +1,7 @@
 package com.example.receiptas.ui.scan_receipt;
 
-import android.widget.ArrayAdapter;
-
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
-
-import com.example.receiptas.MaterialSpinnerArrayAdapter;
 
 import java.util.ArrayList;
 
@@ -15,7 +10,6 @@ public class ScanReceiptViewModel extends ViewModel {
     private SavedStateHandle savedState;
     private ArrayList<String> images;
     private ArrayList<String> selectedImages;
-    public MaterialSpinnerArrayAdapter adapter;
 
     public ScanReceiptViewModel(SavedStateHandle savedStateHandle) {
         this.savedState = savedStateHandle;
