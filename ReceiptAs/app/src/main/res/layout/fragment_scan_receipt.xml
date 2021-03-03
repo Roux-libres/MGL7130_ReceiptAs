@@ -32,15 +32,22 @@
         app:layout_constraintBottom_toBottomOf="@+id/button_add_image"
         app:layout_constraintEnd_toStartOf="@+id/button_add_image"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_add_image">
+        app:layout_constraintTop_toTopOf="@+id/button_add_image"
+        app:counterEnabled="true"
+        app:counterMaxLength="100" >
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_scan_receipt_name"
+            android:inputType="textShortMessage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLength="100"
+            android:maxLines="1"
+            android:lines="1" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/editTextNumberDecimal"
+        android:id="@+id/edit_scan_receipt_price"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
@@ -52,7 +59,8 @@
         app:layout_constraintStart_toStartOf="@+id/edit_scan_receipt_name"
         app:layout_constraintTop_toBottomOf="@+id/edit_scan_receipt_name">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_scan_receipt_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal" />
@@ -64,10 +72,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextNumberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_scan_receipt_price"
         app:layout_constraintEnd_toEndOf="@+id/button_add_image"
-        app:layout_constraintStart_toEndOf="@+id/editTextNumberDecimal"
-        app:layout_constraintTop_toTopOf="@+id/editTextNumberDecimal">
+        app:layout_constraintStart_toEndOf="@+id/edit_scan_receipt_price"
+        app:layout_constraintTop_toTopOf="@+id/edit_scan_receipt_price">
 
         <AutoCompleteTextView
             android:id="@+id/currency_menu_text_view"
@@ -95,7 +103,7 @@
         android:layout_marginTop="30dp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumberDecimal"/>
+        app:layout_constraintTop_toBottomOf="@+id/edit_scan_receipt_price"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_validation"

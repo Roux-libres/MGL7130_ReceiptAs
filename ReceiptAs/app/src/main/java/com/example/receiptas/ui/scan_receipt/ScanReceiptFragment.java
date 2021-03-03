@@ -1,18 +1,23 @@
 package com.example.receiptas.ui.scan_receipt;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -21,12 +26,23 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.receiptas.MaterialSpinnerArrayAdapter;
 import com.example.receiptas.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ScanReceiptFragment extends Fragment implements View.OnClickListener {
 
     private ScanReceiptViewModel scanReceiptViewModel;
+
+    private TextInputEditText inputReceiptName;
+    private EditText inputReceiptPrice;
+    private AutoCompleteTextView receiptCurrency;
+
     private RecyclerView recyclerView;
     private ImageView shape;
     private FloatingActionButton validation;
@@ -39,11 +55,40 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         scanReceiptViewModel = new ViewModelProvider(this).get(ScanReceiptViewModel.class);
         View root = inflater.inflate(R.layout.fragment_scan_receipt, container, false);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(),
-                R.array.currencies_array, R.layout.list_item);
-        AutoCompleteTextView autoCompleteTextView = root.findViewById(R.id.currency_menu_text_view);
-        autoCompleteTextView.setText(adapter.getItem(0), false);
-        autoCompleteTextView.setAdapter(adapter);
+        this.inputReceiptName = root.findViewById(R.id.input_scan_receipt_name);
+        if(scanReceiptViewModel.hasReceiptName()){
+            this.inputReceiptName.setText(scanReceiptViewModel.getReceiptName());
+        }
+
+        this.inputReceiptPrice = root.findViewById(R.id.input_scan_receipt_price);
+        if(scanReceiptViewModel.hasReceiptPrice()){
+            this.inputReceiptPrice.setText(String.valueOf(scanReceiptViewModel.getReceiptPrice()));
+        }
+
+        this.receiptCurrency = root.findViewById(R.id.currency_menu_text_view);
+        ArrayList<String> currencyArray = new ArrayList<String>(
+                Arrays.asList(getResources().getStringArray(R.array.currencies_array)));
+        MaterialSpinnerArrayAdapter adapter = new MaterialSpinnerArrayAdapter(getContext(),
+                R.layout.list_item, currencyArray);
+        this.receiptCurrency.setAdapter(adapter);
+
+        if(scanReceiptViewModel.hasReceiptCurrency()){
+            this.receiptCurrency.setText((CharSequence) adapter.getItem(
+                    adapter.getPosition(scanReceiptViewModel.getReceiptCurrency())), false);
+        } else {
+            this.receiptCurrency.setText((CharSequence) adapter.getItem(0), false);
+        }
+
+        this.receiptCurrency.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    View view = getActivity().getCurrentFocus();
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        });
 
         ImageButton buttonLoadImage = root.findViewById(R.id.button_add_image);
         buttonLoadImage.setOnClickListener(this);
@@ -77,8 +122,33 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                 this.scanReceiptViewModel.clearSelectedImages();
                 break;
             case R.id.fab_validation:
-                Navigation.findNavController(view).navigate(R.id.action_nav_scan_receipt_to_nav_scan_receipt_image_process);
-                this.hideGalleryOverlay();
+                /*
+                for(String image_path : scanReceiptViewModel.getSelectedImage()){
+                    ScanReceiptFragmentDirections.ActionNavScanReceiptToNavScanReceiptProcessImage action =
+                            ScanReceiptFragmentDirections.actionNavScanReceiptToNavScanReceiptProcessImage();
+                    action.setImagePath(image_path);
+                    Navigation.findNavController(view).navigate(action);
+                }
+                */
+
+                String inputReceiptNameString = this.inputReceiptName.getText().toString();
+                if(this.scanReceiptViewModel.isStringSet(inputReceiptNameString)){
+                    this.scanReceiptViewModel.setReceiptName(inputReceiptNameString);
+                }
+
+                String inputReceiptPriceString = this.inputReceiptPrice.getText().toString();
+                if(scanReceiptViewModel.isStringSet(inputReceiptPriceString)) {
+                    this.scanReceiptViewModel.setReceiptPrice(Float.parseFloat(inputReceiptPriceString));
+                }
+
+                this.scanReceiptViewModel.setReceiptCurrency(this.receiptCurrency.getText().toString());
+
+                String image_path = scanReceiptViewModel.getSelectedImage().get(0);
+                ScanReceiptFragmentDirections.ActionNavScanReceiptToNavScanReceiptProcessImage action =
+                        ScanReceiptFragmentDirections.actionNavScanReceiptToNavScanReceiptProcessImage();
+                action.setImagePath(image_path);
+                Navigation.findNavController(view).navigate(action);
+
                 break;
         }
     }
@@ -109,6 +179,9 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                 } else {
                     holder.image.setBackgroundResource(R.drawable.gallery_border_unselected);
                     scanReceiptViewModel.removeSelectedImage(path);
+                    if(scanReceiptViewModel.getSelectedImage().size() == 0){
+                        validation.setVisibility(View.INVISIBLE);
+                    }
                 }
 
             }
