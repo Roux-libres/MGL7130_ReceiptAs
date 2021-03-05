@@ -88,7 +88,7 @@
         android:id="@+id/gallery_recycler_view_mask"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/grey_background"
+        android:background="@color/transparent_grey_background"
         android:visibility="invisible"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/grey_background"
+    android:background="@color/transparent_grey_background"
     tools:context=".ui.scan_receipt.ScanReceiptProcessImageFragment">
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -12,9 +12,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.example.receiptas.ui.scan_receipt.drawview.DrawView
-        android:id="@+id/draw_view"
+    <com.example.receiptas.ui.scan_receipt.resizableview.ResizableView
+        android:id="@+id/resizable_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_validation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        app:layout_constraintTop_toBottomOf="@+id/gallery_recycler_view_mask"
+        app:srcCompat="@drawable/baseline_done" />
 
 </RelativeLayout>

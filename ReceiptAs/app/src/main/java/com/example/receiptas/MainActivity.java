@@ -20,14 +20,13 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private Toolbar toolbar;
-    public int currentActivityId;
+    public int currentFragmentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
         this.toolbar = findViewById(R.id.toolbar);
-        toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.baseline_sort_24));
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDestinationChanged(@NonNull NavController controller,
                                              @NonNull NavDestination destination, @Nullable Bundle arguments) {
-                currentActivityId = destination.getId();
+                currentFragmentId = destination.getId();
                 invalidateOptionsMenu();
             }
         });
@@ -55,7 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(this.currentActivityId == R.id.nav_history){
+        if (this.currentFragmentId == R.id.nav_history) {
+            toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.baseline_sort_24));
             getMenuInflater().inflate(R.menu.drawer, menu);
             return true;
         } else {
