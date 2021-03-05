@@ -12,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,33 +28,47 @@ public class HistoryFragment extends Fragment {
     private RecyclerView historyRecyclerView;
     private ReceiptAdapter adapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        historyViewModel =
-                new ViewModelProvider(this).get(HistoryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_history, container, false);
-        historyViewModel.getReceipts().observe(getViewLifecycleOwner(), receiptListUpdateObserver);
-        historyRecyclerView = root.findViewById(R.id.history_recycler_view);
-        this.configureRecyclerView();
-        return root;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        historyViewModel = new ViewModelProvider(this).get(HistoryViewModel.class);
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_history, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //TODO maybe
+
+        historyRecyclerView = view.findViewById(R.id.history_recycler_view);
+        historyViewModel.getReceipts().observe(getViewLifecycleOwner(), receiptListUpdateObserver);
+        this.configureRecyclerView();
+
+        List<String> list = new ArrayList<>();
+        list.add("test receipt");
+        historyViewModel.getReceipts().setValue(list);
     }
 
     private void configureRecyclerView() {
-        adapter = new ReceiptAdapter(new ArrayList<String>());
+        adapter = new ReceiptAdapter(new ArrayList<>(), onReceiptClicked);
         historyRecyclerView.setAdapter(adapter);
         historyRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    private Observer<List<String>> receiptListUpdateObserver = new Observer<List<String>>() {
+    private final OnRecyclerViewItemClickListener onReceiptClicked  = item -> {
+        HistoryFragmentDirections.ShowReceiptDetail action = HistoryFragmentDirections.showReceiptDetail();
+        action.setReceipt(item);
+        action.setReceiptName(item);
+        Navigation.findNavController(getView()).navigate(action);
+    };
+
+    private final Observer<List<String>> receiptListUpdateObserver = new Observer<List<String>>() {
         @Override
-        public void onChanged(List<String> strings) {
-            historyRecyclerView.setAdapter(new ReceiptAdapter(strings));
+        public void onChanged(List<String> receipts) {
+            historyRecyclerView.setAdapter(new ReceiptAdapter(receipts, onReceiptClicked));
         }
     };
 }

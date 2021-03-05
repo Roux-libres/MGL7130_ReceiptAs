@@ -27,6 +27,14 @@
     <string name="menu_settings">Settings</string>
 
     <string name="item_text_placeholder">Item</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="receipt_name_placeholder">Receipt name</string>
+    <string-array name="receipt_detail_tabs_names">
+        <item>Products list</item>
+        <item>Summary</item>
+    </string-array>
+    <string name="receipt_total">Total price : %1$.2f %2$.3S</string>
+    <string name="participant_total">%1$.2f %2$.3S</string>
+    <string name="payer_name">%1$s (payer)</string>
+    <string name="unassigned_total">Total unassigned objects: %1$.2f %2$.3S</string>
 </resources>
