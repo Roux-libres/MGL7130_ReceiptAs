@@ -2,13 +2,19 @@ package com.example.receiptas.ui.history.receipt_detail;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.receiptas.R;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +22,9 @@ import com.example.receiptas.R;
  * create an instance of this fragment.
  */
 public class ReceiptDetailSummaryFragment extends Fragment {
+
+    private ListView listView;
+    private TextView receipt_total, unassigned_total;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,5 +71,23 @@ public class ReceiptDetailSummaryFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_receipt_detail_summary, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        listView = view.findViewById(R.id.list_view);
+        receipt_total = view.findViewById(R.id.receipt_total);
+        unassigned_total = view.findViewById(R.id.unassigned_total);
+
+        receipt_total.setText(getString(R.string.receipt_total, 15.2, "CAD"));
+        unassigned_total.setText(getString(R.string.unassigned_total, 4.00, "CAD"));
+
+        ArrayList<String> strings = new ArrayList<>();
+        strings.add("Aurelien");
+        strings.add("Romain");
+        strings.add("Nelson");
+
+        listView.setAdapter(new ParticipantAdapter(this.getContext(), R.layout.receipt_summary_participant, strings));
     }
 }
