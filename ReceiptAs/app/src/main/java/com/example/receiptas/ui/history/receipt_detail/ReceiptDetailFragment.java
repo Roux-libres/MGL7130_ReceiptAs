@@ -12,15 +12,10 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.receiptas.R;
-import com.example.receiptas.ui.history.HistoryFragmentDirections;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ReceiptDetailFragment extends Fragment {
 
@@ -42,7 +37,7 @@ public class ReceiptDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.receipt_detail_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_receipt_detail, container, false);
     }
 
     @Override
