@@ -28,22 +28,27 @@ public class HistoryFragment extends Fragment {
     private RecyclerView historyRecyclerView;
     private ReceiptAdapter adapter;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        historyViewModel =
-                new ViewModelProvider(this).get(HistoryViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_history, container, false);
-        historyViewModel.getReceipts().observe(getViewLifecycleOwner(), receiptListUpdateObserver);
-        historyRecyclerView = root.findViewById(R.id.history_recycler_view);
-        this.configureRecyclerView();
-        return root;
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        historyViewModel = new ViewModelProvider(this).get(HistoryViewModel.class);
+    }
+
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_history, container, false);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        historyRecyclerView = view.findViewById(R.id.history_recycler_view);
+        historyViewModel.getReceipts().observe(getViewLifecycleOwner(), receiptListUpdateObserver);
+        this.configureRecyclerView();
+
         List<String> list = new ArrayList<>();
-        list.add("coucou les amis");
+        list.add("test receipt");
         historyViewModel.getReceipts().setValue(list);
     }
 
