@@ -10,7 +10,9 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.util.DisplayMetrics;
@@ -18,12 +20,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.receiptas.R;
 import com.example.receiptas.ui.scan_receipt.resizableview.ResizableView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
+import java.util.Arrays;
 
 public class ScanReceiptProcessImageFragment extends Fragment {
 
@@ -42,16 +46,32 @@ public class ScanReceiptProcessImageFragment extends Fragment {
             return root;
         }
 
-        Bitmap imageBitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
-        ImageView image = root.findViewById(R.id.image);
-        image.setImageBitmap(imageBitmap);
+        final Bitmap[] imageBitmap = {BitmapFactory.decodeFile(imageFile.getAbsolutePath())};
+        ImageView image_view = root.findViewById(R.id.image_view);
+        ResizableView resizableView = root.findViewById(R.id.resizable_view);
+
+        image_view.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                ImageView image_view = getView().findViewById(R.id.image_view);
+
+                float ratioWidth = ((float) image_view.getWidth()) / ((float) imageBitmap[0].getWidth());
+                float ratioHeight = ((float) image_view.getHeight()) / ((float) imageBitmap[0].getHeight());
+                float ratio = Math.min(ratioWidth, ratioHeight);
+                int newWidth = (int) ((int) imageBitmap[0].getWidth() * ratio);
+                int newHeight = (int) ((int) imageBitmap[0].getHeight() * ratio);
+
+                imageBitmap[0] = Bitmap.createScaledBitmap(imageBitmap[0], newWidth, newHeight, true);
+                image_view.setImageBitmap(imageBitmap[0]);
+                resizableView.compareSize(image_view, imageBitmap[0]);
+            }
+        });
 
         this.validation = root.findViewById(R.id.fab_validation);
         this.validation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ResizableView resizableView = root.findViewById(R.id.resizable_view);
-                image.setImageBitmap(shapeBitmap(imageBitmap, resizableView));
+                shapeBitmap(imageBitmap[0], resizableView);
             }
         });
 
@@ -60,27 +80,8 @@ public class ScanReceiptProcessImageFragment extends Fragment {
 
     private Bitmap shapeBitmap(Bitmap imageBitmap, ResizableView resizableView){
         Point[] points = resizableView.getPoints();
+        points = this.swapPoints(points);
 
-        DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
-        System.out.println("Screen width : " + metrics.widthPixels + "\tScreen height : " + metrics.heightPixels);
-
-        int widthDifference = resizableView.getWidth() - imageBitmap.getWidth();
-        int heightDifference = resizableView.getHeight() - imageBitmap.getHeight();
-
-        System.out.println("View width : " + resizableView.getWidth() + "\tView height : " + resizableView.getHeight());
-        System.out.println("Image width : " + imageBitmap.getWidth() + "\tImage height : " + imageBitmap.getHeight());
-        System.out.println("Width difference : " + widthDifference + "\tHeight difference: " + heightDifference);
-
-        for(Point point : points){
-            point.set(point.x - (widthDifference / 2), point.y - (heightDifference / 2));
-        }
-
-        this.swapPoints(points);
-
-        System.out.println("Point0 X : " + points[0].x + "\tPoint0 Y : " + points[0].y);
-        System.out.println("Point3 X : " + points[3].x + "\tPoint3 Y : " + points[3].y);
-
-        //TODO: check greater distance between p0-p3 and p1-p2
         Bitmap imageBitmapCropped = Bitmap.createBitmap(imageBitmap,
                 points[0].x,
                 points[0].y,
@@ -91,7 +92,44 @@ public class ScanReceiptProcessImageFragment extends Fragment {
     }
 
     private Point[] swapPoints(Point[] points){
-        //TODO: Swap points in order to find the greatest area
+        Point lowestPoint = points[0];
+
+        for(Point point : points){
+            if(point.x <= lowestPoint.x && point.y <= lowestPoint.y){
+                lowestPoint = point;
+            }
+        }
+
+        Point tempPoint;
+
+        switch(Arrays.asList(points).indexOf(lowestPoint)){
+            case 0:
+                break;
+            case 1:
+                tempPoint = points[1];
+                points[1] = points[0];
+                points[0] = tempPoint;
+                tempPoint = points[2];
+                points[2] = points[3];
+                points[3] = tempPoint;
+                break;
+            case 2:
+                tempPoint = points[2];
+                points[2] = points[0];
+                points[0] = tempPoint;
+                tempPoint = points[3];
+                points[3] = points[1];
+                points[1] = tempPoint;
+                break;
+            case 3:
+                tempPoint = points[3];
+                points[3] = points[0];
+                points[0] = tempPoint;
+                tempPoint = points[2];
+                points[2] = points[1];
+                points[1] = tempPoint;
+                break;
+        }
 
         return points;
     }

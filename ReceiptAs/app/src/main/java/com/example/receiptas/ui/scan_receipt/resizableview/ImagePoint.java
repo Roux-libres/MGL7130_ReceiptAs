@@ -13,9 +13,13 @@ public class ImagePoint {
     static int count = 0;
 
     public ImagePoint(Context context, int resourceId, Point point){
-        this.id = count ++;
+        this.id = count++;
         this.drawable = context.getDrawable(resourceId);
         this.point = point;
+    }
+
+    public static void resetCount(){
+        count = 0;
     }
 
     public int getWidth() {
@@ -28,10 +32,10 @@ public class ImagePoint {
 
     public void draw(Canvas canvas) {
         this.drawable.setBounds(
-                this.getX(),
-                this.getY(),
-                this.getX() + this.getWidth(),
-                this.getY() + this.getHeight()
+                this.getX() - this.getWidth() / 2,
+                this.getY() - this.getHeight() / 2,
+                this.getX() + this.getWidth() / 2,
+                this.getY() + this.getHeight() / 2
         );
         this.drawable.draw(canvas);
     }

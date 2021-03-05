@@ -1,15 +1,20 @@
 package com.example.receiptas.ui.scan_receipt.resizableview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.drawable.BitmapDrawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 
@@ -19,10 +24,12 @@ import java.util.ArrayList;
 
 public class ResizableView extends View {
 
-    ArrayList<ImagePoint> imagePoints;
-    Paint paint;
-    Canvas canvas;
-    int pointId;
+    private ArrayList<ImagePoint> imagePoints;
+    private Paint paint;
+    private Paint transparentPaint;
+    private Canvas canvas;
+    private int pointId;
+    private int horizontalDifference, verticalDifference;
 
     public ResizableView(Context context) {
         super(context);
@@ -40,15 +47,15 @@ public class ResizableView extends View {
     }
 
     private void initializeView(Context context){
-        this.paint = new Paint();
+        this.paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         setFocusable(true);
         this.canvas = new Canvas();
         this.imagePoints = new ArrayList<ImagePoint>();
 
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 
-        int widthDivision = metrics.widthPixels / 6;
-        int heightDivision = metrics.heightPixels / 6;
+        int widthDivision = metrics.widthPixels /3;
+        int heightDivision = metrics.heightPixels / 3;
 
         //Upper left
         ImagePoint point0 = new ImagePoint(context, R.drawable.circle, new Point());
@@ -73,25 +80,30 @@ public class ResizableView extends View {
         point3.setX(metrics.widthPixels - widthDivision);
         point3.setY(metrics.heightPixels - heightDivision);
         this.imagePoints.add(point3);
+
+        ImagePoint.resetCount();
+    }
+
+    public void compareSize(ImageView imageView, Bitmap imageBitmap){
+        this.horizontalDifference = (imageView.getWidth() - imageBitmap.getWidth()) / 2;
+        this.verticalDifference = (imageView.getHeight() - imageBitmap.getHeight()) / 2;
     }
 
     @Override
     protected void onDraw(Canvas canvas){
         this.paint.setAntiAlias(true);
         this.paint.setDither(true);
-        this.paint.setColor(Color.parseColor("#55000000"));
-        this.paint.setStyle(Paint.Style.FILL);
-        this.paint.setStrokeJoin(Paint.Join.ROUND);
-        this.paint.setStrokeWidth(5);
-
-        canvas.drawPaint(this.paint);
-        this.paint.setColor(Color.parseColor("#55FFFFFF"));
+        this.paint.setColor(getResources().getColor(R.color.teal_200));
+        this.paint.setXfermode(null);
+        this.paint.setStyle(Paint.Style.STROKE);
+        this.paint.setStrokeWidth(10);
 
         Path path = new Path();
         path.moveTo(this.imagePoints.get(0).getX(), this.imagePoints.get(0).getY());
         path.lineTo(this.imagePoints.get(1).getX(), this.imagePoints.get(1).getY());
         path.lineTo(this.imagePoints.get(3).getX(), this.imagePoints.get(3).getY());
         path.lineTo(this.imagePoints.get(2).getX(), this.imagePoints.get(2).getY());
+        path.lineTo(this.imagePoints.get(0).getX(), this.imagePoints.get(0).getY());
         canvas.drawPath(path, this.paint);
 
         for(ImagePoint point : this.imagePoints){
@@ -106,7 +118,17 @@ public class ResizableView extends View {
         int x = (int) event.getX();
         int y = (int) event.getY();
 
-        System.out.println("Event X : " + x + "\tEvent Y : " + y);
+        if(x <= this.horizontalDifference){
+            x = this.horizontalDifference;
+        } else if(x >= this.getWidth() - this.horizontalDifference){
+            x = this.getWidth() - this.horizontalDifference;
+        }
+
+        if(y <= this.verticalDifference){
+            y = this.verticalDifference;
+        } else if(y >= this.getHeight() - this.verticalDifference){
+            y = this.getHeight() - this.verticalDifference;
+        }
 
         switch(eventAction){
             case MotionEvent.ACTION_DOWN:
@@ -126,13 +148,33 @@ public class ResizableView extends View {
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
-                if(this.pointId > -1){
-                    imagePoints.get(this.pointId).setX(x - imagePoints.get(this.pointId).getWidth() / 2);
-                    imagePoints.get(this.pointId).setY(y - imagePoints.get(this.pointId).getHeight() / 2);
-                    imagePoints.get(this.pointId).draw(this.canvas);
-                    System.out.println("X : " + imagePoints.get(this.pointId).getX() + "\tY : " + imagePoints.get(this.pointId).getY());
-                    invalidate();
+                if(this.pointId == -1){
+                    break;
                 }
+
+                imagePoints.get(this.pointId).setX(x);
+                imagePoints.get(this.pointId).setY(y);
+
+                switch(this.pointId){
+                    case 0:
+                        imagePoints.get(2).setX(x);
+                        imagePoints.get(1).setY(y);
+                        break;
+                    case 1:
+                        imagePoints.get(3).setX(x);
+                        imagePoints.get(0).setY(y);
+                        break;
+                    case 2:
+                        imagePoints.get(0).setX(x);
+                        imagePoints.get(3).setY(y);
+                        break;
+                    case 3:
+                        imagePoints.get(1).setX(x);
+                        imagePoints.get(2).setY(y);
+                        break;
+                }
+
+                invalidate();
                 break;
         }
         invalidate();
@@ -146,6 +188,11 @@ public class ResizableView extends View {
                 this.imagePoints.get(2).getPoint(),
                 this.imagePoints.get(3).getPoint()
         };
+
+        for(Point point : points){
+            point.x = point.x - this.horizontalDifference;
+            point.y = point.y - this.verticalDifference;
+        }
 
         return points;
     }
