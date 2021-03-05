@@ -6,20 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.history.HistoryFragment">
 
-    <TextView
-        android:id="@+id/text_scan_receipt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageButton
         android:id="@+id/button_add_image"
         style="@style/Widget.AppCompat.ImageButton"
@@ -35,45 +21,100 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/edit_scan_receipt_name"
-        style="@style/Widget.AppCompat.EditText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="Receipt title"
+        android:hint="@string/scan_receipt_title"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_marginLeft="30dp"
         app:layout_constraintBottom_toBottomOf="@+id/button_add_image"
         app:layout_constraintEnd_toStartOf="@+id/button_add_image"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button_add_image" />
+        app:layout_constraintTop_toTopOf="@+id/button_add_image"
+        app:counterEnabled="true"
+        app:counterMaxLength="100" >
 
-    <EditText
-        android:id="@+id/editTextNumberDecimal"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_scan_receipt_name"
+            android:inputType="textShortMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLength="100"
+            android:maxLines="1"
+            android:lines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/edit_scan_receipt_price"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:layout_marginLeft="0dp"
-        android:layout_marginRight="30dp"
         android:ems="10"
-        android:hint="Receipt price"
-        android:inputType="numberDecimal"
+        android:hint="@string/scan_receipt_price"
         app:layout_constraintEnd_toEndOf="@+id/edit_scan_receipt_name"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/edit_scan_receipt_name"
-        app:layout_constraintTop_toBottomOf="@+id/edit_scan_receipt_name" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_scan_receipt_name">
 
-    <Spinner
-        android:id="@+id/currency_spinner"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_scan_receipt_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/currency_menu"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:background="@android:drawable/btn_dropdown"
-        android:spinnerMode="dropdown"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextNumberDecimal"
+        app:layout_constraintBottom_toBottomOf="@+id/edit_scan_receipt_price"
         app:layout_constraintEnd_toEndOf="@+id/button_add_image"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/editTextNumberDecimal"
-        app:layout_constraintTop_toTopOf="@+id/editTextNumberDecimal"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toEndOf="@+id/edit_scan_receipt_price"
+        app:layout_constraintTop_toTopOf="@+id/edit_scan_receipt_price">
+
+        <AutoCompleteTextView
+            android:id="@+id/currency_menu_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageView
+        android:id="@+id/gallery_recycler_view_mask"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/grey_background"
+        android:visibility="invisible"
+        android:clickable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/gallery_recycler_view" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/gallery_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_scan_receipt_price"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_validation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/gallery_recycler_view_mask"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/gallery_recycler_view_mask"
+        app:srcCompat="@drawable/baseline_done" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

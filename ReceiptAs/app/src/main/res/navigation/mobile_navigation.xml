@@ -9,17 +9,50 @@
         android:id="@+id/nav_history"
         android:name="com.example.receiptas.ui.history.HistoryFragment"
         android:label="@string/menu_history"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_scan_receipt">
+        <action
+            android:id="@+id/show_receipt_detail"
+            app:destination="@id/receiptDetailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_scan_receipt"
         android:name="com.example.receiptas.ui.scan_receipt.ScanReceiptFragment"
         android:label="@string/menu_scan_receipt"
-        tools:layout="@layout/fragment_scan_receipt" />
+        tools:layout="@layout/fragment_scan_receipt" >
+        <action
+            android:id="@+id/action_nav_scan_receipt_to_nav_scan_receipt_process_image"
+            app:destination="@id/nav_scan_receipt_process_image" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_scan_receipt_process_image"
+        android:name="com.example.receiptas.ui.scan_receipt.ScanReceiptProcessImageFragment"
+        android:label="@string/scan_receipt_process_image_product_name"
+        tools:layout="@layout/fragment_scan_receipt_process_image" >
+        <argument
+            android:name="image_path"
+            android:defaultValue="null"
+            app:argType="string" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_settings"
         android:name="com.example.receiptas.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/receiptDetailFragment"
+        android:name="com.example.receiptas.ui.history.receipt_detail.ReceiptDetailFragment"
+        android:label="{receipt_name}"
+        tools:layout="@layout/fragment_receipt_detail" >
+        <argument
+            android:name="receipt"
+            app:argType="string"
+            android:defaultValue=" " />
+        <argument
+            android:name="receipt_name"
+            app:argType="string"
+            android:defaultValue="Receipt name" />
+    </fragment>
 </navigation>
