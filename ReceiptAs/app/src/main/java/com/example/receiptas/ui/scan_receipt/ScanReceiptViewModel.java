@@ -111,6 +111,14 @@ public class ScanReceiptViewModel extends ViewModel {
         this.processedImages.getValue().add(imageBitmap);
     }
 
+    public void removeProcessedImage(int index){
+        this.processedImages.getValue().remove(index);
+    }
+
+    public void clearProcessedImages(){
+        this.processedImages.getValue().clear();
+    }
+
     public ArrayList<Bitmap> getProcessedImages(){
         return this.processedImages.getValue();
     }

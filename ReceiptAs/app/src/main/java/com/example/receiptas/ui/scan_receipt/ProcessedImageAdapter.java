@@ -1,7 +1,7 @@
 package com.example.receiptas.ui.scan_receipt;
 
-import android.appwidget.AppWidgetHost;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,23 +13,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.receiptas.R;
 
-//import com.bumptech.glide.glide;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
+//import com.bumptech.glide.glide;
+
+public class ProcessedImageAdapter extends GalleryAdapter {
 
     private Context context;
-    private List<String> images;
-    protected PhotoListener photoListener;
+    private List<Bitmap> images;
     private ArrayList<ViewHolder> holders;
+    private PhotoListener photoListener;
 
-    public GalleryAdapter(Context context){
-        this.context = context;
-    }
-
-    public GalleryAdapter(Context context, List<String> images, PhotoListener photoListener) {
+    public ProcessedImageAdapter(Context context, List<Bitmap> images, PhotoListener photoListener) {
+        super(context);
         this.context = context;
         this.images = images;
         this.photoListener = photoListener;
@@ -46,10 +43,9 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        final Bitmap image = images.get(position);
 
-        final String image = images.get(position);
-
-        Glide.with(context).load(image).into(holder.image);
+        Glide.with(context).asBitmap().load(image).into(holder.image);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +54,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
             }
         });
 
+        holder.image.setBackgroundResource(R.drawable.gallery_border_selected);
         holders.add(holder);
     }
 
@@ -70,23 +67,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         return 0;
     }
 
-    public void resetImageViewBackground(){
-        for(ViewHolder holder : holders){
-            holder.image.setBackgroundResource(R.drawable.gallery_border_unselected);
-        }
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
-
-        public ViewHolder(@NonNull View itemView){
-            super(itemView);
-
-            image = itemView.findViewById(R.id.image);
-        }
-    }
-
     public interface PhotoListener {
-        void onPhotoClick(ViewHolder holder, String path);
+        void onPhotoClick(ViewHolder holder, Bitmap imageBitmap);
     }
 }
