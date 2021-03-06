@@ -48,7 +48,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        scanReceiptViewModel = new ViewModelProvider(this).get(ScanReceiptViewModel.class);
+        scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
         View root = inflater.inflate(R.layout.fragment_scan_receipt, container, false);
 
         this.inputReceiptName = root.findViewById(R.id.input_scan_receipt_name);
@@ -118,15 +118,6 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                 this.scanReceiptViewModel.clearSelectedImages();
                 break;
             case R.id.fab_validation:
-                /*
-                for(String image_path : scanReceiptViewModel.getSelectedImage()){
-                    ScanReceiptFragmentDirections.ActionNavScanReceiptToNavScanReceiptProcessImage action =
-                            ScanReceiptFragmentDirections.actionNavScanReceiptToNavScanReceiptProcessImage();
-                    action.setImagePath(image_path);
-                    Navigation.findNavController(view).navigate(action);
-                }
-                */
-
                 String inputReceiptNameString = this.inputReceiptName.getText().toString();
                 if(this.scanReceiptViewModel.isStringSet(inputReceiptNameString)){
                     this.scanReceiptViewModel.setReceiptName(inputReceiptNameString);
@@ -139,10 +130,9 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
 
                 this.scanReceiptViewModel.setReceiptCurrency(this.receiptCurrency.getText().toString());
 
-                String image_path = scanReceiptViewModel.getSelectedImage().get(0);
                 ScanReceiptFragmentDirections.ActionNavScanReceiptToNavScanReceiptProcessImage action =
-                        ScanReceiptFragmentDirections.actionNavScanReceiptToNavScanReceiptProcessImage();
-                action.setImagePath(image_path);
+                        ScanReceiptFragmentDirections.actionNavScanReceiptToNavScanReceiptProcessImage(
+                                getString(R.string.scan_receipt_process_image_product_name));
                 Navigation.findNavController(view).navigate(action);
 
                 break;
@@ -175,7 +165,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                 } else {
                     holder.image.setBackgroundResource(R.drawable.gallery_border_unselected);
                     scanReceiptViewModel.removeSelectedImage(path);
-                    if(scanReceiptViewModel.getSelectedImage().size() == 0){
+                    if(scanReceiptViewModel.getSelectedImages().size() == 0){
                         validation.setVisibility(View.INVISIBLE);
                     }
                 }

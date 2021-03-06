@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -31,6 +33,7 @@ import java.util.Arrays;
 
 public class ScanReceiptProcessImageFragment extends Fragment {
 
+    private ScanReceiptViewModel scanReceiptViewModel;
     private FloatingActionButton validation;
 
     @Override
@@ -38,8 +41,10 @@ public class ScanReceiptProcessImageFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_scan_receipt_process_image, container, false);
+        this.scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
 
-        String image_path = ScanReceiptProcessImageFragmentArgs.fromBundle(getArguments()).getImagePath();
+        String image_path = this.scanReceiptViewModel.getSelectedImages().get(
+                this.scanReceiptViewModel.getNumberOfProcessedImages() / 2);
         File imageFile = new File(image_path);
 
         if(!imageFile.exists()){
@@ -70,8 +75,24 @@ public class ScanReceiptProcessImageFragment extends Fragment {
         this.validation = root.findViewById(R.id.fab_validation);
         this.validation.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                shapeBitmap(imageBitmap[0], resizableView);
+            public void onClick(View view) {
+                scanReceiptViewModel.addProcessedImage(shapeBitmap(imageBitmap[0], resizableView));
+                if(scanReceiptViewModel.getNumberOfProcessedImages() % 2 == 1){
+                    ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageSelf action =
+                            ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageSelf(
+                                    getString(R.string.scan_receipt_process_image_product_price));
+                    Navigation.findNavController(view).navigate(action);
+                } else if(scanReceiptViewModel.getNumberOfProcessedImages() / 2 ==
+                        scanReceiptViewModel.getNumberOfSelectedImages()){
+                    ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageToNavScanReceipt action =
+                            ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageToNavScanReceipt();
+                    Navigation.findNavController(view).navigate(action);
+                } else {
+                    ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageSelf action =
+                            ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageSelf(
+                                    getString(R.string.scan_receipt_process_image_product_name));
+                    Navigation.findNavController(view).navigate(action);
+                }
             }
         });
 
