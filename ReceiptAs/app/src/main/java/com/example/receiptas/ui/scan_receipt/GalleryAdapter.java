@@ -71,7 +71,11 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     }
 
     public void resetImageViewBackground(){
+        float scale = this.context.getResources().getDisplayMetrics().density;
+        int paddingSize = (int) (1 * scale + 0.5f);
+
         for(ViewHolder holder : holders){
+            holder.image.setPadding(paddingSize, paddingSize, paddingSize, paddingSize);
             holder.image.setBackgroundResource(R.drawable.gallery_border_unselected);
         }
     }

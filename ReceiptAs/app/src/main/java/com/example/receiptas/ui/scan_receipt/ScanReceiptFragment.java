@@ -25,6 +25,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.receiptas.MainActivity;
 import com.example.receiptas.MaterialDropdownMenuArrayAdapter;
 import com.example.receiptas.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -49,8 +50,6 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
     private ImageView shape;
     private FloatingActionButton validationSelection;
     private GalleryAdapter galleryAdapter;
-
-    private static final int MY_READ_PERMISSION_CODE = 101;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -99,27 +98,18 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         if(this.scanReceiptViewModel.getNumberOfProcessedImages() > 0){
             this.validationReceipt.setOnClickListener(this);
             this.validationReceipt.setVisibility(View.VISIBLE);
+            this.loadProcessedImages();
         }
 
         ImageButton buttonLoadImage = root.findViewById(R.id.button_add_image);
         buttonLoadImage.setOnClickListener(this);
 
         this.galleryRecyclerView = root.findViewById(R.id.gallery_recycler_view);
+        this.loadGalleryImages();
         this.shape = root.findViewById(R.id.gallery_recycler_view_mask);
         this.shape.setOnClickListener(this);
         this.validationSelection = root.findViewById(R.id.fab_validation_selection);
         this.validationSelection.setOnClickListener(this);
-
-        if(ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(getActivity(),
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_READ_PERMISSION_CODE);
-        } else {
-            this.loadGalleryImages();
-            if(this.scanReceiptViewModel.getNumberOfProcessedImages() > 0){
-                this.loadProcessedImages();
-            }
-        }
 
         return root;
     }
@@ -182,19 +172,26 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         this.galleryAdapter = new GalleryAdapter(getContext(), scanReceiptViewModel.getImages(), new GalleryAdapter.PhotoListener() {
             @Override
             public void onPhotoClick(GalleryAdapter.ViewHolder holder, String path) {
+                float scale = getResources().getDisplayMetrics().density;
+                int paddingSize;
+
                 if(holder.image.getBackground().getConstantState() ==
                         getResources().getDrawable(R.drawable.gallery_border_unselected).getConstantState()){
                     validationSelection.setVisibility(View.VISIBLE);
                     holder.image.setBackgroundResource(R.drawable.gallery_border_selected);
+                    paddingSize = (int) (3 * scale + 0.5f);
                     scanReceiptViewModel.addSelectedImage(path);
                 } else {
                     holder.image.setBackgroundResource(R.drawable.gallery_border_unselected);
+                    paddingSize = (int) (1 * scale + 0.5f);
+                    holder.image.setPadding(paddingSize, paddingSize, paddingSize, paddingSize);
                     scanReceiptViewModel.removeSelectedImage(path);
                     if(scanReceiptViewModel.getSelectedImages().size() == 0){
                         validationSelection.setVisibility(View.INVISIBLE);
                     }
                 }
 
+                holder.image.setPadding(paddingSize, paddingSize, paddingSize, paddingSize);
             }
         });
 
@@ -235,19 +232,5 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
             }
         });
         this.processedImagesRecyclerView.setAdapter(this.processedImageAdapter);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        //TODO: Reload the fragment when the results have been received
-        if(requestCode == MY_READ_PERMISSION_CODE){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(getContext(), "Read external storage permission granted", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(getContext(), "Read external storage permission denied", Toast.LENGTH_SHORT).show();
-            }
-        }
     }
 }

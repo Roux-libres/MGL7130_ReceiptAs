@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.receiptas.MainActivity;
 import com.example.receiptas.R;
 import com.example.receiptas.ui.scan_receipt.resizableview.ResizableView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,7 +30,7 @@ public class ScanReceiptProcessImageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        ((MainActivity) getActivity()).lockDrawer();
         View root = inflater.inflate(R.layout.fragment_scan_receipt_process_image, container, false);
         this.scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
 
@@ -66,6 +67,9 @@ public class ScanReceiptProcessImageFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 scanReceiptViewModel.addProcessedImage(shapeBitmap(imageBitmap[0], resizableView));
+
+                ((MainActivity) getActivity()).unlockDrawer();
+
                 if(scanReceiptViewModel.getNumberOfProcessedImages() % 2 == 1){
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageSelf action =
                             ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageSelf(
