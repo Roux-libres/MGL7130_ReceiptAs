@@ -100,7 +100,7 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/baseline_done" />
+        app:srcCompat="@drawable/baseline_done_24" />
 
     <ImageView
         android:id="@+id/gallery_recycler_view_mask"
@@ -133,6 +133,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/gallery_recycler_view_mask"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gallery_recycler_view_mask"
-        app:srcCompat="@drawable/baseline_done" />
+        app:srcCompat="@drawable/baseline_done_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
