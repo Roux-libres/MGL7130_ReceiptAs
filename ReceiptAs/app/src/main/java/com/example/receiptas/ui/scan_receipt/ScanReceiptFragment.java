@@ -56,6 +56,8 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
         View root = inflater.inflate(R.layout.fragment_scan_receipt, container, false);
 
+        getActivity().invalidateOptionsMenu();
+
         this.inputReceiptName = root.findViewById(R.id.input_scan_receipt_name);
         if(scanReceiptViewModel.hasReceiptName()){
             this.inputReceiptName.setText(scanReceiptViewModel.getReceiptName());
@@ -141,6 +143,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                 ScanReceiptFragmentDirections.ActionNavScanReceiptToNavScanReceiptProcessImage action =
                         ScanReceiptFragmentDirections.actionNavScanReceiptToNavScanReceiptProcessImage(
                                 getString(R.string.scan_receipt_process_image_product_name));
+                action.setNumberOfImages(this.scanReceiptViewModel.getNumberOfSelectedImages());
                 Navigation.findNavController(view).navigate(action);
 
                 break;

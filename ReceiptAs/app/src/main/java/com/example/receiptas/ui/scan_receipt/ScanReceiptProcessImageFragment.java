@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.receiptas.MainActivity;
 import com.example.receiptas.R;
@@ -33,6 +34,16 @@ public class ScanReceiptProcessImageFragment extends Fragment {
         ((MainActivity) getActivity()).lockDrawer();
         View root = inflater.inflate(R.layout.fragment_scan_receipt_process_image, container, false);
         this.scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
+
+        int numberOfImages = getArguments().getInt("numberOfImages");
+        TextView progressionTextView = root.findViewById(R.id.text_progression);
+        if(numberOfImages > 1){
+            String progression = String.valueOf(numberOfImages - this.scanReceiptViewModel.getNumberOfSelectedImages() + 1) + "/" + String.valueOf(numberOfImages);
+            progressionTextView.setText(progression);
+        } else {
+            progressionTextView.setVisibility(View.INVISIBLE);
+        }
+
 
         String image_path = this.scanReceiptViewModel.getSelectedImages().get(0);
         File imageFile = new File(image_path);
@@ -74,6 +85,7 @@ public class ScanReceiptProcessImageFragment extends Fragment {
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageSelf action =
                             ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageSelf(
                                     getString(R.string.scan_receipt_process_image_product_price));
+                    action.setNumberOfImages(numberOfImages);
                     Navigation.findNavController(view).navigate(action);
                 } else if(scanReceiptViewModel.getNumberOfSelectedImages() == 1){
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageToNavScanReceipt action =
@@ -84,6 +96,7 @@ public class ScanReceiptProcessImageFragment extends Fragment {
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageSelf action =
                             ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageSelf(
                                     getString(R.string.scan_receipt_process_image_product_name));
+                    action.setNumberOfImages(numberOfImages);
                     scanReceiptViewModel.getSelectedImages().remove(0);
                     Navigation.findNavController(view).navigate(action);
                 }
