@@ -46,17 +46,27 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if(position == 0) {
+            Glide.with(context).load(R.drawable.baseline_photo_camera_24).into(holder.image);
 
-        final String image = images.get(position);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    photoListener.onPhotoClick(holder, "");
+                }
+            });
+        } else {
+            final String image = images.get(position - 1);
 
-        Glide.with(context).load(image).into(holder.image);
+            Glide.with(context).load(image).into(holder.image);
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                photoListener.onPhotoClick(holder, image);
-            }
-        });
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    photoListener.onPhotoClick(holder, image);
+                }
+            });
+        }
 
         holders.add(holder);
     }
@@ -71,9 +81,17 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     }
 
     public void resetImageViewBackground(){
+        float scale = this.context.getResources().getDisplayMetrics().density;
+        int paddingSize = (int) (1 * scale + 0.5f);
+
         for(ViewHolder holder : holders){
+            holder.image.setPadding(paddingSize, paddingSize, paddingSize, paddingSize);
             holder.image.setBackgroundResource(R.drawable.gallery_border_unselected);
         }
+    }
+
+    public ViewHolder getHolder(int index){
+        return this.holders.get(index);
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

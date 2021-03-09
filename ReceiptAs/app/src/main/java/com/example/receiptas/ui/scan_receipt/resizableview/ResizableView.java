@@ -26,7 +26,6 @@ public class ResizableView extends View {
 
     private ArrayList<ImagePoint> imagePoints;
     private Paint paint;
-    private Paint transparentPaint;
     private Canvas canvas;
     private int pointId;
     private int horizontalDifference, verticalDifference;
@@ -54,7 +53,7 @@ public class ResizableView extends View {
 
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 
-        int widthDivision = metrics.widthPixels /3;
+        int widthDivision = metrics.widthPixels / 3;
         int heightDivision = metrics.heightPixels / 3;
 
         //Upper left

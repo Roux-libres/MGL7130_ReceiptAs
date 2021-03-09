@@ -6,6 +6,11 @@
     <string name="nav_header_title">Menu</string>
     <string name="nav_header_desc">Navigation header</string>
 
+    <string name="request_permission_title">Permission request</string>
+    <string name="request_permission_message">The application need the following permissions :\n - Read external file\n - Access camera</string>
+    <string name="request_permission_button_neutral">Quit</string>
+    <string name="request_permission_button_accept">Accept</string>
+
 
     <string name="menu_history">History</string>
 

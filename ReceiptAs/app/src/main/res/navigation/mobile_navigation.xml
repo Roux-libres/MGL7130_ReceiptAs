@@ -37,6 +37,10 @@
         <argument
             android:name="title"
             app:argType="string" />
+        <argument
+            android:name="numberOfImages"
+            app:argType="integer"
+            android:defaultValue="1" />
         <action
             android:id="@+id/action_nav_scan_receipt_process_image_self"
             app:destination="@id/nav_scan_receipt_process_image" />
