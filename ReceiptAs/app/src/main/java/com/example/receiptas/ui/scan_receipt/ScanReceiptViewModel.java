@@ -13,6 +13,7 @@ public class ScanReceiptViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<String>> images = new MutableLiveData<ArrayList<String>>();
     private MutableLiveData<ArrayList<String>> selectedImages = new MutableLiveData<ArrayList<String>>();
+    private MutableLiveData<Bitmap> cameraCaptureBitmap = new MutableLiveData<Bitmap>();
     private MutableLiveData<String> receiptName = new MutableLiveData<String>();
     private MutableLiveData<Float> receiptPrice = new MutableLiveData<Float>();
     private MutableLiveData<String> receiptCurrency = new MutableLiveData<String>();
@@ -49,6 +50,14 @@ public class ScanReceiptViewModel extends ViewModel {
 
     public int getNumberOfSelectedImages(){
         return this.selectedImages.getValue().size();
+    }
+
+    public Bitmap getCameraCaptureBitmap(){
+        return this.cameraCaptureBitmap.getValue();
+    }
+
+    public void setCameraCaptureBitmap(Bitmap cameraCaptureBitmap){
+        this.cameraCaptureBitmap.setValue(cameraCaptureBitmap);
     }
 
     public boolean hasReceiptName(){

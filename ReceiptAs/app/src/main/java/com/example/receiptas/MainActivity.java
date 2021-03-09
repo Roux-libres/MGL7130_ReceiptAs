@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     public int currentFragmentId;
 
-    private static final int READ_PERMISSION_CODE = 101;
+    private static final int PERMISSION_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +87,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void requestPermissions(){
-        if(ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+        boolean hasReadFilePermission = (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
+        boolean hasCameraPermission = (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
+
+        if(!hasReadFilePermission || !hasCameraPermission){
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_PERMISSION_CODE);
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PERMISSION_CODE);
         }
     }
 
@@ -98,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(requestCode == READ_PERMISSION_CODE){
+        if(requestCode == PERMISSION_CODE){
             if(grantResults[0] == PackageManager.PERMISSION_DENIED){
                 new MaterialAlertDialogBuilder(this)
                         .setTitle(getString(R.string.request_permission_title))
