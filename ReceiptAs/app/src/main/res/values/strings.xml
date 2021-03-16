@@ -6,6 +6,11 @@
     <string name="nav_header_title">Menu</string>
     <string name="nav_header_desc">Navigation header</string>
 
+    <string name="request_permission_title">Permission request</string>
+    <string name="request_permission_message">The application need the following permissions :\n - Read external file\n - Access camera</string>
+    <string name="request_permission_button_neutral">Quit</string>
+    <string name="request_permission_button_accept">Accept</string>
+
 
     <string name="menu_history">History</string>
 
@@ -19,6 +24,10 @@
     <string name="menu_scan_receipt">Scan receipt</string>
     <string name="scan_receipt_process_image_product_name">Select products name</string>
     <string name="scan_receipt_process_image_product_price">Select products price</string>
+    <string name="scan_receipt_remove_image_title">Delete image</string>
+    <string name="scan_receipt_remove_image_message">Do you really want to delete this image ?</string>
+    <string name="scan_receipt_remove_image_cancel">Cancel</string>
+    <string name="scan_receipt_remove_image_accept">Delete</string>
 
     <string name="scan_receipt_title">Receipt title</string>
     <string name="scan_receipt_price">Receipt price</string>

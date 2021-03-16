@@ -84,11 +84,29 @@
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/processed_images_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_scan_receipt_price"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_validation_receipt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/fab_margin"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/baseline_done_24" />
+
     <ImageView
         android:id="@+id/gallery_recycler_view_mask"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:src="@drawable/grey_background"
+        android:background="@color/transparent_grey_background"
         android:visibility="invisible"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -106,7 +124,7 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_scan_receipt_price"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_validation"
+        android:id="@+id/fab_validation_selection"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -115,6 +133,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/gallery_recycler_view_mask"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gallery_recycler_view_mask"
-        app:srcCompat="@drawable/baseline_done" />
+        app:srcCompat="@drawable/baseline_done_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
