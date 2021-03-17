@@ -10,7 +10,6 @@ public class Item {
     private float price;
     private ArrayList<Participant> participants;
 
-    @Inject
     public Item(int id, String name, float price, ArrayList<Participant> participants) {
         this.id = id;
         this.name = name;
