@@ -7,7 +7,6 @@ public class Participant {
     private String name;
     private boolean payer;
 
-    @Inject
     public Participant(int id, String name, boolean payer) {
         this.id = id;
         this.name = name;

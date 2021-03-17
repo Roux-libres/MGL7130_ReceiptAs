@@ -12,7 +12,6 @@ public class Receipt {
     private ArrayList<Item> items;
     private ArrayList<Participant> participants;
 
-    @Inject
     public Receipt(int id, String name, Date date, ArrayList<Item> items, ArrayList<Participant> participants) {
         this.id = id;
         this.name = name;
