@@ -22,6 +22,9 @@ import com.example.receiptas.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class HistoryFragment extends Fragment {
 
     private HistoryViewModel historyViewModel;
