@@ -2,21 +2,25 @@ package com.example.receiptas;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.Menu;
-import android.widget.Toast;
+import android.view.View;
 
-import com.example.receiptas.ui.scan_receipt.ScanReceiptFragment;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
+import androidx.core.view.GravityCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -26,6 +30,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
@@ -33,16 +40,35 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     public int currentFragmentId;
 
+    private boolean isTablet;
+
     private static final int PERMISSION_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer);
+
         this.toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         this.drawerLayout = findViewById(R.id.drawer_layout);
+
+        this.isTablet = getResources().getBoolean(R.bool.isTablet);
+
+        if(this.isTablet()){
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+
+            this.toolbar.setNavigationIcon(null);
+
+            //TODO: disable navigation icon on toolbar
+            //this.toolbar.setNavigationOnClickListener(null);
+
+            this.lockDrawerOpen();
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
         NavigationView navigationView = findViewById(R.id.nav_view);
 
         this.requestPermissions();
@@ -69,8 +95,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        if(this.isTablet() && (this.currentFragmentId != R.id.nav_history && this.currentFragmentId != R.id.nav_scan_receipt && this.currentFragmentId != R.id.nav_settings)){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } else {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+
         if (this.currentFragmentId == R.id.nav_history) {
-            toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.baseline_sort_24));
+            toolbar.setOverflowIcon(getBaseContext().getDrawable(R.drawable.baseline_sort_24));
             getMenuInflater().inflate(R.menu.drawer, menu);
             return true;
         } else {
@@ -124,7 +156,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void lockDrawer(){
+    public boolean isTablet(){
+        return this.isTablet;
+    }
+
+    public void lockDrawerOpen(){
+        this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+    }
+
+    public void lockDrawerClosed(){
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 

@@ -33,7 +33,8 @@ public class ScanReceiptProcessImageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((MainActivity) getActivity()).lockDrawer();
+        ((MainActivity) getActivity()).unlockDrawer();
+        ((MainActivity) getActivity()).lockDrawerClosed();
         View root = inflater.inflate(R.layout.fragment_scan_receipt_process_image, container, false);
         this.scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
 
@@ -87,7 +88,12 @@ public class ScanReceiptProcessImageFragment extends Fragment {
             public void onClick(View view) {
                 scanReceiptViewModel.addProcessedImage(shapeBitmap(imageBitmap, resizableView));
 
-                ((MainActivity) getActivity()).unlockDrawer();
+
+                if(((MainActivity) getActivity()).isTablet()){
+                    ((MainActivity) getActivity()).lockDrawerOpen();
+                } else {
+                    ((MainActivity) getActivity()).unlockDrawer();
+                }
 
                 if(scanReceiptViewModel.getNumberOfProcessedImages() % 2 == 1){
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageSelf action =

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/addingParticipantsFragment">
+    app:startDestination="@+id/nav_history">
 
     <fragment
         android:id="@+id/nav_history"
@@ -13,6 +13,21 @@
         <action
             android:id="@+id/show_receipt_detail"
             app:destination="@id/receiptDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/receiptDetailFragment"
+        android:name="com.example.receiptas.ui.history.receipt_detail.ReceiptDetailFragment"
+        android:label="{receipt_name}"
+        tools:layout="@layout/fragment_receipt_detail" >
+        <argument
+            android:name="receipt"
+            app:argType="string"
+            android:defaultValue=" " />
+        <argument
+            android:name="receipt_name"
+            app:argType="string"
+            android:defaultValue="Receipt name" />
     </fragment>
 
     <fragment
@@ -54,26 +69,4 @@
         android:name="com.example.receiptas.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
-    <fragment
-        android:id="@+id/receiptDetailFragment"
-        android:name="com.example.receiptas.ui.history.receipt_detail.ReceiptDetailFragment"
-        android:label="{receipt_name}"
-        tools:layout="@layout/fragment_receipt_detail" >
-        <argument
-            android:name="receipt"
-            app:argType="string"
-            android:defaultValue=" " />
-        <argument
-            android:name="receipt_name"
-            app:argType="string"
-            android:defaultValue="Receipt name" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/addingParticipantsFragment"
-        android:name="com.example.receiptas.ui.division.AddingParticipantsFragment"
-        android:label="test"
-        tools:layout="@layout/fragment_division_adding_participants">
-    </fragment>
-
 </navigation>
