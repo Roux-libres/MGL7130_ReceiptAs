@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.receiptas.MainActivity;
 import com.example.receiptas.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -43,13 +44,16 @@ public class ReceiptDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tabLayout = view.findViewById(R.id.tab_layout);
-        viewPager = view.findViewById(R.id.pager);
 
-        tabLayout.addOnTabSelectedListener(tabSelectedListener);
-        viewPager.setAdapter(new ReceiptDetailAdapter(this, tabLayout.getTabCount()));
+        if(!((MainActivity) getActivity()).isTablet()) {
+            tabLayout = view.findViewById(R.id.tab_layout);
+            viewPager = view.findViewById(R.id.pager);
 
-        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabsNames[position])).attach();
+            tabLayout.addOnTabSelectedListener(tabSelectedListener);
+            viewPager.setAdapter(new ReceiptDetailAdapter(this, tabLayout.getTabCount()));
+
+            new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabsNames[position])).attach();
+        }
     }
 
     @Override

@@ -8,11 +8,13 @@
 
     <application
         android:allowBackup="true"
+        android:name=".ReceiptAsApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ReceiptAs"
+        android:screenOrientation="nosensor"
         android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"
