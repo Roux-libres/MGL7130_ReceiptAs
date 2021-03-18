@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_history">
+    app:startDestination="@+id/addingParticipantsFragment">
 
     <fragment
         android:id="@+id/nav_history"
@@ -68,4 +68,12 @@
             app:argType="string"
             android:defaultValue="Receipt name" />
     </fragment>
+
+    <fragment
+        android:id="@+id/addingParticipantsFragment"
+        android:name="com.example.receiptas.ui.division.AddingParticipantsFragment"
+        android:label="test"
+        tools:layout="@layout/fragment_division_adding_participants">
+    </fragment>
+
 </navigation>
