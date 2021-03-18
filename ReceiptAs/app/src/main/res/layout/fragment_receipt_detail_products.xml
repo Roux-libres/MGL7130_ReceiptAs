@@ -5,6 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".ui.history.receipt_detail.ReceiptDetailProductsFragment">
 
+    <LinearLayout
+        android:id="@+id/top_border"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/purple_500"
+        android:orientation="horizontal"
+        android:layout_gravity="top" />
+
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"

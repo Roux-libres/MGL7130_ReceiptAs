@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -177,7 +178,13 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
 
     private void loadGalleryImages(){
         this.galleryRecyclerView.setHasFixedSize(true);
-        this.galleryRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+
+        if(((MainActivity) getActivity()).isTablet()){
+            this.galleryRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
+        } else {
+            this.galleryRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        }
+
         this.scanReceiptViewModel.setImages(ImagesGallery.listOfImages(getContext()));
         this.galleryAdapter = new GalleryAdapter(getContext(), scanReceiptViewModel.getImages(), new GalleryAdapter.PhotoListener() {
             @Override
