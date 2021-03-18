@@ -32,6 +32,10 @@
     <string name="scan_receipt_title">Receipt title</string>
     <string name="scan_receipt_price">Receipt price</string>
 
+    <string name="name_input">Name</string>
+    <string name="adding_button_description">Add</string>
+    <string name="validation_button_description">Validate</string>
+
 
     <string name="menu_settings">Settings</string>
 
@@ -46,4 +50,7 @@
     <string name="participant_total">%1$.2f %2$.3S</string>
     <string name="payer_name">%1$s (payer)</string>
     <string name="unassigned_total">Total unassigned objects: %1$.2f %2$.3S</string>
+
+    <string name="information_message_adding_participants">Enter the names of different participants. \n (8 participants max)</string>
+
 </resources>
