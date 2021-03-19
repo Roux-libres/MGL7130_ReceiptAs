@@ -80,11 +80,6 @@ public class MainRepository {
         );
     }
 
-
-    private void getParsedText(String image) {
-
-    }
-
     public ArrayList<Receipt> getReceipts() {
         try {
 

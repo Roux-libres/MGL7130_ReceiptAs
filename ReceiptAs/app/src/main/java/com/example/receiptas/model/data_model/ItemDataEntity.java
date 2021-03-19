@@ -7,10 +7,6 @@ import java.util.ArrayList;
 
 public class ItemDataEntity {
 
-    @SerializedName("id")
-    @Expose
-    private int id;
-
     @SerializedName("name")
     @Expose
     private String name;
@@ -23,8 +19,10 @@ public class ItemDataEntity {
     @Expose
     private ArrayList<Integer> participants;
 
-    public int getId() {
-        return id;
+    public ItemDataEntity(String name, float price, ArrayList<Integer> participants) {
+        this.name = name;
+        this.price = price;
+        this.participants = participants;
     }
 
     public String getName() {
