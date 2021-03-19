@@ -23,6 +23,7 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -31,13 +32,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.receiptas.MainActivity;
 import com.example.receiptas.MaterialDropdownMenuArrayAdapter;
 import com.example.receiptas.R;
+import com.example.receiptas.model.util.DataState;
+import com.example.receiptas.ui.history.ReceiptAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class ScanReceiptFragment extends Fragment implements View.OnClickListener {
 
     private static final int CAMERA_REQUEST = 1;
@@ -143,6 +150,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                 break;
             case R.id.fab_validation_receipt:
                 //TODO: Navigate to next fragment OR treat the data first
+                this.scanReceiptViewModel.parseTextFromImages();
                 break;
         }
     }

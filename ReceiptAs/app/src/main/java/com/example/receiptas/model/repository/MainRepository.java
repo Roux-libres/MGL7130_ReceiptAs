@@ -8,7 +8,12 @@ import com.example.receiptas.model.util.DataState;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,31 +33,56 @@ public class MainRepository {
         this.dataMapper = dataMapper;
     }
 
-    public DataState<ArrayList<String>> getParsedText(String base64Image) {
+    public DataState<ArrayList<String>> getTextFromImages(ArrayList<String> images) {
+        ArrayList<String> texts = new ArrayList<>();
         DataState<ArrayList<String>> dataState = new DataState();
         dataState.setState(DataState.State.LOADING);
 
-        Call<JsonObject> call = ocrService.getParsedText(API_KEY, base64Image, OCR_ENGINE, IS_TABLE);
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.isSuccessful()) {
-                    System.out.println(response.body().get("ParsedText"));
-                    dataState.setData(null);
-                    dataState.setState(DataState.State.SUCCESS);
-                } else {
-                    //do nothing
-                }
-            }
+        try {
+            Observable<JsonObject> request = ocrService.getParsedText(API_KEY, images.get(0), OCR_ENGINE, IS_TABLE);
 
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                dataState.setError(t);
-                dataState.setState(DataState.State.ERROR);
+            for(String image : images.subList(1, images.size())) {
+                request = request.concatMapEager(result -> {
+                    texts.addAll(parseJsonObjectParsedText(result));
+                    return ocrService.getParsedText(API_KEY, image, OCR_ENGINE, IS_TABLE);
+                });
             }
-        });
+            request.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                        texts.addAll(parseJsonObjectParsedText(result));
+                        //TODO delete display
+                        System.out.println(texts);
+                        dataState.setData(texts);
+                        dataState.setState(DataState.State.SUCCESS);
+                    }, throwable -> {
+                        throwable.printStackTrace();
+                        dataState.setError(throwable);
+                        dataState.setState(DataState.State.ERROR);
+                    }
+                );
+        } catch (Exception exception) {
+            dataState.setError(exception);
+            dataState.setState(DataState.State.ERROR);
+        }
 
         return dataState;
+    }
+
+    private ArrayList<String> parseJsonObjectParsedText(JsonObject jsonObject) {
+        return new ArrayList<>(
+            Arrays.asList(
+                jsonObject.get("ParsedResults")
+                    .getAsJsonArray().get(0)
+                    .getAsJsonObject().get("ParsedText")
+                    .getAsString().split("\r\n")
+            )
+        );
+    }
+
+
+    private void getParsedText(String image) {
+
     }
 
     public ArrayList<Receipt> getReceipts() {
