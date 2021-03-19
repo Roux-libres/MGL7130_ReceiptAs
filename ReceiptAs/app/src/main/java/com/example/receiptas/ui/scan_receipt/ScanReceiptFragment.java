@@ -150,6 +150,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                 Navigation.findNavController(view).navigate(action);
                 break;
             case R.id.fab_validation_receipt:
+                this.scanReceiptViewModel.getProcessedImages();
                 //TODO: Navigate to next fragment OR treat the data first
                 this.scanReceiptViewModel.parseTextFromImages();
                 break;
