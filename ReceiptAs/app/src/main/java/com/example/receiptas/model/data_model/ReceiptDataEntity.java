@@ -10,10 +10,6 @@ import javax.inject.Inject;
 
 public class ReceiptDataEntity {
 
-    @SerializedName("id")
-    @Expose
-    private int id;
-
     @SerializedName("name")
     @Expose
     private String name;
@@ -30,16 +26,11 @@ public class ReceiptDataEntity {
     @Expose
     private ArrayList<ParticipantDataEntity> participants;
 
-    public ReceiptDataEntity(int id, String name, Date date, ArrayList<ItemDataEntity> items, ArrayList<ParticipantDataEntity> participants) {
-        this.id = id;
+    public ReceiptDataEntity(String name, Date date, ArrayList<ItemDataEntity> items, ArrayList<ParticipantDataEntity> participants) {
         this.name = name;
         this.date = date;
         this.items = items;
         this.participants = participants;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {
