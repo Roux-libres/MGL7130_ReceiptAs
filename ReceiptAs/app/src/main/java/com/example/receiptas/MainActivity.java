@@ -9,6 +9,7 @@ import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.View;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
@@ -57,10 +58,13 @@ public class MainActivity extends AppCompatActivity {
 
         if(this.isTablet()){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            this.lockDrawerOpen();
+
+            this.toolbar.setNavigationIcon(null);
 
             //TODO: disable navigation icon on toolbar
-            this.toolbar.setNavigationOnClickListener(null);
+            //this.toolbar.setNavigationOnClickListener(null);
+
+            this.lockDrawerOpen();
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
@@ -91,8 +95,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        if(this.isTablet() && (this.currentFragmentId != R.id.nav_history && this.currentFragmentId != R.id.nav_scan_receipt && this.currentFragmentId != R.id.nav_settings)){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } else {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        }
+
         if (this.currentFragmentId == R.id.nav_history) {
-            toolbar.setOverflowIcon(getResources().getDrawable(R.drawable.baseline_sort_24));
+            toolbar.setOverflowIcon(getBaseContext().getDrawable(R.drawable.baseline_sort_24));
             getMenuInflater().inflate(R.menu.drawer, menu);
             return true;
         } else {
