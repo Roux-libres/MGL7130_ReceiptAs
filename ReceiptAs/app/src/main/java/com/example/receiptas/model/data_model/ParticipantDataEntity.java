@@ -5,10 +5,6 @@ import com.google.gson.annotations.SerializedName;
 
 public class ParticipantDataEntity {
 
-    @SerializedName("id")
-    @Expose
-    private int id;
-
     @SerializedName("name")
     @Expose
     private String name;
@@ -17,14 +13,9 @@ public class ParticipantDataEntity {
     @Expose
     private boolean payer;
 
-    public ParticipantDataEntity(int id, String name, boolean payer) {
-        this.id = id;
+    public ParticipantDataEntity(String name, boolean payer) {
         this.name = name;
         this.payer = payer;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {

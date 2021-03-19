@@ -6,22 +6,16 @@ import java.util.Date;
 import javax.inject.Inject;
 
 public class Receipt {
-    private int id;
     private String name;
     private Date date;
     private ArrayList<Item> items;
     private ArrayList<Participant> participants;
 
-    public Receipt(int id, String name, Date date, ArrayList<Item> items, ArrayList<Participant> participants) {
-        this.id = id;
+    public Receipt(String name, Date date, ArrayList<Item> items, ArrayList<Participant> participants) {
         this.name = name;
         this.date = date;
         this.items = items;
         this.participants = participants;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getName() {
