@@ -5,30 +5,23 @@ import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.Menu;
-import android.view.View;
-
-import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
-import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.navigation.NavigationView;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -58,12 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
         if(this.isTablet()){
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-
-            this.toolbar.setNavigationIcon(null);
-
-            //TODO: disable navigation icon on toolbar
-            //this.toolbar.setNavigationOnClickListener(null);
-
             this.lockDrawerOpen();
         } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -95,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(this.isTablet() && (this.currentFragmentId != R.id.nav_history && this.currentFragmentId != R.id.nav_scan_receipt && this.currentFragmentId != R.id.nav_settings)){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } else {
+        if(this.isTablet() && (this.currentFragmentId == R.id.nav_history || this.currentFragmentId == R.id.nav_scan_receipt || this.currentFragmentId == R.id.nav_settings)){
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        } else {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         if (this.currentFragmentId == R.id.nav_history) {
