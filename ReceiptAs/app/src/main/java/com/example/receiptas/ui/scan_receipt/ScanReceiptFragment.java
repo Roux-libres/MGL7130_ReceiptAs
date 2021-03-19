@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -150,8 +151,10 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                 Navigation.findNavController(view).navigate(action);
                 break;
             case R.id.fab_validation_receipt:
-                //TODO: Navigate to next fragment OR treat the data first
                 this.scanReceiptViewModel.parseTextFromImages();
+                NavDirections goToItemCorrection =
+                    ScanReceiptFragmentDirections.actionNavScanReceiptToItemCorrectionFragment();
+                Navigation.findNavController(view).navigate(goToItemCorrection);
                 break;
         }
     }

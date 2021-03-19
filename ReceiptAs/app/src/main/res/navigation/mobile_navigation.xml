@@ -42,6 +42,9 @@
         <action
             android:id="@+id/action_nav_scan_receipt_to_nav_scan_receipt_process_image"
             app:destination="@id/nav_scan_receipt_process_image" />
+        <action
+            android:id="@+id/action_nav_scan_receipt_to_itemCorrectionFragment"
+            app:destination="@id/itemCorrectionFragment" />
     </fragment>
 
     <fragment
@@ -69,4 +72,9 @@
         android:name="com.example.receiptas.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/itemCorrectionFragment"
+        android:name="com.example.receiptas.ui.scan_receipt.correction.ItemCorrectionFragment"
+        android:label="Correction"
+        tools:layout="@layout/fragment_item_correction" />
 </navigation>
