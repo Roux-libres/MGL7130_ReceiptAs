@@ -82,10 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(this.isTablet() && (this.currentFragmentId != R.id.nav_history && this.currentFragmentId != R.id.nav_scan_receipt && this.currentFragmentId != R.id.nav_settings)){
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } else {
+        if(this.isTablet() && (this.currentFragmentId == R.id.nav_history || this.currentFragmentId == R.id.nav_scan_receipt || this.currentFragmentId == R.id.nav_settings)){
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        } else {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         if (this.currentFragmentId == R.id.nav_history) {
