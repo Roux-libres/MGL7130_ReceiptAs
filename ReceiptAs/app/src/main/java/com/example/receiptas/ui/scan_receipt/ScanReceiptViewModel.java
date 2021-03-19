@@ -2,15 +2,27 @@ package com.example.receiptas.ui.scan_receipt;
 
 import android.graphics.Bitmap;
 import android.text.TextUtils;
+import android.util.Base64;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
-import java.util.ArrayList;
+import com.example.receiptas.model.repository.MainRepository;
+import com.example.receiptas.model.util.DataState;
 
+import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
+
+@HiltViewModel
 public class ScanReceiptViewModel extends ViewModel {
 
+    private MainRepository mainRepository;
     private MutableLiveData<ArrayList<String>> images = new MutableLiveData<ArrayList<String>>();
     private MutableLiveData<ArrayList<String>> selectedImages = new MutableLiveData<ArrayList<String>>();
     private MutableLiveData<Bitmap> cameraCaptureBitmap = new MutableLiveData<Bitmap>();
@@ -18,10 +30,14 @@ public class ScanReceiptViewModel extends ViewModel {
     private MutableLiveData<Float> receiptPrice = new MutableLiveData<Float>();
     private MutableLiveData<String> receiptCurrency = new MutableLiveData<String>();
     private MutableLiveData<ArrayList<Bitmap>> processedImages = new MutableLiveData<ArrayList<Bitmap>>();
+    private MutableLiveData<DataState<ArrayList<String>>> items = new MutableLiveData<>();
+    private MutableLiveData<DataState<ArrayList<String>>> prices = new MutableLiveData<>();
 
-    public ScanReceiptViewModel() {
+    @Inject
+    public ScanReceiptViewModel(MainRepository mainRepository) {
         this.selectedImages.setValue(new ArrayList<String>());
         this.processedImages.setValue(new ArrayList<Bitmap>());
+        this.mainRepository = mainRepository;
     }
 
     public void setImages(ArrayList<String> images){
@@ -134,5 +150,52 @@ public class ScanReceiptViewModel extends ViewModel {
 
     public int getNumberOfProcessedImages(){
         return this.processedImages.getValue().size();
+    }
+
+    public MutableLiveData<DataState<ArrayList<String>>> getItems() {
+        return items;
+    }
+
+    public MutableLiveData<DataState<ArrayList<String>>> getPrices() {
+        return prices;
+    }
+
+    public void parseTextFromImages() {
+        this.items.setValue(
+            this.mainRepository.getTextFromImages(
+                fromBitmapToBase64Images(getSublist(processedImages.getValue(), 0, 2))
+            )
+        );
+
+        this.prices.setValue(
+            this.mainRepository.getTextFromImages(
+                fromBitmapToBase64Images(getSublist(processedImages.getValue(), 1, 2))
+            )
+        );
+    }
+
+    private <T> ArrayList<T> getSublist(ArrayList<T> list, int startIndex, int step) {
+        ArrayList<T> sublist = new ArrayList<>();
+        for(int i = startIndex; i < list.size(); i += step) {
+            sublist.add(list.get(i));
+        }
+        return sublist;
+    }
+
+    private ArrayList<String> fromBitmapToBase64Images(ArrayList<Bitmap> imageSublist) {
+        ArrayList<String> base64Images = new ArrayList<>();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        for(Bitmap bitmap : imageSublist) {
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream.toByteArray();
+            base64Images.add(
+                new StringBuilder("data:image/png;base64,")
+                    .append(Base64.encodeToString(byteArray, Base64.DEFAULT))
+                    .toString());
+            byteArrayOutputStream.reset();
+        }
+
+        return base64Images;
     }
 }
