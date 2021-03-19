@@ -40,7 +40,7 @@
     <li>
       <a href="#prise-en-main">Prise en main</a>
       <ul>
-        <li><a href="#prerequis">Prérequis</a></li>
+        <li><a href="#prérequis">Prérequis</a></li>
         <li><a href="#installation">Installation</a></li>
       </ul>
     </li>
@@ -106,11 +106,11 @@ Lien du projet: [https://github.com/Roux-libres/MGL7130_ReceiptAs](https://githu
 
 
 
-[contributors-shield]: https://img.shields.io/github/contributors/Roux-libres/repo.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/Roux-libres/MGL7130_ReceiptAs.svg?style=for-the-badge
 [contributors-url]: https://github.com/Roux-libres/MGL7130_ReceiptAs/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Roux-libres/repo.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/Roux-libres/MGL7130_ReceiptAs.svg?style=for-the-badge
 [forks-url]: https://github.com/Roux-libres/MGL7130_ReceiptAs/network/members
-[stars-shield]: https://img.shields.io/github/stars/Roux-libres/repo.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/Roux-libres/MGL7130_ReceiptAs.svg?style=for-the-badge
 [stars-url]: https://github.com/Roux-libres/MGL7130_ReceiptAs/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Roux-libres/repo.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/Roux-libres/MGL7130_ReceiptAs.svg?style=for-the-badge
 [issues-url]: https://github.com/Roux-libres/MGL7130_ReceiptAs/issues
