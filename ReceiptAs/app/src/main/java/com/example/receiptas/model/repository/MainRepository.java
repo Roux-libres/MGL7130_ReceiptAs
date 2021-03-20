@@ -37,7 +37,7 @@ public class MainRepository {
     public DataState<ArrayList<String>> getTextFromImages(ArrayList<String> images) {
         ArrayList<String> texts = new ArrayList<>();
         DataState<ArrayList<String>> dataState = new DataState();
-        dataState.setState(DataState.State.LOADING);
+        dataState.setLoading();
 
         try {
             Observable<JsonObject> request = ocrService.getParsedText(API_KEY, images.get(0), OCR_ENGINE, IS_TABLE);
@@ -54,17 +54,14 @@ public class MainRepository {
                         texts.addAll(parseJsonObjectParsedText(result));
                         //TODO delete display
                         System.out.println(texts);
-                        dataState.setData(texts);
-                        dataState.setState(DataState.State.SUCCESS);
+                        dataState.setSuccess(texts);
                     }, throwable -> {
                         throwable.printStackTrace();
                         dataState.setError(throwable);
-                        dataState.setState(DataState.State.ERROR);
                     }
                 );
         } catch (Exception exception) {
             dataState.setError(exception);
-            dataState.setState(DataState.State.ERROR);
         }
 
         return dataState;
