@@ -37,6 +37,7 @@ public class HistoryFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         historyViewModel = new ViewModelProvider(this).get(HistoryViewModel.class);
+        historyViewModel.setContext(getContext());
     }
 
     @Override
@@ -52,9 +53,7 @@ public class HistoryFragment extends Fragment {
         historyViewModel.getReceipts().observe(getViewLifecycleOwner(), receiptListUpdateObserver);
         this.configureRecyclerView();
 
-        List<String> list = new ArrayList<>();
-        list.add("test receipt");
-        historyViewModel.getReceipts().setValue(list);
+        historyViewModel.getReceipts();
     }
 
     private void configureRecyclerView() {
