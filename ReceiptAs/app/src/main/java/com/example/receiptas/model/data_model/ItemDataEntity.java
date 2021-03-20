@@ -17,9 +17,9 @@ public class ItemDataEntity {
 
     @SerializedName("participants")
     @Expose
-    private ArrayList<Integer> participants;
+    private ArrayList<String> participants;
 
-    public ItemDataEntity(String name, float price, ArrayList<Integer> participants) {
+    public ItemDataEntity(String name, float price, ArrayList<String> participants) {
         this.name = name;
         this.price = price;
         this.participants = participants;
@@ -33,7 +33,7 @@ public class ItemDataEntity {
         return price;
     }
 
-    public ArrayList<Integer> getParticipants() {
+    public ArrayList<String> getParticipants() {
         return participants;
     }
 }

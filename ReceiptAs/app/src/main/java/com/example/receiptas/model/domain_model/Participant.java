@@ -6,7 +6,7 @@ public class Participant {
     private String name;
     private boolean payer;
 
-    public Participant(int id, String name, boolean payer) {
+    public Participant(String name, boolean payer) {
         this.name = name;
         this.payer = payer;
     }

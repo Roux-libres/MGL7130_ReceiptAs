@@ -2,6 +2,7 @@ package com.example.receiptas.model.repository;
 
 import com.example.receiptas.model.data_model.DataMapper;
 import com.example.receiptas.model.data_model.ReceiptDao;
+import com.example.receiptas.model.data_model.ReceiptDataEntity;
 import com.example.receiptas.model.domain_model.Receipt;
 import com.example.receiptas.model.service.OCRService;
 import com.example.receiptas.model.util.DataState;
@@ -78,11 +79,22 @@ public class MainRepository {
     }
 
     public ArrayList<Receipt> getReceipts() {
+        ArrayList<Receipt> receipts;
+
         try {
-
-        } catch (Exception e) {
-
+            receipts = this.dataMapper.mapFromEntities(this.receiptDao.getAll());
+        } catch (Exception exception) {
+            receipts = new ArrayList<>();
         }
-        return null;
+
+        return receipts;
+    }
+
+    public void saveReceipts(ArrayList<Receipt> receipts){
+        try {
+            this.receiptDao.setAll(this.dataMapper.mapToEntities(receipts));
+        } catch (Exception exception) {
+            System.out.println(exception);
+        }
     }
 }
