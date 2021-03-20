@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/recycler_view_item_height"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="25dp"
+    android:paddingEnd="25dp">
+
+    <TextView
+        android:id="@+id/itemLabel"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.90"
+        android:drawablePadding="10dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:paddingStart="0dp"
+        android:paddingEnd="20dp"
+        android:text="@string/item_text_placeholder"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/itemMenu"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        android:background="@android:color/transparent"
+        app:icon="@drawable/more_vert_black_24dp"
+        app:iconTint="@color/black" />
+</LinearLayout>
