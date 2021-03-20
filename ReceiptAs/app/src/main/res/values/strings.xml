@@ -54,4 +54,11 @@
     <string name="information_message_adding_participants">Enter the names of different participants. \n (8 participants max)</string>
     <string name="information_message_item_correction">Select the lines to delete or combine</string>
     <string name="foo">element</string>
+
+    <string name="item_correction_popup_menu_delete">Delete</string>
+    <string name="item_correction_popup_menu_undelete">Undelete</string>
+    <string name="item_correction_popup_menu_combine_above">Combine above</string>
+    <string name="item_correction_popup_menu_combine_below">Combine below</string>
+    <string name="item_correction_popup_menu_detach_first">Detach first item</string>
+    <string name="item_correction_popup_menu_detach_last">Detach last item</string>
 </resources>

@@ -32,7 +32,7 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptViewHolder> {
     public void onBindViewHolder(@NonNull ReceiptViewHolder holder, int position) {
         holder.getLeftTextView().setText(localDataSet.get(position));
         holder.getRightTextView().setText(localDataSet.get(position));
-        holder.bindListener(localDataSet.get(position), this.listener);
+        holder.bindListener(position, localDataSet.get(position), this.listener);
     }
 
     @Override
