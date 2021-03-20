@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/deleteItem"
+        android:title="@string/item_correction_popup_menu_delete"/>
+    <item android:id="@+id/undeleteItem"
+        android:title="@string/item_correction_popup_menu_undelete"/>
+    <item android:id="@+id/combineAbove"
+        android:title="@string/item_correction_popup_menu_combine_above" />
+    <item android:id="@+id/combineBelow"
+        android:title="@string/item_correction_popup_menu_combine_below" />
+    <item android:id="@+id/detachFirst"
+        android:title="@string/item_correction_popup_menu_detach_first" />
+    <item android:id="@+id/detachLast"
+        android:title="@string/item_correction_popup_menu_detach_last" />
+</menu>

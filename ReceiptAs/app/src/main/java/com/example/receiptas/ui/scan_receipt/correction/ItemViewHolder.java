@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.receiptas.R;
+import com.example.receiptas.ui.history.OnRecyclerViewItemClickListener;
 
 public class ItemViewHolder extends RecyclerView.ViewHolder {
     private final TextView itemLabel;
@@ -24,5 +25,9 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
 
     public  Button getItemMenu() {
         return this.itemMenu;
+    }
+
+    public void bindListener(final int id, final OnRecyclerViewItemClickListener<View> listener) {
+        itemMenu.setOnClickListener(view -> listener.onItemClick(id, view));
     }
 }

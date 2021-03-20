@@ -24,7 +24,7 @@ public class ReceiptViewHolder extends RecyclerView.ViewHolder {
         return rightTextView;
     }
 
-    public void bindListener(final String item, final OnRecyclerViewItemClickListener listener) {
-        itemView.setOnClickListener(view -> listener.onItemClick(item));
+    public void bindListener(final int id, final String item, final OnRecyclerViewItemClickListener listener) {
+        itemView.setOnClickListener(view -> listener.onItemClick(id, item));
     }
 }

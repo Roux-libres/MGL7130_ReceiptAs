@@ -63,7 +63,7 @@ public class HistoryFragment extends Fragment {
         historyRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    private final OnRecyclerViewItemClickListener onReceiptClicked  = item -> {
+    private final OnRecyclerViewItemClickListener<String> onReceiptClicked  = (itemId, item) -> {
         HistoryFragmentDirections.ShowReceiptDetail action = HistoryFragmentDirections.showReceiptDetail();
         action.setReceipt(item);
         action.setReceiptName(item);
