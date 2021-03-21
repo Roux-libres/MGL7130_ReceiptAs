@@ -12,9 +12,11 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.receiptas.MainActivity;
 import com.example.receiptas.R;
+import com.example.receiptas.model.domain_model.Receipt;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -24,6 +26,7 @@ public class ReceiptDetailFragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private String[] tabsNames;
+    private Receipt receipt;
 
     public static ReceiptDetailFragment newInstance() {
         return new ReceiptDetailFragment();
@@ -32,7 +35,9 @@ public class ReceiptDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        tabsNames = getResources().getStringArray(R.array.receipt_detail_tabs_names);
+        this.tabsNames = getResources().getStringArray(R.array.receipt_detail_tabs_names);
+        //this.receipt = (Receipt) getArguments().get("receipt");
+        //System.out.println(receipt.getName());
     }
 
     @Override
@@ -45,7 +50,13 @@ public class ReceiptDetailFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if(!((MainActivity) getActivity()).isTablet()) {
+        if(((MainActivity) getActivity()).isTablet()) {
+            TextView productsListHeader = getView().findViewById(R.id.products_list_header);
+            productsListHeader.setText(this.tabsNames[0]);
+
+            TextView summaryHeader = getView().findViewById(R.id.summary_header);
+            summaryHeader.setText(this.tabsNames[1]);
+        } else {
             tabLayout = view.findViewById(R.id.tab_layout);
             viewPager = view.findViewById(R.id.pager);
 

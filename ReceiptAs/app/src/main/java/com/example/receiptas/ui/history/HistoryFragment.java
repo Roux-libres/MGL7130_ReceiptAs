@@ -62,9 +62,9 @@ public class HistoryFragment extends Fragment {
     }
 
     private final OnRecyclerViewItemClickListener<String> onReceiptClicked  = (itemId, item) -> {
-        HistoryFragmentDirections.ShowReceiptDetail action = HistoryFragmentDirections.showReceiptDetail();
-        action.setReceipt(item);
-        action.setReceiptName(item);
+        HistoryFragmentDirections.ShowReceiptDetail action = HistoryFragmentDirections.showReceiptDetail(
+                this.historyViewModel.getReceipts().getValue().get(itemId),
+                this.historyViewModel.getReceipts().getValue().get(itemId).getName());
         Navigation.findNavController(getView()).navigate(action);
     };
 
