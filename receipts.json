@@ -1,10 +1,8 @@
 [
    {
-      "receipt":{
-         "name":"Glaces",
-         "date":"2020-12-10T13:45:00.000Z",
-         "currency":"CAD"
-      },
+      "name":"Glaces",
+      "date":"1616282781804",
+      "currency":"CAD",
       "participants":[
          {
             "name":"Romain",

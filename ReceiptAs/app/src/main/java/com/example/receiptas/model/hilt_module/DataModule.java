@@ -1,10 +1,13 @@
 package com.example.receiptas.model.hilt_module;
 
 import com.example.receiptas.model.data_model.DataMapper;
+import com.example.receiptas.model.data_model.DateJsonDeserializer;
+import com.example.receiptas.model.data_model.DateJsonSerializer;
 import com.example.receiptas.model.data_model.ReceiptDao;
-import com.example.receiptas.model.domain_model.Receipt;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.Date;
 
 import javax.inject.Singleton;
 
@@ -21,6 +24,8 @@ public class DataModule {
     public static Gson provideGsonBuilder() {
         return new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
+                .registerTypeAdapter(Date.class, new DateJsonSerializer())
+                .registerTypeAdapter(Date.class, new DateJsonDeserializer())
                 .create();
     }
 

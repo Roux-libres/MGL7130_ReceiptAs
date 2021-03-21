@@ -14,9 +14,7 @@ public class Receipt {
 
     public Receipt(String name, Date date, String currency, ArrayList<Item> items, ArrayList<Participant> participants) {
         this.name = name;
-        System.out.println("DATE : " + date.toString());
         this.date = date;
-        System.out.println("THIS.DATE : " + this.date.toString());
         this.currency = currency;
         this.items = items;
         this.participants = participants;

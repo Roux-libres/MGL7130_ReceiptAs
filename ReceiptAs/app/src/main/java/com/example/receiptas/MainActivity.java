@@ -86,77 +86,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
-
-        String json = "[\n" +
-                "   {\n" +
-                "      \"receipt\":{\n" +
-                "         \"name\":\"Glaces\",\n" +
-                "         \"date\":\"2020-12-10T13:45:00.000Z\",\n" +
-                "         \"currency\":\"CAD\"\n" +
-                "      },\n" +
-                "      \"participants\":[\n" +
-                "         {\n" +
-                "            \"name\":\"Romain\",\n" +
-                "            \"payer\":false\n" +
-                "         },\n" +
-                "         {\n" +
-                "            \"name\":\"Aurélien\",\n" +
-                "            \"payer\":true\n" +
-                "         },\n" +
-                "         {\n" +
-                "            \"name\":\"Nelson\",\n" +
-                "            \"payer\":false\n" +
-                "         }\n" +
-                "      ],\n" +
-                "      \"items\":[\n" +
-                "         {\n" +
-                "            \"name\":\"Chocolat\",\n" +
-                "            \"price\":12.83,\n" +
-                "            \"participants\":[\n" +
-                "               \"Romain\",\n" +
-                "               \"Nelson\"\n" +
-                "            ]\n" +
-                "         },\n" +
-                "         {\n" +
-                "            \"name\":\"Vanille\",\n" +
-                "            \"price\":7.00,\n" +
-                "            \"participants\":[\n" +
-                "               \"Romain\"\n" +
-                "            ]\n" +
-                "         },\n" +
-                "         {\n" +
-                "            \"name\":\"Fraise\",\n" +
-                "            \"price\":9.99,\n" +
-                "            \"participants\":[\n" +
-                "               \"Romain\",\n" +
-                "               \"Aurélien\",\n" +
-                "               \"Nelson\"\n" +
-                "            ]\n" +
-                "         }\n" +
-                "      ]\n" +
-                "   }\n" +
-                "]";
-        String path = getFilesDir() + "/receipts.json";
-
-        System.out.println("PATH : " + path);
-
-        File json_file = new File(path);
-        if(!json_file.exists()){
-            try {
-                json_file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        try {
-            FileWriter fileWriter = new FileWriter(path);
-            fileWriter.write(json);
-            fileWriter.close();
-        } catch (IOException ioException){
-            System.out.println(ioException);
-        }
+        this.writeFakeJson();
     }
 
     @Override
@@ -241,5 +171,73 @@ public class MainActivity extends AppCompatActivity {
 
     public void unlockDrawer(){
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    private void writeFakeJson(){
+        String json = "[\n" +
+                "   {\n" +
+                "      \"name\":\"Glaces\",\n" +
+                "      \"date\":\"1616282781804\",\n" +
+                "      \"currency\":\"CAD\",\n" +
+                "      \"participants\":[\n" +
+                "         {\n" +
+                "            \"name\":\"Romain\",\n" +
+                "            \"payer\":false\n" +
+                "         },\n" +
+                "         {\n" +
+                "            \"name\":\"Aurélien\",\n" +
+                "            \"payer\":true\n" +
+                "         },\n" +
+                "         {\n" +
+                "            \"name\":\"Nelson\",\n" +
+                "            \"payer\":false\n" +
+                "         }\n" +
+                "      ],\n" +
+                "      \"items\":[\n" +
+                "         {\n" +
+                "            \"name\":\"Chocolat\",\n" +
+                "            \"price\":12.83,\n" +
+                "            \"participants\":[\n" +
+                "               \"Romain\",\n" +
+                "               \"Nelson\"\n" +
+                "            ]\n" +
+                "         },\n" +
+                "         {\n" +
+                "            \"name\":\"Vanille\",\n" +
+                "            \"price\":7.00,\n" +
+                "            \"participants\":[\n" +
+                "               \"Romain\"\n" +
+                "            ]\n" +
+                "         },\n" +
+                "         {\n" +
+                "            \"name\":\"Fraise\",\n" +
+                "            \"price\":9.99,\n" +
+                "            \"participants\":[\n" +
+                "               \"Romain\",\n" +
+                "               \"Aurélien\",\n" +
+                "               \"Nelson\"\n" +
+                "            ]\n" +
+                "         }\n" +
+                "      ]\n" +
+                "   }\n" +
+                "]";
+        String path = getFilesDir() + "/receipts.json";
+
+        File json_file = new File(path);
+        if(!json_file.exists()){
+            try {
+                json_file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            FileWriter fileWriter = new FileWriter(path);
+            fileWriter.write(json);
+            fileWriter.close();
+        } catch (IOException ioException){
+            System.out.println(ioException);
+        }
     }
 }

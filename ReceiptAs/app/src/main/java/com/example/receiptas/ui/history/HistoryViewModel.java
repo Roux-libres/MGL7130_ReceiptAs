@@ -17,7 +17,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class HistoryViewModel extends ViewModel {
 
-    private MutableLiveData<ArrayList<String>> receipts;
+    private MutableLiveData<ArrayList<Receipt>> receipts;
     private MainRepository mainRepository;
 
     @Inject
@@ -27,17 +27,10 @@ public class HistoryViewModel extends ViewModel {
     }
 
     public void setContext(Context context){
-        ArrayList<String> receiptsNames = new ArrayList<String>();
-        ArrayList<Receipt> receipts = this.mainRepository.getReceipts(context.getFilesDir().toString());
-
-        for(Receipt receipt : receipts){
-            receiptsNames.add(receipt.getName());
-        }
-
-        this.receipts.setValue(receiptsNames);
+        this.receipts.setValue(this.mainRepository.getReceipts(context.getFilesDir().toString()));
     }
 
-    public MutableLiveData<ArrayList<String>> getReceipts() {
+    public MutableLiveData<ArrayList<Receipt>> getReceipts() {
         return this.receipts;
     }
 }
