@@ -2,6 +2,8 @@ package com.example.receiptas.ui.history;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
@@ -39,11 +41,19 @@ public class HistoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         historyViewModel = new ViewModelProvider(this).get(HistoryViewModel.class);
         historyViewModel.setContext(getContext());
+        this.setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_history, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        ((MainActivity)getActivity()).getToolbar().setOverflowIcon(getContext().getDrawable(R.drawable.baseline_sort_24));
+        inflater.inflate(R.menu.drawer, menu);
     }
 
     @Override

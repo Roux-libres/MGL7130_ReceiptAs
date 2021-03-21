@@ -52,8 +52,6 @@ public class MainRepository {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                         texts.addAll(parseJsonObjectParsedText(result));
-                        //TODO delete display
-                        System.out.println(texts);
                         dataState.setSuccess(texts);
                     }, throwable -> {
                         throwable.printStackTrace();
