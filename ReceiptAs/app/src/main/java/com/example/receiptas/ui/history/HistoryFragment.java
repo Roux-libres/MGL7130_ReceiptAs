@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.receiptas.MainActivity;
 import com.example.receiptas.R;
+import com.example.receiptas.model.domain_model.Receipt;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class HistoryFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         historyViewModel = new ViewModelProvider(this).get(HistoryViewModel.class);
+        historyViewModel.setContext(getContext());
         this.setHasOptionsMenu(true);
     }
 
@@ -61,14 +63,10 @@ public class HistoryFragment extends Fragment {
         historyRecyclerView = view.findViewById(R.id.history_recycler_view);
         historyViewModel.getReceipts().observe(getViewLifecycleOwner(), receiptListUpdateObserver);
         this.configureRecyclerView();
-
-        List<String> list = new ArrayList<>();
-        list.add("test receipt");
-        historyViewModel.getReceipts().setValue(list);
     }
 
     private void configureRecyclerView() {
-        adapter = new ReceiptAdapter(new ArrayList<>(), onReceiptClicked);
+        adapter = new ReceiptAdapter(this.historyViewModel.getReceipts().getValue(), onReceiptClicked);
         historyRecyclerView.setAdapter(adapter);
         historyRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -80,9 +78,9 @@ public class HistoryFragment extends Fragment {
         Navigation.findNavController(getView()).navigate(action);
     };
 
-    private final Observer<List<String>> receiptListUpdateObserver = new Observer<List<String>>() {
+    private final Observer<List<Receipt>> receiptListUpdateObserver = new Observer<List<Receipt>>() {
         @Override
-        public void onChanged(List<String> receipts) {
+        public void onChanged(List<Receipt> receipts) {
             historyRecyclerView.setAdapter(new ReceiptAdapter(receipts, onReceiptClicked));
         }
     };
