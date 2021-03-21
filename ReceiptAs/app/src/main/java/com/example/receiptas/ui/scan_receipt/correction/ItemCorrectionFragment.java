@@ -89,7 +89,7 @@ public class ItemCorrectionFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.validate_button:
-                //TODO
+                //TODO navigation + consoliadation dans shared viewmodel (TheReceipt + DataState items ?)
                 System.out.println(itemCorrectionViewModel.getCorrectedItems());
                 return true;
             default:
