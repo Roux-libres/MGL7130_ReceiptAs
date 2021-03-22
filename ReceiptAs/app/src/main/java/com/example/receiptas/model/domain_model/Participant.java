@@ -18,4 +18,5 @@ public class Participant {
     public boolean isPayer() {
         return payer;
     }
+    
 }

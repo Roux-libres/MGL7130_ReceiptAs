@@ -8,6 +8,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
+import com.example.receiptas.model.domain_model.Item;
+import com.example.receiptas.model.domain_model.Participant;
+import com.example.receiptas.model.domain_model.Receipt;
 import com.example.receiptas.model.repository.MainRepository;
 import com.example.receiptas.model.util.DataState;
 
@@ -32,12 +35,18 @@ public class ScanReceiptViewModel extends ViewModel {
     private MutableLiveData<ArrayList<Bitmap>> processedImages = new MutableLiveData<ArrayList<Bitmap>>();
     private MutableLiveData<DataState<ArrayList<String>>> items = new MutableLiveData<>();
     private MutableLiveData<DataState<ArrayList<String>>> prices = new MutableLiveData<>();
+    private Receipt theReceipt;
 
     @Inject
     public ScanReceiptViewModel(MainRepository mainRepository) {
         this.selectedImages.setValue(new ArrayList<String>());
         this.processedImages.setValue(new ArrayList<Bitmap>());
         this.mainRepository = mainRepository;
+        this.theReceipt = new Receipt();
+    }
+
+    public Receipt getTheReceipt() {
+        return theReceipt;
     }
 
     public void setImages(ArrayList<String> images){

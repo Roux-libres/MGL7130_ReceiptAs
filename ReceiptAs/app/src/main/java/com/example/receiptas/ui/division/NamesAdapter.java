@@ -42,6 +42,10 @@ public class NamesAdapter extends BaseAdapter {
         }
     }
 
+    public ArrayList<String> getNames() {
+        return names;
+    }
+
     public boolean addName(String name) {
         if (this.names.size() < 8) {
             this.names.add(name);
