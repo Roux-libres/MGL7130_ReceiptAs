@@ -4,6 +4,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +24,7 @@ import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.receiptas.MainActivity;
 import com.example.receiptas.R;
 import com.example.receiptas.model.util.DataState;
 import com.example.receiptas.ui.history.HistoryFragmentDirections;
@@ -39,10 +43,12 @@ public class ItemCorrectionFragment extends Fragment {
     private ItemCorrectionViewModel itemCorrectionViewModel;
     private RecyclerView itemRecyclerView;
     private ProgressBar progressBar;
+    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setHasOptionsMenu(true);
         scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
         itemCorrectionViewModel = new ViewModelProvider(this).get(ItemCorrectionViewModel.class);
     }
@@ -52,6 +58,12 @@ public class ItemCorrectionFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_item_correction, container, false);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.validate, menu);
     }
 
     @Override
@@ -70,6 +82,18 @@ public class ItemCorrectionFragment extends Fragment {
             this.itemCorrectionViewModel.setCorrectableItemsFromList(this.scanReceiptViewModel.getItems().getValue().getData());
         } else {
             this.scanReceiptViewModel.getItems().getValue().getState().observe(getViewLifecycleOwner(), itemsObserver);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.validate_button:
+                //TODO navigation + consoliadation dans shared viewmodel (TheReceipt + DataState items ?)
+                System.out.println(itemCorrectionViewModel.getCorrectedItems());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 

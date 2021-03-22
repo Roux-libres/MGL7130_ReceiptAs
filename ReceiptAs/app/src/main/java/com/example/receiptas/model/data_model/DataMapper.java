@@ -43,6 +43,7 @@ public class DataMapper implements EntityMapper<ReceiptDataEntity, Receipt> {
         Receipt receipt = new Receipt(
                 receiptDataEntity.getName(),
                 receiptDataEntity.getDate(),
+                receiptDataEntity.getCurrency(),
                 items,
                 participants);
 
@@ -77,6 +78,7 @@ public class DataMapper implements EntityMapper<ReceiptDataEntity, Receipt> {
         ReceiptDataEntity receiptDataEntity = new ReceiptDataEntity(
                 domainObject.getName(),
                 domainObject.getDate(),
+                domainObject.getCurrency(),
                 itemDataEntities,
                 participantDataEntities);
 

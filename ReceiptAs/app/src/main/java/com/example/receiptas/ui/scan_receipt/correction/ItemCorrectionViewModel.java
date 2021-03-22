@@ -35,6 +35,19 @@ public class ItemCorrectionViewModel extends ViewModel {
         return this.correctableItems;
     }
 
+    public ArrayList<String> getCorrectedItems() {
+        ArrayList<String> correctedItems = new ArrayList<>();
+
+        for(CorrectableItem item : this.correctableItems.getValue()) {
+            if(!item.isDeleted()) {
+                correctedItems.add(item.getLabel());
+            } else {
+                //do nothing
+            }
+        }
+    return correctedItems;
+    }
+
     public class CorrectableItem {
         private String label;
         private boolean deleted;

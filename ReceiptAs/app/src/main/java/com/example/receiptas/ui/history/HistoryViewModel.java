@@ -1,22 +1,23 @@
 package com.example.receiptas.ui.history;
 
-import androidx.lifecycle.LiveData;
+import android.content.Context;
+
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.receiptas.model.domain_model.Receipt;
 import com.example.receiptas.model.repository.MainRepository;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
-import dagger.hilt.android.AndroidEntryPoint;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
 public class HistoryViewModel extends ViewModel {
 
-    private MutableLiveData<List<String>> receipts;
+    private MutableLiveData<ArrayList<Receipt>> receipts;
     private MainRepository mainRepository;
 
     @Inject
@@ -25,7 +26,11 @@ public class HistoryViewModel extends ViewModel {
         this.mainRepository = mainRepository;
     }
 
-    public MutableLiveData<List<String>> getReceipts() {
-        return receipts;
+    public void setContext(Context context){
+        this.receipts.setValue(this.mainRepository.getReceipts(context.getFilesDir().toString()));
+    }
+
+    public MutableLiveData<ArrayList<Receipt>> getReceipts() {
+        return this.receipts;
     }
 }

@@ -6,8 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.inject.Inject;
-
 public class ReceiptDataEntity {
 
     @SerializedName("name")
@@ -18,6 +16,10 @@ public class ReceiptDataEntity {
     @Expose
     private Date date;
 
+    @SerializedName("currency")
+    @Expose
+    private String currency;
+
     @SerializedName("items")
     @Expose
     private ArrayList<ItemDataEntity> items;
@@ -26,9 +28,11 @@ public class ReceiptDataEntity {
     @Expose
     private ArrayList<ParticipantDataEntity> participants;
 
-    public ReceiptDataEntity(String name, Date date, ArrayList<ItemDataEntity> items, ArrayList<ParticipantDataEntity> participants) {
+    public ReceiptDataEntity(String name, Date date, String currency, ArrayList<ItemDataEntity> items, ArrayList<ParticipantDataEntity> participants) {
         this.name = name;
         this.date = date;
+        this.date = date;
+        this.currency = currency;
         this.items = items;
         this.participants = participants;
     }
@@ -39,6 +43,10 @@ public class ReceiptDataEntity {
 
     public Date getDate() {
         return date;
+    }
+
+    public String getCurrency() {
+        return currency;
     }
 
     public ArrayList<ItemDataEntity> getItems() {

@@ -52,8 +52,6 @@ public class MainRepository {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
                         texts.addAll(parseJsonObjectParsedText(result));
-                        //TODO delete display
-                        System.out.println(texts);
                         dataState.setSuccess(texts);
                     }, throwable -> {
                         throwable.printStackTrace();
@@ -78,11 +76,11 @@ public class MainRepository {
         );
     }
 
-    public ArrayList<Receipt> getReceipts() {
+    public ArrayList<Receipt> getReceipts(String pathFilesDirectory) {
         ArrayList<Receipt> receipts;
 
         try {
-            receipts = this.dataMapper.mapFromEntities(this.receiptDao.getAll());
+            receipts = this.dataMapper.mapFromEntities(this.receiptDao.getAll(pathFilesDirectory));
         } catch (Exception exception) {
             receipts = new ArrayList<>();
         }
@@ -90,9 +88,9 @@ public class MainRepository {
         return receipts;
     }
 
-    public void saveReceipts(ArrayList<Receipt> receipts){
+    public void saveReceipts(String pathFilesDirectory, ArrayList<Receipt> receipts){
         try {
-            this.receiptDao.setAll(this.dataMapper.mapToEntities(receipts));
+            this.receiptDao.setAll(pathFilesDirectory, this.dataMapper.mapToEntities(receipts));
         } catch (Exception exception) {
             System.out.println(exception);
         }
