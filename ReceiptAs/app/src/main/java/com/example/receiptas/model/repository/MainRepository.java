@@ -21,7 +21,7 @@ import retrofit2.Response;
 
 public class MainRepository {
     private static final String API_KEY = "a4e5461ff488957";
-    private static int OCR_ENGINE = 1;
+    private static int OCR_ENGINE = 2;
     private static boolean IS_TABLE = false;
 
     private final ReceiptDao receiptDao;
@@ -66,12 +66,13 @@ public class MainRepository {
     }
 
     private ArrayList<String> parseJsonObjectParsedText(JsonObject jsonObject) {
+        //TODO REFACTO WITH IS TABLE TRUE
         return new ArrayList<>(
             Arrays.asList(
                 jsonObject.get("ParsedResults")
                     .getAsJsonArray().get(0)
                     .getAsJsonObject().get("ParsedText")
-                    .getAsString().split("\r\n")
+                    .getAsString().split(OCR_ENGINE == 1 ? "\r\n" : "\n")
             )
         );
     }
