@@ -5,6 +5,7 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_history">
 
+
     <fragment
         android:id="@+id/nav_history"
         android:name="com.example.receiptas.ui.history.HistoryFragment"
@@ -77,4 +78,29 @@
         android:name="com.example.receiptas.ui.scan_receipt.correction.ItemCorrectionFragment"
         android:label="Correction"
         tools:layout="@layout/fragment_item_correction" />
+
+    <fragment
+        android:id="@+id/addingParticipantsFragment"
+        android:name="com.example.receiptas.ui.division.AddingParticipantsFragment"
+        android:label="Adding Participant"
+        tools:layout="@layout/fragment_division_adding_participants" >
+        <action
+            android:id="@+id/action_addingParticipantsFragment_to_itemDivision"
+            app:destination="@id/itemDivision" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/itemDivision"
+        android:name="com.example.receiptas.ui.division.ItemDivisionFragment"
+        android:label="Division Participants"
+        tools:layout="@layout/fragment_item_divison">
+    <argument
+        android:name="participantIndex"
+        app:argType="integer"
+        android:defaultValue="0" />
+        <action
+            android:id="@+id/action_itemDivision_self"
+            app:destination="@id/itemDivision" />
+    </fragment>
+
 </navigation>
