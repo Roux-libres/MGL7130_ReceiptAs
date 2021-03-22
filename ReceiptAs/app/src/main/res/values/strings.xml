@@ -53,7 +53,7 @@
 
     <string name="information_message_adding_participants">Enter the names of different participants. \n (8 participants max)</string>
     <string name="information_message_item_correction">Select the lines to delete or combine</string>
-    <string name="information_message_division_participant"> : select your items.</string>
+    <string name="information_message_division_participant">, select your items.</string>
     <string name="foo">element</string>
 
     <string name="item_correction_popup_menu_delete">Delete</string>
