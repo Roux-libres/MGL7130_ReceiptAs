@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.receiptas.MainActivity;
+import com.example.receiptas.MainViewModel;
 import com.example.receiptas.R;
 import com.example.receiptas.model.domain_model.Receipt;
 
@@ -32,15 +33,15 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class HistoryFragment extends Fragment {
 
-    private HistoryViewModel historyViewModel;
+    private MainViewModel mainViewModel;
     private RecyclerView historyRecyclerView;
     private ReceiptAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        historyViewModel = new ViewModelProvider(this).get(HistoryViewModel.class);
-        historyViewModel.setContext(getContext());
+        mainViewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
+        mainViewModel.setContext(getContext());
         this.setHasOptionsMenu(true);
     }
 
@@ -61,20 +62,20 @@ public class HistoryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         historyRecyclerView = view.findViewById(R.id.history_recycler_view);
-        historyViewModel.getReceipts().observe(getViewLifecycleOwner(), receiptListUpdateObserver);
+        mainViewModel.getReceipts().observe(getViewLifecycleOwner(), receiptListUpdateObserver);
         this.configureRecyclerView();
     }
 
     private void configureRecyclerView() {
-        adapter = new ReceiptAdapter(this.historyViewModel.getReceipts().getValue(), onReceiptClicked);
+        adapter = new ReceiptAdapter(this.mainViewModel.getReceipts().getValue(), onReceiptClicked);
         historyRecyclerView.setAdapter(adapter);
         historyRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private final OnRecyclerViewItemClickListener<String> onReceiptClicked  = (itemId, item) -> {
-        HistoryFragmentDirections.ShowReceiptDetail action = HistoryFragmentDirections.showReceiptDetail();
-        action.setReceipt(item);
-        action.setReceiptName(item);
+        HistoryFragmentDirections.ShowReceiptDetail action = HistoryFragmentDirections.showReceiptDetail(
+                itemId,
+                this.mainViewModel.getReceipts().getValue().get(itemId).getName());
         Navigation.findNavController(getView()).navigate(action);
     };
 

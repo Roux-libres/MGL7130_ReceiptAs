@@ -5,7 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <include
+    <TextView
+        android:id="@+id/products_list_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/summary_header"/>
+
+    <TextView
+        android:id="@+id/summary_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/products_list_header"/>
+
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/include_fragment_receipt_detail_products"
         layout="@layout/fragment_receipt_detail_products"
         android:layout_width="0dp"
@@ -13,7 +37,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/include_fragment_receipt_detail_summary"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/products_list_header" />
 
     <LinearLayout
         android:id="@+id/top_border"
@@ -26,7 +50,7 @@
         app:layout_constraintStart_toEndOf="@+id/include_fragment_receipt_detail_products"
         app:layout_constraintEnd_toStartOf="@+id/include_fragment_receipt_detail_summary" />
 
-    <include
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/include_fragment_receipt_detail_summary"
         layout="@layout/fragment_receipt_detail_summary"
         android:layout_width="0dp"
@@ -34,6 +58,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/include_fragment_receipt_detail_products"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/summary_header" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

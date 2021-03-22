@@ -22,13 +22,11 @@
         android:label="{receipt_name}"
         tools:layout="@layout/fragment_receipt_detail" >
         <argument
-            android:name="receipt"
-            app:argType="string"
-            android:defaultValue=" " />
+            android:name="receipt_id"
+            app:argType="integer"/>
         <argument
             android:name="receipt_name"
-            app:argType="string"
-            android:defaultValue="Receipt name" />
+            app:argType="string"/>
     </fragment>
 
     <fragment

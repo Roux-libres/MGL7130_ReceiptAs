@@ -2,65 +2,64 @@ package com.example.receiptas.ui.history.receipt_detail;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.receiptas.MainViewModel;
 import com.example.receiptas.R;
+import com.example.receiptas.ui.division.ItemDivisionAdapter;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ReceiptDetailProductsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ReceiptDetailProductsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private MainViewModel mainViewModel;
+    private int receiptId;
 
     public ReceiptDetailProductsFragment() {
-        // Required empty public constructor
+
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ReceiptDetailProductsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ReceiptDetailProductsFragment newInstance(String param1, String param2) {
-        ReceiptDetailProductsFragment fragment = new ReceiptDetailProductsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+    public ReceiptDetailProductsFragment(int receiptId) {
+        this.receiptId = receiptId;
+    }
+
+    public static ReceiptDetailProductsFragment newInstance(int receiptId) {
+        ReceiptDetailProductsFragment fragment = new ReceiptDetailProductsFragment(receiptId);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        this.mainViewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
+
+        if(savedInstanceState != null){
+            this.receiptId = savedInstanceState.getInt("receipt_id");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_receipt_detail_products, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        RecyclerView itemRecyclerView = view.findViewById(R.id.item_recycler_view);
+        ItemDivisionAdapter itemDivisionAdapter = new ItemDivisionAdapter(
+                this.mainViewModel.getReceipts().getValue().get(this.receiptId),
+                getContext());
+        itemRecyclerView.setAdapter(itemDivisionAdapter);
+        itemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 }

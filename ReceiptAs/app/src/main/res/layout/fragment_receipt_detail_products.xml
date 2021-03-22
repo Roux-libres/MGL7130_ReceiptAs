@@ -13,10 +13,9 @@
         android:orientation="horizontal"
         android:layout_gravity="top" />
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/item_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="PRODUCTS" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>

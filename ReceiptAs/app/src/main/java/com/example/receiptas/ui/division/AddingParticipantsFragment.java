@@ -21,7 +21,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.receiptas.R;
-import com.example.receiptas.ui.history.HistoryViewModel;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;

@@ -9,15 +9,21 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.receiptas.R;
+import com.example.receiptas.model.domain_model.Participant;
+import com.example.receiptas.model.domain_model.Receipt;
 
 import java.util.List;
 
-public class ParticipantAdapter extends ArrayAdapter<String> {
+public class ParticipantAdapter extends ArrayAdapter<Participant> {
 
-    public ParticipantAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
-        super(context, resource, objects);
+    private Receipt receipt;
+
+    public ParticipantAdapter(@NonNull Context context, int resource, @NonNull Receipt receipt) {
+        super(context, resource, receipt.getParticipantsPayerFirst());
+        this.receipt = receipt;
     }
 
     @Override
@@ -31,16 +37,18 @@ public class ParticipantAdapter extends ArrayAdapter<String> {
         TextView participant = convertView.findViewById(R.id.leftTextView);
         TextView total = convertView.findViewById(R.id.rightTextView);
 
-
-        if(getItem(position).equals("Aurelien")) {
-            LinearLayout layout = convertView.findViewById(R.id.participant_layout);
+        LinearLayout layout = convertView.findViewById(R.id.participant_layout);
+        if(getItem(position).isPayer()) {
             layout.setBackground(getContext().getResources().getDrawable(R.drawable.receipt_summary_payer_background));
-            participant.setText(getContext().getString(R.string.payer_name,getItem(position)));
+            participant.setText(getContext().getString(R.string.payer_name, getItem(position).getName()));
         } else {
-            participant.setText(getItem(position));
+            layout.setBackground(getContext().getResources().getDrawable(R.drawable.name_added_item_background));
+            participant.setText(getItem(position).getName());
         }
 
-        total.setText(getContext().getString(R.string.participant_total, 14.20, "CAD"));
+        total.setText(getContext().getString(R.string.participant_total,
+                receipt.getParticipantTotal(getItem(position)),
+                this.receipt.getCurrency()));
         return convertView;
     }
 }

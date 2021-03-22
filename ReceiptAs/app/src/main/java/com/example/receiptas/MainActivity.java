@@ -220,6 +220,11 @@ public class MainActivity extends AppCompatActivity {
                 "               \"Aurélien\",\n" +
                 "               \"Nelson\"\n" +
                 "            ]\n" +
+                "         },\n" +
+                "         {\n" +
+                "            \"name\":\"Banana Marbré\",\n" +
+                "            \"price\":35,\n" +
+                "            \"participants\":[]\n" +
                 "         }\n" +
                 "      ]\n" +
                 "   }\n" +
