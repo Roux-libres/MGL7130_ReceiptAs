@@ -61,7 +61,59 @@ public class Receipt {
         return participants;
     }
 
+    public ArrayList<Participant> getParticipantsPayerFirst() {
+        ArrayList<Participant> participants = (ArrayList<Participant>) this.getParticipants().clone();
+        Participant payer = null;
+
+        for(Participant participant : participants){
+            if(participant.isPayer()){
+                payer = participant;
+            }
+        }
+
+        participants.remove(payer);
+        participants.add(0, payer);
+
+        return participants;
+    }
+
     public void addParticipantByName(String name) {
         this.participants.add(new Participant(name, false));
+    }
+
+    public float getUnassignedAmount(){
+        float unassignedAmount = 0;
+
+        for(Item item : this.getItems()){
+            System.out.println(item.getParticipants());
+            if(item.getParticipants().size() == 0){
+                System.out.println(item.getPrice());
+                unassignedAmount += item.getPrice();
+            }
+        }
+
+        return unassignedAmount;
+    }
+
+    public float getTotalAmount(){
+        float totalAmount = 0;
+
+        for(Item item : this.getItems()){
+            totalAmount += item.getPrice();
+        }
+
+        return totalAmount;
+    }
+
+    public float getParticipantTotal(Participant participant){
+        float totalAmount = 0;
+
+        for(Item item : this.getItems()){
+            if(item.getParticipants().contains(participant)){
+                totalAmount += item.getPrice() / item.getParticipants().size();
+            }
+        }
+
+        return totalAmount;
     }
 }

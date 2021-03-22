@@ -27,7 +27,7 @@ public class DataMapper implements EntityMapper<ReceiptDataEntity, Receipt> {
 
             for(String participantName : itemDataEntity.getParticipants()){
                 for(Participant participant : participants){
-                    if(participant.getName() == participantName){
+                    if(participant.getName().equals(participantName)){
                         itemParticipants.add(participant);
                     }
                 }

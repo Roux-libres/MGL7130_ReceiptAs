@@ -41,6 +41,11 @@
                "Aurélien",
                "Nelson"
             ]
+         },
+         {
+            "name":"Banana Marbré",
+            "price":35,
+            "participants":[]
          }
       ]
    }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,12 +13,16 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.receiptas.MainViewModel;
 import com.example.receiptas.R;
+import com.example.receiptas.model.domain_model.Participant;
+import com.example.receiptas.model.domain_model.Receipt;
 
 import java.util.ArrayList;
 
 public class ReceiptDetailSummaryFragment extends Fragment {
 
+    private MainViewModel mainViewModel;
     private ListView listView;
     private TextView receipt_total, unassigned_total;
     private int receiptId;
@@ -38,6 +43,7 @@ public class ReceiptDetailSummaryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.mainViewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
 
         if(savedInstanceState != null){
             this.receiptId = savedInstanceState.getInt("receipt_id");
@@ -58,14 +64,11 @@ public class ReceiptDetailSummaryFragment extends Fragment {
         receipt_total = view.findViewById(R.id.receipt_total);
         unassigned_total = view.findViewById(R.id.unassigned_total);
 
-        receipt_total.setText(getString(R.string.receipt_total, 15.2, "CAD"));
-        unassigned_total.setText(getString(R.string.unassigned_total, 4.00, "CAD"));
+        Receipt receipt = this.mainViewModel.getReceipts().getValue().get(this.receiptId);
 
-        ArrayList<String> strings = new ArrayList<>();
-        strings.add("Aurelien");
-        strings.add("Romain");
-        strings.add("Nelson");
+        receipt_total.setText(getString(R.string.receipt_total, receipt.getTotalAmount(), receipt.getCurrency()));
+        unassigned_total.setText(getString(R.string.unassigned_total, receipt.getUnassignedAmount(), receipt.getCurrency()));
 
-        listView.setAdapter(new ParticipantAdapter(this.getContext(), R.layout.receipt_summary_participant, strings));
+        listView.setAdapter(new ParticipantAdapter(this.getContext(), R.layout.receipt_summary_participant, receipt));
     }
 }
