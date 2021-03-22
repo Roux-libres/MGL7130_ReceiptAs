@@ -1,19 +1,7 @@
 package com.example.receiptas.ui.scan_receipt.correction;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,15 +12,24 @@ import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.receiptas.MainActivity;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.receiptas.R;
 import com.example.receiptas.model.util.DataState;
-import com.example.receiptas.ui.history.HistoryFragmentDirections;
 import com.example.receiptas.ui.history.OnRecyclerViewItemClickListener;
-import com.example.receiptas.ui.history.ReceiptAdapter;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -77,23 +74,34 @@ public class ItemCorrectionFragment extends Fragment {
         this.itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
         this.configureRecyclerView();
 
-        this.itemCorrectionViewModel.getCorrectableItems().observe(getViewLifecycleOwner(), correctableItemObserver);
-        if(this.scanReceiptViewModel.getItems().getValue().getState().getValue() == DataState.State.SUCCESS) {
-            this.itemCorrectionViewModel.setCorrectableItemsFromList(this.scanReceiptViewModel.getItems().getValue().getData());
-        } else {
-            this.scanReceiptViewModel.getItems().getValue().getState().observe(getViewLifecycleOwner(), itemsObserver);
-        }
+        this.itemCorrectionViewModel.getCorrectableItems().observe(this.getViewLifecycleOwner(), correctableItemObserver);
+        this.scanReceiptViewModel.parseTextFromImages();
+        this.scanReceiptViewModel.getItems().getValue().getState().observe(this.getViewLifecycleOwner(), itemsObserver);
+        this.scanReceiptViewModel.getPrices().getValue().getState().observe(this.getViewLifecycleOwner(), pricesObserver);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.validate_button:
-                //TODO navigation + consoliadation dans shared viewmodel (TheReceipt + DataState items ?)
-                System.out.println(itemCorrectionViewModel.getCorrectedItems());
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if(item.getItemId() == R.id.validate_button) {
+            //TODO navigation + consolidation dans shared viewmodel (TheReceipt)
+            ArrayList<String> correctedItems = itemCorrectionViewModel.getCorrectedItems();
+
+            openBlockingDialog(
+                R.string.item_correction_dialog_validate_title,
+                itemCorrectionViewModel.getPreview(
+                    correctedItems,
+                    itemCorrectionViewModel.getPrices(),
+                    scanReceiptViewModel.getReceiptCurrency().getValue().charAt(0),
+                    this.getContext()
+                ),
+                R.string.item_correction_dialog_validate,
+                null,
+                R.string.dialog_negative,
+                null,
+                false);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 
@@ -145,7 +153,7 @@ public class ItemCorrectionFragment extends Fragment {
         menu.getMenu().findItem(R.id.deleteItem).setVisible(!item.isDeleted());
         menu.getMenu().findItem(R.id.undeleteItem).setVisible(item.isDeleted());
 
-        boolean isCombined = item.getCombinedItem() == null ? false : true;
+        boolean isCombined = item.getCombinedItem() != null;
         menu.getMenu().findItem(R.id.detachFirst).setVisible(isCombined);
         menu.getMenu().findItem(R.id.detachLast).setVisible(isCombined);
     }
@@ -194,8 +202,16 @@ public class ItemCorrectionFragment extends Fragment {
                     displayProgressBar(false);
                     break;
                 case ERROR:
+                    openBlockingDialog(
+                        R.string.error_parsing_items,
+                        scanReceiptViewModel.getItems().getValue().getError().getMessage(),
+                        R.string.dialog_positive,
+                        null,
+                        R.string.dialog_negative,
+                        null,
+                        true
+                    );
                     displayProgressBar(false);
-                    scanReceiptViewModel.getItems().getValue().getError().printStackTrace();
                     break;
                 case LOADING:
                     displayProgressBar(true);
@@ -205,4 +221,58 @@ public class ItemCorrectionFragment extends Fragment {
             }
         }
     };
+
+    private final Observer<DataState.State> pricesObserver = new Observer<DataState.State>() {
+        @Override
+        public void onChanged(DataState.State dataState) {
+            switch(dataState) {
+                case SUCCESS:
+                    try {
+                        //TODO CURRENCY REFACTORING
+                        itemCorrectionViewModel.setPricesFromParsedText(
+                            scanReceiptViewModel.getPrices().getValue().getData(),
+                            Locale.FRANCE
+                        );
+                    } catch (Exception e) {
+                        scanReceiptViewModel.getPrices().getValue().setError(e);
+                    }
+                    break;
+                case ERROR:
+                    openBlockingDialog(
+                        R.string.error_parsing_prices,
+                            scanReceiptViewModel.getPrices().getValue().getError().getMessage(),
+                            R.string.dialog_positive,
+                            null,
+                            R.string.dialog_negative,
+                            null,
+                            true
+                    );
+                    break;
+                default:
+                    //do nothing
+            }
+        }
+    };
+
+    private void openBlockingDialog(
+        int titleId,
+        String message,
+        int positiveMessageId,
+        DialogInterface.OnClickListener positiveListener,
+        int negativeMessageId,
+        DialogInterface.OnClickListener negativeListener,
+        boolean navigateUp
+    ) {
+        AlertDialog.Builder blockingDialog = new AlertDialog.Builder(getContext());
+        blockingDialog.setTitle(titleId);
+        blockingDialog.setMessage(message);
+        blockingDialog.setPositiveButton(positiveMessageId, positiveListener);
+        blockingDialog.setNegativeButton(negativeMessageId, negativeListener);
+        blockingDialog.create().show();
+
+        if (navigateUp) {
+            //TODO RESOLVE CRASH WHEN TIME OUT GO BACK TO PROCESS IMAGE FRAGMENT
+            Navigation.findNavController(this.getView()).navigateUp();
+        }
+    }
 }

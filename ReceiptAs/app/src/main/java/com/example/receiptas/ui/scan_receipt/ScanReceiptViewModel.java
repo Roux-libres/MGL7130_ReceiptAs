@@ -5,18 +5,14 @@ import android.text.TextUtils;
 import android.util.Base64;
 
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.SavedStateHandle;
 import androidx.lifecycle.ViewModel;
 
-import com.example.receiptas.model.domain_model.Item;
-import com.example.receiptas.model.domain_model.Participant;
 import com.example.receiptas.model.domain_model.Receipt;
 import com.example.receiptas.model.repository.MainRepository;
 import com.example.receiptas.model.util.DataState;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -29,8 +25,7 @@ public class ScanReceiptViewModel extends ViewModel {
     private MutableLiveData<ArrayList<String>> images = new MutableLiveData<ArrayList<String>>();
     private MutableLiveData<ArrayList<String>> selectedImages = new MutableLiveData<ArrayList<String>>();
     private MutableLiveData<Bitmap> cameraCaptureBitmap = new MutableLiveData<Bitmap>();
-    private MutableLiveData<String> receiptName = new MutableLiveData<String>();
-    private MutableLiveData<Float> receiptPrice = new MutableLiveData<Float>();
+    private MutableLiveData<Float> receiptSpecifiedPrice = new MutableLiveData<Float>();
     private MutableLiveData<String> receiptCurrency = new MutableLiveData<String>();
     private MutableLiveData<ArrayList<Bitmap>> processedImages = new MutableLiveData<ArrayList<Bitmap>>();
     private MutableLiveData<DataState<ArrayList<String>>> items = new MutableLiveData<>();
@@ -49,12 +44,8 @@ public class ScanReceiptViewModel extends ViewModel {
         return theReceipt;
     }
 
-    public void setImages(ArrayList<String> images){
-        this.images.setValue(images);
-    }
-
-    public ArrayList<String> getImages(){
-        return this.images.getValue();
+    public MutableLiveData<ArrayList<String>> getImages(){
+        return this.images;
     }
 
     public void addSelectedImage(String image){
@@ -69,52 +60,28 @@ public class ScanReceiptViewModel extends ViewModel {
         this.selectedImages.getValue().clear();
     }
 
-    public ArrayList<String> getSelectedImages(){
-        return this.selectedImages.getValue();
+    public MutableLiveData<ArrayList<String>> getSelectedImages(){
+        return this.selectedImages;
     }
 
     public int getNumberOfSelectedImages(){
         return this.selectedImages.getValue().size();
     }
 
-    public Bitmap getCameraCaptureBitmap(){
-        return this.cameraCaptureBitmap.getValue();
-    }
-
-    public void setCameraCaptureBitmap(Bitmap cameraCaptureBitmap){
-        this.cameraCaptureBitmap.setValue(cameraCaptureBitmap);
-    }
-
-    public boolean hasReceiptName(){
-        if(TextUtils.isEmpty(this.receiptName.getValue())){
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public void setReceiptName(String receiptName){
-        this.receiptName.setValue(receiptName);
-    }
-
-    public String getReceiptName(){
-        return this.receiptName.getValue();
+    public MutableLiveData<Bitmap> getCameraCaptureBitmap(){
+        return this.cameraCaptureBitmap;
     }
 
     public boolean hasReceiptPrice(){
-        if(this.receiptPrice.getValue() == null){
+        if(this.receiptSpecifiedPrice.getValue() == null){
             return false;
         } else {
             return true;
         }
     }
 
-    public void setReceiptPrice(float receiptPrice){
-        this.receiptPrice.setValue(receiptPrice);
-    }
-
-    public float getReceiptPrice(){
-        return this.receiptPrice.getValue();
+    public MutableLiveData<Float> getReceiptSpecifiedPrice(){
+        return this.receiptSpecifiedPrice;
     }
 
     public boolean hasReceiptCurrency(){
@@ -125,20 +92,8 @@ public class ScanReceiptViewModel extends ViewModel {
         }
     }
 
-    public void setReceiptCurrency(String receiptCurrency){
-        this.receiptCurrency.setValue(receiptCurrency);
-    }
-
-    public String getReceiptCurrency(){
-        return this.receiptCurrency.getValue();
-    }
-
-    public boolean isStringSet(String string){
-        if(TextUtils.isEmpty(string)){
-            return false;
-        } else {
-            return true;
-        }
+    public MutableLiveData<String> getReceiptCurrency(){
+        return this.receiptCurrency;
     }
 
     public void addProcessedImage(Bitmap imageBitmap){
@@ -153,8 +108,8 @@ public class ScanReceiptViewModel extends ViewModel {
         this.processedImages.getValue().clear();
     }
 
-    public ArrayList<Bitmap> getProcessedImages(){
-        return this.processedImages.getValue();
+    public MutableLiveData<ArrayList<Bitmap>> getProcessedImages(){
+        return this.processedImages;
     }
 
     public int getNumberOfProcessedImages(){

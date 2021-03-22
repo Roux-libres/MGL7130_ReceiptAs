@@ -1,14 +1,17 @@
 package com.example.receiptas.ui.scan_receipt.correction;
 
-import android.graphics.Bitmap;
+import android.content.Context;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.receiptas.model.repository.MainRepository;
+import com.example.receiptas.R;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -16,7 +19,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
 public class ItemCorrectionViewModel extends ViewModel {
-    private MutableLiveData<ArrayList<CorrectableItem>> correctableItems = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<CorrectableItem>> correctableItems = new MutableLiveData<>();
+    private final ArrayList<Float> prices = new ArrayList<>();
 
     @Inject
     public ItemCorrectionViewModel() {
@@ -46,6 +50,41 @@ public class ItemCorrectionViewModel extends ViewModel {
             }
         }
     return correctedItems;
+    }
+
+    public void setPricesFromParsedText(ArrayList<String> parsedText, Locale locale) throws Exception {
+        NumberFormat formatter = DecimalFormat.getInstance(locale);
+        String regex = "[^0-9" + new DecimalFormatSymbols(locale).getDecimalSeparator() + "]";
+        for(String text : parsedText) {
+            text = text.replaceAll(regex, "");
+            this.prices.add(formatter.parse(text).floatValue());
+        }
+    }
+
+    public String getPreview(ArrayList<String> correctedItems, ArrayList<Float> prices, char currencySymbol, Context context) {
+        StringBuilder builder = new StringBuilder();
+
+        if (correctedItems.size() != prices.size()) {
+            builder.append(context.getResources().getString(R.string.item_correction_dialog_quantity_caution));
+        }
+        int referenceSize = Math.max(correctedItems.size(), prices.size());
+
+        builder.append(context.getResources().getString(R.string.item_correction_dialog_preview));
+        for (int i = 0; i < referenceSize; i++) {
+            builder
+                .append("---------------\n")
+                .append(i < correctedItems.size() ? correctedItems.get(i) : "no item")
+                .append(" : ")
+                .append(i < prices.size() ? prices.get(i) : "0")
+                .append(currencySymbol)
+                .append("\n");
+        }
+
+        return builder.toString();
+    }
+
+    public ArrayList<Float> getPrices() {
+        return this.prices;
     }
 
     public class CorrectableItem {
