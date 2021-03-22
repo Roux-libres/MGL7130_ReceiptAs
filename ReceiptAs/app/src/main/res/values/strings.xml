@@ -28,6 +28,8 @@
     <string name="scan_receipt_remove_image_message">Do you really want to delete this image ?</string>
     <string name="scan_receipt_remove_image_cancel">Cancel</string>
     <string name="scan_receipt_remove_image_accept">Delete</string>
+    <string name="scan_receipt_missing_info_title">Some infos are missing</string>
+    <string name="scan_receipt_missing_info_description">Some required infos are missing (title, prices) or no images have been selected</string>
 
     <string name="scan_receipt_title">Receipt title</string>
     <string name="scan_receipt_price">Receipt price</string>
@@ -67,8 +69,8 @@
 
     <string name="item_correction_dialog_validate_title">Validate items list ?</string>
     <string name="item_correction_dialog_validate">Validate</string>
-    <string name="item_correction_dialog_positive">Gotcha</string>
-    <string name="item_correction_dialog_negative">Cancel</string>
+    <string name="dialog_positive">Gotcha !</string>
+    <string name="dialog_negative">Cancel</string>
     <string name="item_correction_dialog_quantity_caution">CAUTION !! - ITEMS QUANTITY DOESN\'T MATCH PRICES QUANTITY\n\n</string>
     <string name="item_correction_dialog_preview">"[ Item - price mapping preview ] :\n"</string>
 </resources>

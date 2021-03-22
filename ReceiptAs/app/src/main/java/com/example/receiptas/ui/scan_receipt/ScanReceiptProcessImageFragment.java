@@ -4,16 +4,15 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.example.receiptas.MainActivity;
 import com.example.receiptas.R;
@@ -47,12 +46,12 @@ public class ScanReceiptProcessImageFragment extends Fragment {
             progressionTextView.setVisibility(View.INVISIBLE);
         }
 
-        this.isCameraCapture = (this.scanReceiptViewModel.getCameraCaptureBitmap() != null);
+        this.isCameraCapture = (this.scanReceiptViewModel.getCameraCaptureBitmap().getValue() != null);
 
         if(this.isCameraCapture) {
-            this.imageBitmap = this.scanReceiptViewModel.getCameraCaptureBitmap();
+            this.imageBitmap = this.scanReceiptViewModel.getCameraCaptureBitmap().getValue();
         } else {
-            String image_path = this.scanReceiptViewModel.getSelectedImages().get(0);
+            String image_path = this.scanReceiptViewModel.getSelectedImages().getValue().get(0);
             File imageFile = new File(image_path);
 
             if(!imageFile.exists()){
@@ -104,19 +103,19 @@ public class ScanReceiptProcessImageFragment extends Fragment {
                 } else if(isCameraCapture){
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageToNavScanReceipt action =
                             ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageToNavScanReceipt();
-                    scanReceiptViewModel.setCameraCaptureBitmap(null);
+                    scanReceiptViewModel.getCameraCaptureBitmap().setValue(null);
                     Navigation.findNavController(view).navigate(action);
                 } else if(scanReceiptViewModel.getNumberOfSelectedImages() == 1){
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageToNavScanReceipt action =
                             ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageToNavScanReceipt();
-                    scanReceiptViewModel.getSelectedImages().remove(0);
+                    scanReceiptViewModel.getSelectedImages().getValue().remove(0);
                     Navigation.findNavController(view).navigate(action);
                 } else {
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageSelf action =
                             ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageSelf(
                                     getString(R.string.scan_receipt_process_image_product_name));
                     action.setNumberOfImages(numberOfImages);
-                    scanReceiptViewModel.getSelectedImages().remove(0);
+                    scanReceiptViewModel.getSelectedImages().getValue().remove(0);
                     Navigation.findNavController(view).navigate(action);
                 }
             }

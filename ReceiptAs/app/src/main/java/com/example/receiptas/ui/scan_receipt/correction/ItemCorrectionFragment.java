@@ -91,12 +91,12 @@ public class ItemCorrectionFragment extends Fragment {
                 itemCorrectionViewModel.getPreview(
                     correctedItems,
                     itemCorrectionViewModel.getPrices(),
-                    scanReceiptViewModel.getReceiptCurrency().charAt(0),
+                    scanReceiptViewModel.getReceiptCurrency().getValue().charAt(0),
                     this.getContext()
                 ),
                 R.string.item_correction_dialog_validate,
                 null,
-                R.string.item_correction_dialog_negative,
+                R.string.dialog_negative,
                 null,
                 false);
             return true;
@@ -205,9 +205,9 @@ public class ItemCorrectionFragment extends Fragment {
                     openBlockingDialog(
                         R.string.error_parsing_items,
                         scanReceiptViewModel.getItems().getValue().getError().getMessage(),
-                        R.string.item_correction_dialog_positive,
+                        R.string.dialog_positive,
                         null,
-                        R.string.item_correction_dialog_negative,
+                        R.string.dialog_negative,
                         null,
                         true
                     );
@@ -241,9 +241,9 @@ public class ItemCorrectionFragment extends Fragment {
                     openBlockingDialog(
                         R.string.error_parsing_prices,
                             scanReceiptViewModel.getPrices().getValue().getError().getMessage(),
-                            R.string.item_correction_dialog_positive,
+                            R.string.dialog_positive,
                             null,
-                            R.string.item_correction_dialog_negative,
+                            R.string.dialog_negative,
                             null,
                             true
                     );
