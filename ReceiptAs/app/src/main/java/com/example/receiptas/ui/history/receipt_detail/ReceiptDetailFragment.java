@@ -1,12 +1,11 @@
 package com.example.receiptas.ui.history.receipt_detail;
 
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
@@ -15,27 +14,37 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.receiptas.MainActivity;
-import com.example.receiptas.MainViewModel;
 import com.example.receiptas.R;
-import com.example.receiptas.model.domain_model.Receipt;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class ReceiptDetailFragment extends Fragment {
 
-    private MainViewModel mainViewModel;
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private String[] tabsNames;
-
-    public static ReceiptDetailFragment newInstance() {
-        return new ReceiptDetailFragment();
-    }
+    private int receiptId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.tabsNames = getResources().getStringArray(R.array.receipt_detail_tabs_names);
+        this.receiptId = getArguments().getInt("receipt_id");
+
+        if(((MainActivity) getActivity()).isTablet()) {
+            Bundle arguments = new Bundle();
+            arguments.putInt("receipt_id", this.receiptId);
+
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.include_fragment_receipt_detail_products,
+                            ReceiptDetailProductsFragment.class,
+                            arguments)
+                    .add(R.id.include_fragment_receipt_detail_summary,
+                            ReceiptDetailSummaryFragment.class,
+                            arguments)
+                    .commit();
+        }
     }
 
     @Override
@@ -49,17 +58,17 @@ public class ReceiptDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         if(((MainActivity) getActivity()).isTablet()) {
-            TextView productsListHeader = getView().findViewById(R.id.products_list_header);
+            TextView productsListHeader = view.findViewById(R.id.products_list_header);
             productsListHeader.setText(this.tabsNames[0]);
 
-            TextView summaryHeader = getView().findViewById(R.id.summary_header);
+            TextView summaryHeader = view.findViewById(R.id.summary_header);
             summaryHeader.setText(this.tabsNames[1]);
         } else {
             tabLayout = view.findViewById(R.id.tab_layout);
             viewPager = view.findViewById(R.id.pager);
 
             tabLayout.addOnTabSelectedListener(tabSelectedListener);
-            viewPager.setAdapter(new ReceiptDetailAdapter(this, tabLayout.getTabCount()));
+            viewPager.setAdapter(new ReceiptDetailAdapter(this, tabLayout.getTabCount(), this.receiptId));
 
             new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabsNames[position])).attach();
         }
@@ -68,7 +77,6 @@ public class ReceiptDetailFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        this.mainViewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
     }
 
     private final TabLayout.OnTabSelectedListener tabSelectedListener = new TabLayout.OnTabSelectedListener() {

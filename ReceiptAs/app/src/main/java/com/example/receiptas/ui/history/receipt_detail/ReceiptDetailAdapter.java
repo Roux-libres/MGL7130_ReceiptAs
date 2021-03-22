@@ -7,11 +7,14 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class ReceiptDetailAdapter extends FragmentStateAdapter {
-    private final int pageCount;
 
-    public ReceiptDetailAdapter(@NonNull Fragment fragment, int pageCount) {
+    private final int pageCount;
+    private int receiptId;
+
+    public ReceiptDetailAdapter(@NonNull Fragment fragment, int pageCount, int receiptId) {
         super(fragment);
         this.pageCount = pageCount;
+        this.receiptId = receiptId;
     }
 
     @NonNull
@@ -20,10 +23,10 @@ public class ReceiptDetailAdapter extends FragmentStateAdapter {
         Fragment fragment;
         switch (position) {
             case 0:
-                fragment = ReceiptDetailProductsFragment.newInstance("", "");
+                fragment = ReceiptDetailProductsFragment.newInstance(this.receiptId);
                 break;
             default:
-                fragment = ReceiptDetailSummaryFragment.newInstance("", "");
+                fragment = ReceiptDetailSummaryFragment.newInstance(this.receiptId);
         }
 
         return fragment;

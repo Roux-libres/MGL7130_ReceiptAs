@@ -29,7 +29,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="@+id/products_list_header"/>
 
-    <include
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/include_fragment_receipt_detail_products"
         layout="@layout/fragment_receipt_detail_products"
         android:layout_width="0dp"
@@ -50,7 +50,7 @@
         app:layout_constraintStart_toEndOf="@+id/include_fragment_receipt_detail_products"
         app:layout_constraintEnd_toStartOf="@+id/include_fragment_receipt_detail_summary" />
 
-    <include
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/include_fragment_receipt_detail_summary"
         layout="@layout/fragment_receipt_detail_summary"
         android:layout_width="0dp"
