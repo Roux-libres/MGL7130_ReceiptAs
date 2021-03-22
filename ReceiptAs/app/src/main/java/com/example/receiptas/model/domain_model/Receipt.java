@@ -1,5 +1,6 @@
 package com.example.receiptas.model.domain_model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 

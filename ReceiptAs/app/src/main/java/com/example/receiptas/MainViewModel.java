@@ -1,4 +1,4 @@
-package com.example.receiptas.ui.history;
+package com.example.receiptas;
 
 import android.content.Context;
 
@@ -15,13 +15,13 @@ import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
-public class HistoryViewModel extends ViewModel {
+public class MainViewModel extends ViewModel {
 
     private MutableLiveData<ArrayList<Receipt>> receipts;
     private MainRepository mainRepository;
 
     @Inject
-    public HistoryViewModel(MainRepository mainRepository) {
+    public MainViewModel(MainRepository mainRepository) {
         receipts = new MutableLiveData<>();
         this.mainRepository = mainRepository;
     }

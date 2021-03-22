@@ -15,7 +15,6 @@ import android.widget.EditText;
 import android.widget.GridView;
 
 import com.example.receiptas.R;
-import com.example.receiptas.ui.history.HistoryViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 

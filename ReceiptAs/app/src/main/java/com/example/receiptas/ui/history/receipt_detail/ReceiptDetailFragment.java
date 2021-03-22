@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.receiptas.MainActivity;
+import com.example.receiptas.MainViewModel;
 import com.example.receiptas.R;
 import com.example.receiptas.model.domain_model.Receipt;
 import com.google.android.material.tabs.TabLayout;
@@ -22,11 +23,10 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 public class ReceiptDetailFragment extends Fragment {
 
-    private ReceiptDetailViewModel mViewModel;
+    private MainViewModel mainViewModel;
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
     private String[] tabsNames;
-    private Receipt receipt;
 
     public static ReceiptDetailFragment newInstance() {
         return new ReceiptDetailFragment();
@@ -36,8 +36,6 @@ public class ReceiptDetailFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.tabsNames = getResources().getStringArray(R.array.receipt_detail_tabs_names);
-        //this.receipt = (Receipt) getArguments().get("receipt");
-        //System.out.println(receipt.getName());
     }
 
     @Override
@@ -70,8 +68,7 @@ public class ReceiptDetailFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ReceiptDetailViewModel.class);
-        // TODO: Use the ViewModel
+        this.mainViewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
     }
 
     private final TabLayout.OnTabSelectedListener tabSelectedListener = new TabLayout.OnTabSelectedListener() {
