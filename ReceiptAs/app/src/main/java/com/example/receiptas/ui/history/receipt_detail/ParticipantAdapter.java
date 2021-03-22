@@ -5,11 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 
 import com.example.receiptas.R;
 import com.example.receiptas.model.domain_model.Participant;
@@ -20,10 +22,12 @@ import java.util.List;
 public class ParticipantAdapter extends ArrayAdapter<Participant> {
 
     private Receipt receipt;
+    private int[] colors;
 
     public ParticipantAdapter(@NonNull Context context, int resource, @NonNull Receipt receipt) {
         super(context, resource, receipt.getParticipantsPayerFirst());
         this.receipt = receipt;
+        this.colors = context.getResources().getIntArray(R.array.colors_participants);
     }
 
     @Override
@@ -38,6 +42,13 @@ public class ParticipantAdapter extends ArrayAdapter<Participant> {
         TextView total = convertView.findViewById(R.id.rightTextView);
 
         LinearLayout layout = convertView.findViewById(R.id.participant_layout);
+
+        ImageView colorDot = convertView.findViewById(R.id.participant_color);
+        colorDot.setBackgroundColor(
+                this.colors[
+                        this.receipt.getParticipants().indexOf(
+                                this.receipt.getParticipantsPayerFirst().get(position))]);
+
         if(getItem(position).isPayer()) {
             layout.setBackground(getContext().getResources().getDrawable(R.drawable.receipt_summary_payer_background));
             participant.setText(getContext().getString(R.string.payer_name, getItem(position).getName()));
