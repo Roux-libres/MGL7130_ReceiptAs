@@ -97,14 +97,13 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        if (this.currentFragmentId == R.id.nav_history) {
-            toolbar.setOverflowIcon(getBaseContext().getDrawable(R.drawable.baseline_sort_24));
-            getMenuInflater().inflate(R.menu.drawer, menu);
+        /*if (this.currentFragmentId == R.id.nav_history) {
+
             return true;
         } else {
             return false;
-        }
-
+        }*/
+        return false;
     }
 
     @Override
@@ -171,6 +170,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void unlockDrawer(){
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    public Toolbar getToolbar() {
+        return toolbar;
     }
 
     private void writeFakeJson(){
