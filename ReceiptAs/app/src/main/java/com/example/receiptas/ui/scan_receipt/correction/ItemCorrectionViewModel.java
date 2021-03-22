@@ -7,7 +7,12 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.receiptas.model.repository.MainRepository;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -46,6 +51,17 @@ public class ItemCorrectionViewModel extends ViewModel {
             }
         }
     return correctedItems;
+    }
+
+    public ArrayList<Float> getPricesFromParsedText(ArrayList<String> parsedText, Locale locale) throws Exception {
+        ArrayList<Float> prices = new ArrayList<>();
+        NumberFormat formatter = DecimalFormat.getInstance(locale);
+        String regex = "[^0-9" + new DecimalFormatSymbols(locale).getDecimalSeparator() + "]";
+        for(String text : parsedText) {
+            text = text.replaceAll(regex, "");
+            prices.add(formatter.parse(text).floatValue());
+        }
+        return prices;
     }
 
     public class CorrectableItem {
