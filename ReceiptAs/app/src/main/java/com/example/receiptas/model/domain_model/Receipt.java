@@ -72,7 +72,9 @@ public class Receipt {
         }
 
         participants.remove(payer);
-        participants.add(0, payer);
+        //TODO refactor
+        if(payer != null)
+            participants.add(0, payer);
 
         return participants;
     }

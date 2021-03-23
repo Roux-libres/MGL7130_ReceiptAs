@@ -1,19 +1,15 @@
-package com.example.receiptas.ui.division;
+package com.example.receiptas.ui.scan_receipt.division;
 
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.receiptas.R;
-import com.example.receiptas.model.domain_model.Item;
-import com.example.receiptas.ui.history.OnRecyclerViewItemClickListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ItemDivisionViewHolder extends RecyclerView.ViewHolder {
     private final TextView itemName, itemPrice;

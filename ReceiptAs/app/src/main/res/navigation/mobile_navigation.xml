@@ -82,7 +82,7 @@
 
     <fragment
         android:id="@+id/addingParticipantsFragment"
-        android:name="com.example.receiptas.ui.division.AddingParticipantsFragment"
+        android:name="com.example.receiptas.ui.scan_receipt.division.AddingParticipantsFragment"
         android:label="Participants"
         tools:layout="@layout/fragment_division_adding_participants" >
         <action
@@ -92,7 +92,7 @@
 
     <fragment
         android:id="@+id/itemDivision"
-        android:name="com.example.receiptas.ui.division.ItemDivisionFragment"
+        android:name="com.example.receiptas.ui.scan_receipt.division.ItemDivisionFragment"
         android:label="Division"
         tools:layout="@layout/fragment_item_divison">
     <argument
@@ -102,6 +102,16 @@
         <action
             android:id="@+id/action_itemDivision_self"
             app:destination="@id/itemDivision" />
+        <action
+            android:id="@+id/action_itemDivision_to_finalizationFragment"
+            app:destination="@id/finalizationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/finalizationFragment"
+        android:name="com.example.receiptas.ui.scan_receipt.division.FinalizationFragment"
+        android:label="Finalization"
+        tools:layout="@layout/fragment_finalization">
+
     </fragment>
 
 </navigation>

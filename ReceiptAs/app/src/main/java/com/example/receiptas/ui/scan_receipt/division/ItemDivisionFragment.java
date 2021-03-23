@@ -1,6 +1,5 @@
-package com.example.receiptas.ui.division;
+package com.example.receiptas.ui.scan_receipt.division;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -8,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,14 +21,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.receiptas.R;
-import com.example.receiptas.model.domain_model.Receipt;
-import com.example.receiptas.ui.history.HistoryFragmentDirections;
-import com.example.receiptas.ui.history.OnRecyclerViewItemClickListener;
-import com.example.receiptas.ui.history.ReceiptAdapter;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.List;
 
 public class ItemDivisionFragment extends Fragment {
 
@@ -74,9 +67,12 @@ public class ItemDivisionFragment extends Fragment {
             int nextParticipantIndex = participantIndex + 1;
 
             if(scanReceiptViewModel.getTheReceipt().getParticipants().size() > nextParticipantIndex) {
-                ItemDivisionFragmentDirections.ActionItemDivisionSelf action =  ItemDivisionFragmentDirections.actionItemDivisionSelf();
-                action.setParticipantIndex(nextParticipantIndex);
-                Navigation.findNavController(getView()).navigate(action);
+                ItemDivisionFragmentDirections.ActionItemDivisionSelf action1 =  ItemDivisionFragmentDirections.actionItemDivisionSelf();
+                action1.setParticipantIndex(nextParticipantIndex);
+                Navigation.findNavController(getView()).navigate(action1);
+            } else {
+                NavDirections action2 = ItemDivisionFragmentDirections.actionItemDivisionToFinalizationFragment();
+                Navigation.findNavController(getView()).navigate(action2);
             }
             return true;
         } else {
@@ -96,7 +92,6 @@ public class ItemDivisionFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        // TODO: Use the ViewModel
     }
 
     private void configureRecyclerView() {

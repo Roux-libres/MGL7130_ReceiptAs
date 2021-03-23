@@ -7,6 +7,7 @@ import android.util.Base64;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.receiptas.model.domain_model.Item;
 import com.example.receiptas.model.domain_model.Receipt;
 import com.example.receiptas.model.repository.MainRepository;
 import com.example.receiptas.model.util.DataState;
@@ -43,7 +44,7 @@ public class ScanReceiptViewModel extends ViewModel {
         items.add(new Item("vanille", new Float(6.45),  new ArrayList<>()));
         items.add(new Item("Chocolat", new Float(5.45),  new ArrayList<>()));
         items.add(new Item("FRAISE", new Float(4.45),  new ArrayList<>()));
-        this.theReceipt = new Receipt("test", null, null, items,  new ArrayList<>());
+        this.theReceipt = new Receipt("Courses Lidl", null, "CAD", items,  new ArrayList<>());
     }
 
     public Receipt getTheReceipt() {
