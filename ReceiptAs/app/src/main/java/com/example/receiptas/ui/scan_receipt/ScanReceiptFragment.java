@@ -74,6 +74,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
+        this.scanReceiptViewModel.clearSelectedImages();
         View root = inflater.inflate(R.layout.fragment_scan_receipt, container, false);
 
         getActivity().invalidateOptionsMenu();
@@ -161,7 +162,8 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
 
                 ScanReceiptFragmentDirections.ActionNavScanReceiptToNavScanReceiptProcessImage action =
                         ScanReceiptFragmentDirections.actionNavScanReceiptToNavScanReceiptProcessImage(
-                                getString(R.string.scan_receipt_process_image_product_name));
+                                getString(R.string.scan_receipt_process_image_product_name),
+                                new ArrayList<Bitmap>());
                 action.setNumberOfImages(this.scanReceiptViewModel.getNumberOfSelectedImages());
                 Navigation.findNavController(view).navigate(action);
                 break;
@@ -292,7 +294,8 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
             this.scanReceiptViewModel.getCameraCaptureBitmap().setValue(imageBitmap);
             ScanReceiptFragmentDirections.ActionNavScanReceiptToNavScanReceiptProcessImage action =
                     ScanReceiptFragmentDirections.actionNavScanReceiptToNavScanReceiptProcessImage(
-                            getString(R.string.scan_receipt_process_image_product_name));
+                            getString(R.string.scan_receipt_process_image_product_name),
+                            new ArrayList<Bitmap>());
             Navigation.findNavController(getView()).navigate(action);
         }
     }

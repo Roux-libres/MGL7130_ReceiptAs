@@ -58,6 +58,9 @@
             android:name="numberOfImages"
             app:argType="integer"
             android:defaultValue="1" />
+        <argument
+            android:name="processed_images"
+            app:argType="java.util.ArrayList" />
         <action
             android:id="@+id/action_nav_scan_receipt_process_image_self"
             app:destination="@id/nav_scan_receipt_process_image" />
