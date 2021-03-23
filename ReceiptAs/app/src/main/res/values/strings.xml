@@ -76,6 +76,6 @@
     <string name="item_correction_dialog_quantity_caution">CAUTION !! - ITEMS QUANTITY DOESN\'T MATCH PRICES QUANTITY\n\n</string>
     <string name="item_correction_dialog_preview">"[ Item - price mapping preview ] :\n"</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="scan_receipt_missing_payer_title">Payer is missing</string>
+    <string name="scan_receipt_missing_payer_description">No payer has been specified. Please select one.</string>
 </resources>

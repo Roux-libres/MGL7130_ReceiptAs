@@ -49,7 +49,7 @@ public class FinalizationFragment extends Fragment {
         this.setHasOptionsMenu(true);
         scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
         mainViewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
-        onValidateReceipt = (v) -> {};
+        onValidateReceipt = onValidateReceiptWithoutPayer;
     }
 
     @Override
@@ -88,6 +88,7 @@ public class FinalizationFragment extends Fragment {
 
             if(payer == participant){
                 participant.setPayer(false);
+                this.onValidateReceipt = onValidateReceiptWithoutPayer;
             } else if (payer == null){
                 participant.setPayer(true);
                 this.onValidateReceipt = onValidateReceiptWithPayer;
@@ -104,7 +105,6 @@ public class FinalizationFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.validate_button) {
             this.onValidateReceipt.onClick(getView());
-            //TODO pop si pas de payeur
             //TODO écrire dans le fichier json
             //TODO naviguer history + clean scanreceipt
             return true;
