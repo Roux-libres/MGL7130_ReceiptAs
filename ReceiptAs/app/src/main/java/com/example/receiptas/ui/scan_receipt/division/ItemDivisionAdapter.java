@@ -15,6 +15,7 @@ import com.example.receiptas.model.domain_model.Participant;
 import com.example.receiptas.model.domain_model.Receipt;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class ItemDivisionAdapter extends RecyclerView.Adapter<ItemDivisionViewHolder> {
 
@@ -45,7 +46,12 @@ public class ItemDivisionAdapter extends RecyclerView.Adapter<ItemDivisionViewHo
     @Override
     public void onBindViewHolder(@NonNull ItemDivisionViewHolder holder, int position) {
         holder.getItemName().setText(this.receipt.getItems().get(position).getName());
-        holder.getItemPrice().setText(Float.toString(this.receipt.getItems().get(position).getPrice()));
+        holder.getItemPrice().setText(
+            new StringBuilder()
+                .append(this.receipt.getItems().get(position).getPrice())
+                .append(this.receipt.getCurrency().getSymbol(Locale.getDefault()))
+                .toString()
+        );
 
         ArrayList<Participant> itemParticipants = this.receipt.getItems().get(position).getParticipants();
         ArrayList<Participant> participants = this.receipt.getParticipants();
