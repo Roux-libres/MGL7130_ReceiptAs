@@ -204,6 +204,8 @@ public class ItemCorrectionFragment extends Fragment {
         }
     };
 
+
+
     private final Observer<DataState.State> itemsObserver = new Observer<DataState.State>() {
         @Override
         public void onChanged(DataState.State dataState) {
@@ -213,6 +215,7 @@ public class ItemCorrectionFragment extends Fragment {
                     displayProgressBar(false);
                     break;
                 case ERROR:
+                    scanReceiptViewModel.getPrices().getValue().getState().removeObserver(pricesObserver);
                     openBlockingDialog(
                         R.string.error_parsing_items,
                         scanReceiptViewModel.getItems().getValue().getError().getMessage(),
@@ -245,6 +248,7 @@ public class ItemCorrectionFragment extends Fragment {
                     }
                     break;
                 case ERROR:
+                    scanReceiptViewModel.getItems().getValue().getState().removeObserver(itemsObserver);
                     openBlockingDialog(
                         R.string.error_parsing_prices,
                             scanReceiptViewModel.getPrices().getValue().getError().getMessage(),

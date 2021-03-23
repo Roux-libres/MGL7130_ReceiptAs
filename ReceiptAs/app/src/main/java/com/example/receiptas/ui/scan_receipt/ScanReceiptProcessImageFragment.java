@@ -119,18 +119,12 @@ public class ScanReceiptProcessImageFragment extends Fragment {
                     action.setNumberOfImages(numberOfImages);
                     Navigation.findNavController(view).navigate(action);
                 } else if(isCameraCapture){
-                    NavDirections action =
-                            ScanReceiptProcessImageFragmentDirections
-                                    .actionNavScanReceiptProcessImageToNavScanReceipt();
                     scanReceiptViewModel.getProcessedImages().getValue().addAll(processedImages);
-                    Navigation.findNavController(view).navigate(action);
+                    Navigation.findNavController(view).popBackStack(R.id.nav_scan_receipt, false);
                 } else if(scanReceiptViewModel.getNumberOfSelectedImages() == 1){
-                    NavDirections action =
-                            ScanReceiptProcessImageFragmentDirections
-                                    .actionNavScanReceiptProcessImageToNavScanReceipt();
                     scanReceiptViewModel.getSelectedImages().getValue().remove(0);
                     scanReceiptViewModel.getProcessedImages().getValue().addAll(processedImages);
-                    Navigation.findNavController(view).navigate(action);
+                    Navigation.findNavController(view).popBackStack(R.id.nav_scan_receipt, false);
                 } else {
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageSelf action =
                             ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageSelf(
