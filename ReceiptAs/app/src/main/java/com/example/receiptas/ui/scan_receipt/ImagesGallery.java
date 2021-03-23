@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ImagesGallery {
@@ -22,15 +23,20 @@ public class ImagesGallery {
 
         String orderBy = MediaStore.Video.Media.DATE_TAKEN;
         cursor = context.getContentResolver().query(uri, projection, null,
-                null, orderBy+" DESC");
+                null, orderBy + " DESC");
 
         column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
 
         while(cursor.moveToNext()){
             absolutePathOfImage = cursor.getString(column_index_data);
 
-            listOfAllImages.add(absolutePathOfImage);
+            File imageFile = new File(absolutePathOfImage);
+            if(imageFile.exists()){
+                listOfAllImages.add(absolutePathOfImage);
+            }
         }
+
+        cursor.close();
 
         return listOfAllImages;
     }
