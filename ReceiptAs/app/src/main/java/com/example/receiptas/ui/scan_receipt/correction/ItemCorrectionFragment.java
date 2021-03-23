@@ -84,7 +84,6 @@ public class ItemCorrectionFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.validate_button) {
-            //TODO consolidation dans shared viewmodel (TheReceipt)
             ArrayList<String> correctedItems = itemCorrectionViewModel.getCorrectedItems();
             openBlockingDialog(
                 R.string.item_correction_dialog_validate_title,
@@ -97,13 +96,15 @@ public class ItemCorrectionFragment extends Fragment {
                 R.string.item_correction_dialog_validate,
                 (dialog, which) -> {
                     int referenceSize = Math.max(correctedItems.size(), itemCorrectionViewModel.getPrices().size());
+                    ArrayList<Item> items = new ArrayList<>();
                     for(int i = 0; i < referenceSize; i++) {
-                        this.scanReceiptViewModel.getReceipt().getItems().add(new Item(
+                        items.add(new Item(
                             i < correctedItems.size() ? correctedItems.get(i) : "no item",
                             i < itemCorrectionViewModel.getPrices().size() ? itemCorrectionViewModel.getPrices().get(i) : 0,
                             new ArrayList<>()
                         ));
                     }
+                    this.scanReceiptViewModel.getReceipt().setItems(items);
 
                     NavDirections action = ItemCorrectionFragmentDirections.actionToAddingParticipantsFragment();
                     Navigation.findNavController(getView()).navigate(action);
