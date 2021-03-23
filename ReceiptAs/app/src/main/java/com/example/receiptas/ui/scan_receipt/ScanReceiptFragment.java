@@ -2,10 +2,16 @@ package com.example.receiptas.ui.scan_receipt;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,6 +42,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Currency;
@@ -60,10 +67,18 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
     private FloatingActionButton validationSelection;
     private GalleryAdapter galleryAdapter;
 
+    private Uri imageUri;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setHasOptionsMenu(true);
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "New scan receipt picture");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera");
+        imageUri = getActivity().getContentResolver().insert(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     }
 
     @Override
@@ -167,7 +182,8 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                 ScanReceiptFragmentDirections.ActionNavScanReceiptToNavScanReceiptProcessImage action =
                         ScanReceiptFragmentDirections.actionNavScanReceiptToNavScanReceiptProcessImage(
                                 getString(R.string.scan_receipt_process_image_product_name),
-                                new ArrayList<Bitmap>());
+                                new ArrayList<Bitmap>(),
+                                null);
                 action.setNumberOfImages(this.scanReceiptViewModel.getNumberOfSelectedImages());
                 Navigation.findNavController(view).navigate(action);
                 break;
@@ -225,9 +241,11 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
             @Override
             public void onPhotoClick(GalleryAdapter.ViewHolder holder, String path) {
                 if(path == ""){
-                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     try{
                         saveInfos();
+
+                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                         startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     } catch(ActivityNotFoundException e){
                         System.out.println(e);
@@ -299,17 +317,37 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            this.scanReceiptViewModel.clearSelectedImages();
+            try {
+                String imageUrl = getRealPathFromURI(imageUri);
+                this.scanReceiptViewModel.clearSelectedImages();
+                this.scanReceiptViewModel.addSelectedImage(imageUrl);
 
-            this.scanReceiptViewModel.getCameraCaptureBitmap().setValue(imageBitmap);
-            ScanReceiptFragmentDirections.ActionNavScanReceiptToNavScanReceiptProcessImage action =
-                    ScanReceiptFragmentDirections.actionNavScanReceiptToNavScanReceiptProcessImage(
-                            getString(R.string.scan_receipt_process_image_product_name),
-                            new ArrayList<Bitmap>());
-            Navigation.findNavController(getView()).navigate(action);
+                Bitmap imageBitmap = this.scanReceiptViewModel.rotateBitmap(imageUrl);
+
+                File image_file = new File(imageUrl);
+                image_file.delete();
+
+                ScanReceiptFragmentDirections.ActionNavScanReceiptToNavScanReceiptProcessImage action =
+                        ScanReceiptFragmentDirections.actionNavScanReceiptToNavScanReceiptProcessImage(
+                                getString(R.string.scan_receipt_process_image_product_name),
+                                new ArrayList<Bitmap>(),
+                                imageBitmap);
+                Navigation.findNavController(getView()).navigate(action);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+    }
+
+    public String getRealPathFromURI(Uri contentUri) {String res = null;
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
+        if(cursor.moveToFirst()){;
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
     }
 
     private void openBlockingDialog() {

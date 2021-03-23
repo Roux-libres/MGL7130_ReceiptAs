@@ -64,8 +64,6 @@ public class AddingParticipantsFragment extends Fragment {
         this.participantAdapter = new ParticipantAdapter(this.getContext(), this.scanReceiptViewModel.getReceipt());
 
         gridNames.setAdapter(participantAdapter);
-        gridNames.setVerticalScrollBarEnabled(false);
-        gridNames.setEnabled(false);
 
         final TextInputLayout textInputLayout = root.findViewById(R.id.name_input_textfield);
         textInputLayout.setEndIconOnClickListener(new View.OnClickListener() {

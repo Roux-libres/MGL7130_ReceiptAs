@@ -34,10 +34,6 @@
         android:name="com.example.receiptas.ui.scan_receipt.ScanReceiptFragment"
         android:label="@string/menu_scan_receipt"
         tools:layout="@layout/fragment_scan_receipt" >
-        <argument
-            android:name="imageBitmap"
-            android:defaultValue="null"
-            app:argType="string" />
         <action
             android:id="@+id/action_nav_scan_receipt_to_nav_scan_receipt_process_image"
             app:destination="@id/nav_scan_receipt_process_image" />
@@ -61,6 +57,10 @@
         <argument
             android:name="processed_images"
             app:argType="java.util.ArrayList" />
+        <argument
+            android:name="image_bitmap"
+            app:argType="android.graphics.Bitmap"
+            app:nullable="true" />
         <action
             android:id="@+id/action_nav_scan_receipt_process_image_self"
             app:destination="@id/nav_scan_receipt_process_image" />
