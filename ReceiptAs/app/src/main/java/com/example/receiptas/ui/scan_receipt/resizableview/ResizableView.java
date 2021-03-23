@@ -1,6 +1,7 @@
 package com.example.receiptas.ui.scan_receipt.resizableview;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -50,42 +51,42 @@ public class ResizableView extends View {
         setFocusable(true);
         this.canvas = new Canvas();
         this.imagePoints = new ArrayList<ImagePoint>();
+    }
+
+    public void compareSize(Context context, ImageView imageView, Bitmap imageBitmap){
+        this.horizontalDifference = (imageView.getWidth() - imageBitmap.getWidth()) / 2;
+        this.verticalDifference = (imageView.getHeight() - imageBitmap.getHeight()) / 2;
 
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
 
-        int widthDivision = metrics.widthPixels / 3;
-        int heightDivision = metrics.heightPixels / 3;
+        int paddingX = this.horizontalDifference + (metrics.widthPixels / 10);
+        int paddingY = this.verticalDifference + (metrics.heightPixels / 10);
 
         //Upper left
         ImagePoint point0 = new ImagePoint(context, R.drawable.circle, new Point());
-        point0.setX(widthDivision);
-        point0.setY(heightDivision);
+        point0.setX(this.horizontalDifference + paddingX);
+        point0.setY(this.verticalDifference + paddingY);
         this.imagePoints.add(point0);
 
         //Upper right
         ImagePoint point1 = new ImagePoint(context, R.drawable.circle, new Point());
-        point1.setX(metrics.widthPixels - widthDivision);
-        point1.setY(heightDivision);
+        point1.setX(imageView.getWidth() - this.horizontalDifference - paddingX);
+        point1.setY(this.verticalDifference + paddingY);
         this.imagePoints.add(point1);
 
         //Bottom left
         ImagePoint point2 = new ImagePoint(context, R.drawable.circle, new Point());
-        point2.setX(widthDivision);
-        point2.setY(metrics.heightPixels - heightDivision);
+        point2.setX(this.horizontalDifference + paddingX);
+        point2.setY(imageView.getHeight() - this.verticalDifference - paddingY);
         this.imagePoints.add(point2);
 
         //Bottom right
         ImagePoint point3 = new ImagePoint(context, R.drawable.circle, new Point());
-        point3.setX(metrics.widthPixels - widthDivision);
-        point3.setY(metrics.heightPixels - heightDivision);
+        point3.setX(imageView.getWidth() - this.horizontalDifference - paddingX);
+        point3.setY(imageView.getHeight() - this.verticalDifference - paddingY);
         this.imagePoints.add(point3);
 
         ImagePoint.resetCount();
-    }
-
-    public void compareSize(ImageView imageView, Bitmap imageBitmap){
-        this.horizontalDifference = (imageView.getWidth() - imageBitmap.getWidth()) / 2;
-        this.verticalDifference = (imageView.getHeight() - imageBitmap.getHeight()) / 2;
     }
 
     @Override

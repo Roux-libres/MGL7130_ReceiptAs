@@ -64,9 +64,6 @@
         <action
             android:id="@+id/action_nav_scan_receipt_process_image_self"
             app:destination="@id/nav_scan_receipt_process_image" />
-        <action
-            android:id="@+id/action_nav_scan_receipt_process_image_to_nav_scan_receipt"
-            app:destination="@id/nav_scan_receipt" />
     </fragment>
 
     <fragment

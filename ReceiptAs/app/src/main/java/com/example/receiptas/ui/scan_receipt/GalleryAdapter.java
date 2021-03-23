@@ -57,9 +57,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
             });
         } else {
             final String image = images.get(position - 1);
-
             Glide.with(context).load(image).into(holder.image);
-
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
