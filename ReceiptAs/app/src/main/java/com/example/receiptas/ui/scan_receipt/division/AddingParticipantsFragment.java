@@ -59,9 +59,9 @@ public class AddingParticipantsFragment extends Fragment {
 
         this.gridNames = root.findViewById(R.id.names_grid);
         ArrayList<String> names = new ArrayList<>();
-        for(Participant participant: this.scanReceiptViewModel.getTheReceipt().getParticipants())
+        for(Participant participant: this.scanReceiptViewModel.getReceipt().getParticipants())
             names.add(participant.getName());
-        this.participantAdapter = new ParticipantAdapter(this.getContext(), this.scanReceiptViewModel.getTheReceipt());
+        this.participantAdapter = new ParticipantAdapter(this.getContext(), this.scanReceiptViewModel.getReceipt());
 
         gridNames.setAdapter(participantAdapter);
         gridNames.setVerticalScrollBarEnabled(false);
@@ -73,8 +73,8 @@ public class AddingParticipantsFragment extends Fragment {
             public void onClick(View v) {
                 TextInputEditText editName = (TextInputEditText) root.findViewById(R.id.name_input_text);
                 String inputText = editName.getText().toString();
-                if (inputText.trim().length() > 0 && scanReceiptViewModel.getTheReceipt().getParticipants().size() < 8) {
-                    scanReceiptViewModel.getTheReceipt().addParticipantByName(inputText);
+                if (inputText.trim().length() > 0 && scanReceiptViewModel.getReceipt().getParticipants().size() < 8) {
+                    scanReceiptViewModel.getReceipt().addParticipantByName(inputText);
                     editName.getText().clear();
                     participantAdapter.notifyDataSetChanged();
                 }
@@ -106,5 +106,4 @@ public class AddingParticipantsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-
 }

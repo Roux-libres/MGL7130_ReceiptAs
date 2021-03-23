@@ -38,6 +38,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Currency;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -80,28 +81,26 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         getActivity().invalidateOptionsMenu();
 
         this.inputReceiptName = root.findViewById(R.id.input_scan_receipt_name);
-        if(!TextUtils.isEmpty(scanReceiptViewModel.getTheReceipt().getName())){
-            this.inputReceiptName.setText(scanReceiptViewModel.getTheReceipt().getName());
+        if(!TextUtils.isEmpty(scanReceiptViewModel.getReceipt().getName())){
+            this.inputReceiptName.setText(scanReceiptViewModel.getReceipt().getName());
         }
 
         this.inputReceiptPrice = root.findViewById(R.id.input_scan_receipt_price);
-        if(scanReceiptViewModel.hasReceiptPrice()){
-            this.inputReceiptPrice.setText(String.valueOf(scanReceiptViewModel.getReceiptSpecifiedPrice().getValue()));
+
+        Float price;
+        if((price = scanReceiptViewModel.getReceiptSpecifiedPrice().getValue()) != null) {
+            this.inputReceiptPrice.setText(String.valueOf(price));
         }
 
         this.receiptCurrency = root.findViewById(R.id.currency_menu_text_view);
         ArrayList<String> currencyArray = new ArrayList<String>(
-                Arrays.asList(getResources().getStringArray(R.array.currencies_array)));
+                Arrays.asList(getResources().getStringArray(R.array.currency_array)));
+
         MaterialDropdownMenuArrayAdapter adapter = new MaterialDropdownMenuArrayAdapter(getContext(),
                 R.layout.list_item, currencyArray);
         this.receiptCurrency.setAdapter(adapter);
-
-        if(scanReceiptViewModel.hasReceiptCurrency()){
-            this.receiptCurrency.setText((CharSequence) adapter.getItem(
-                    adapter.getPosition(scanReceiptViewModel.getReceiptCurrency().getValue())), false);
-        } else {
-            this.receiptCurrency.setText((CharSequence) adapter.getItem(0), false);
-        }
+        this.receiptCurrency.setText((CharSequence) adapter.getItem(
+                    adapter.getPosition(scanReceiptViewModel.getReceipt().getCurrency().getCurrencyCode())), false);
 
         this.receiptCurrency.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -135,13 +134,16 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.validate_button & this.saveDetails()) {
-            NavDirections goToItemCorrection =
-                ScanReceiptFragmentDirections.actionNavScanReceiptToItemCorrectionFragment();
-            Navigation.findNavController(getView()).navigate(goToItemCorrection);
+        if(item.getItemId() == R.id.validate_button) {
+            if(this.saveInfos()) {
+                NavDirections goToItemCorrection =
+                    ScanReceiptFragmentDirections.actionNavScanReceiptToItemCorrectionFragment();
+                Navigation.findNavController(getView()).navigate(goToItemCorrection);
+            } else {
+                this.openBlockingDialog();
+            }
             return true;
         } else {
-            this.openBlockingDialog();
             return super.onOptionsItemSelected(item);
         }
     }
@@ -158,7 +160,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                 this.scanReceiptViewModel.clearSelectedImages();
                 break;
             case R.id.fab_validation_selection:
-                this.saveDetails();
+                this.saveInfos();
 
                 ScanReceiptFragmentDirections.ActionNavScanReceiptToNavScanReceiptProcessImage action =
                         ScanReceiptFragmentDirections.actionNavScanReceiptToNavScanReceiptProcessImage(
@@ -170,19 +172,27 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    //TODO REFACTO view model getter/setter mutabledata + currency
-    private boolean saveDetails(){
+    private boolean saveInfos(){
         String inputReceiptNameString = this.inputReceiptName.getText().toString();
         String inputReceiptPriceString = this.inputReceiptPrice.getText().toString();
 
-        boolean allInfoSpecified = !TextUtils.isEmpty(inputReceiptNameString)
-                & !TextUtils.isEmpty(inputReceiptPriceString)
-                & !this.scanReceiptViewModel.getProcessedImages().getValue().isEmpty();
+        boolean allInfoSpecified =
+            !TextUtils.isEmpty(inputReceiptNameString)
+            && !this.scanReceiptViewModel.getProcessedImages().getValue().isEmpty();
 
-        if(allInfoSpecified) {
-            this.scanReceiptViewModel.getTheReceipt().setName(inputReceiptNameString);
+        this.scanReceiptViewModel.getReceipt().setName(inputReceiptNameString);
+        
+        if(!TextUtils.isEmpty(inputReceiptPriceString)) {
             this.scanReceiptViewModel.getReceiptSpecifiedPrice().setValue(Float.parseFloat(inputReceiptPriceString));
-            this.scanReceiptViewModel.getReceiptCurrency().setValue(this.receiptCurrency.getText().toString());
+        } else {
+            allInfoSpecified = false;
+        }
+
+        try {
+            this.scanReceiptViewModel.getReceipt().setCurrency(Currency.getInstance(this.receiptCurrency.getText().toString()));
+        } catch(Exception exception) {
+            exception.printStackTrace();
+            allInfoSpecified = false;
         }
 
         return allInfoSpecified;
@@ -215,7 +225,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                 if(path == ""){
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     try{
-                        saveDetails();
+                        saveInfos();
                         startActivityForResult(cameraIntent, CAMERA_REQUEST);
                     } catch(ActivityNotFoundException e){
                         System.out.println(e);
