@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -29,10 +32,10 @@ import java.util.List;
 
 public class ItemDivisionFragment extends Fragment {
 
-    private ItemDivisionViewModel itemDivisionViewModel;
     private RecyclerView itemRecyclerView;
     private ItemDivisionAdapter itemDivisionAdapter;
     private ScanReceiptViewModel scanReceiptViewModel;
+    private int participantIndex;
 
     public static ItemDivisionFragment newInstance() {
         return new ItemDivisionFragment();
@@ -41,8 +44,14 @@ public class ItemDivisionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setHasOptionsMenu(true);
         scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
-        itemDivisionViewModel = new ViewModelProvider(this).get(ItemDivisionViewModel.class);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.validate, menu);
     }
 
     @Override
@@ -50,28 +59,30 @@ public class ItemDivisionFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_item_divison, container, false);
 
-        int participantIndex = getArguments().getInt("participantIndex");
+        this.participantIndex = getArguments().getInt("participantIndex");
 
         TextView information_message = root.findViewById(R.id.information_message);
-        String message = getContext().getString(R.string.information_message_division_participant) + " ";
-        information_message.setText(scanReceiptViewModel.getTheReceipt().getParticipants().get(participantIndex).getName() + message);
-
-        FloatingActionButton validation = root.findViewById(R.id.validate_button);
-        validation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int nextParticipantIndex = participantIndex + 1;
-
-                if(scanReceiptViewModel.getTheReceipt().getParticipants().size() > nextParticipantIndex) {
-                    ItemDivisionFragmentDirections.ActionItemDivisionSelf action =  ItemDivisionFragmentDirections.actionItemDivisionSelf();
-                    action.setParticipantIndex(nextParticipantIndex);
-                    Navigation.findNavController(view).navigate(action);
-                } else {
-                    System.out.println("C'est la fin frr");
-                }
-            } });
+        String message = getContext().getString(R.string.information_message_division_participant);
+        information_message.setText(String.format("%s%s", scanReceiptViewModel.getTheReceipt().getParticipants().get(participantIndex).getName(), message));
 
         return root;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.validate_button) {
+            int nextParticipantIndex = participantIndex + 1;
+
+            if(scanReceiptViewModel.getTheReceipt().getParticipants().size() > nextParticipantIndex) {
+                ItemDivisionFragmentDirections.ActionItemDivisionSelf action =  ItemDivisionFragmentDirections.actionItemDivisionSelf();
+                action.setParticipantIndex(nextParticipantIndex);
+                Navigation.findNavController(getView()).navigate(action);
+            }
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+
+        }
     }
 
     @Override
@@ -89,10 +100,9 @@ public class ItemDivisionFragment extends Fragment {
     }
 
     private void configureRecyclerView() {
-        itemDivisionAdapter = new ItemDivisionAdapter(scanReceiptViewModel.getTheReceipt(), getContext());
+        itemDivisionAdapter = new ItemDivisionAdapter(scanReceiptViewModel.getTheReceipt(), getContext(), scanReceiptViewModel.getTheReceipt().getParticipants().get(this.participantIndex));
         itemRecyclerView.setAdapter(itemDivisionAdapter);
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
-
 
 }

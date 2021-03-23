@@ -58,7 +58,8 @@ public class ReceiptDetailProductsFragment extends Fragment {
         RecyclerView itemRecyclerView = view.findViewById(R.id.item_recycler_view);
         ItemDivisionAdapter itemDivisionAdapter = new ItemDivisionAdapter(
                 this.mainViewModel.getReceipts().getValue().get(this.receiptId),
-                getContext());
+                getContext(),
+                null);
         itemRecyclerView.setAdapter(itemDivisionAdapter);
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

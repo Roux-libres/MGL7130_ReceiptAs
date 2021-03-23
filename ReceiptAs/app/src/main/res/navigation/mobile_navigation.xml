@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_history">
+    app:startDestination="@+id/addingParticipantsFragment">
 
 
     <fragment
@@ -83,7 +83,7 @@
     <fragment
         android:id="@+id/addingParticipantsFragment"
         android:name="com.example.receiptas.ui.division.AddingParticipantsFragment"
-        android:label="Adding Participant"
+        android:label="Participants"
         tools:layout="@layout/fragment_division_adding_participants" >
         <action
             android:id="@+id/action_addingParticipantsFragment_to_itemDivision"
@@ -93,7 +93,7 @@
     <fragment
         android:id="@+id/itemDivision"
         android:name="com.example.receiptas.ui.division.ItemDivisionFragment"
-        android:label="Division Participants"
+        android:label="Division"
         tools:layout="@layout/fragment_item_divison">
     <argument
         android:name="participantIndex"
