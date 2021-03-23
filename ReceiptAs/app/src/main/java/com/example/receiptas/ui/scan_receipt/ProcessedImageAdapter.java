@@ -36,9 +36,19 @@ public class ProcessedImageAdapter extends GalleryAdapter {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(
-                LayoutInflater.from(context).inflate(R.layout.gallery_item, parent, false)
-        );
+        ViewHolder viewHolder = new ViewHolder(
+                LayoutInflater.from(context).inflate(R.layout.gallery_item, parent, false));
+        ViewGroup.LayoutParams layoutParams = viewHolder.itemView.getLayoutParams();
+        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        viewHolder.itemView.setLayoutParams(layoutParams);
+
+        ViewGroup.LayoutParams imageLayoutParams = viewHolder.image.getLayoutParams();
+        imageLayoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        viewHolder.image.setLayoutParams(imageLayoutParams);
+
+        viewHolder.image.setScaleType(ImageView.ScaleType.FIT_CENTER);
+        viewHolder.image.setPadding(8, 8, 8, 8);
+        return viewHolder;
     }
 
     @Override

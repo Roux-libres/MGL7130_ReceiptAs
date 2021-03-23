@@ -128,4 +128,14 @@ public class Receipt {
 
         return totalAmount;
     }
+
+    public Participant getPayer(){
+        for(Participant participant : this.getParticipants()){
+            if(participant.isPayer()){
+                return participant;
+            }
+        }
+
+        return null;
+    }
 }

@@ -61,16 +61,6 @@ public class SummaryParticipantAdapter extends ArrayAdapter<Participant> {
                 receipt.getParticipantTotal(getItem(position)),
                 this.receipt.getCurrency()));
 
-        LinearLayout summaryParticipantLayout = convertView.findViewById(R.id.participant_layout);
-        summaryParticipantLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Participant participant = receipt.getParticipants().get(position);
-                participant.setPayer(!participant.isPayer());
-                notifyDataSetChanged();
-            }
-        });
-
         return convertView;
     }
 }

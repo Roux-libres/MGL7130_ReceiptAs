@@ -2,6 +2,7 @@ package com.example.receiptas.ui.scan_receipt.division;
 
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -87,9 +89,14 @@ public class AddingParticipantsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.validate_button) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+            View view = getActivity().getCurrentFocus();
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+
             AddingParticipantsFragmentDirections.ActionAddingParticipantsFragmentToItemDivision action =
                     AddingParticipantsFragmentDirections.actionAddingParticipantsFragmentToItemDivision();
             Navigation.findNavController(getView()).navigate(action);
+
             return true;
         } else {
             return super.onOptionsItemSelected(item);
