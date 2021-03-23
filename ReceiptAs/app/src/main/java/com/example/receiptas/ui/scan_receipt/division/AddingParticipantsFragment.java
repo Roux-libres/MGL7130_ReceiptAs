@@ -1,15 +1,6 @@
 package com.example.receiptas.ui.scan_receipt.division;
 
-import androidx.lifecycle.ViewModelProvider;
-
-import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +10,12 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.example.receiptas.R;
 import com.example.receiptas.model.domain_model.Participant;
@@ -61,9 +58,9 @@ public class AddingParticipantsFragment extends Fragment {
 
         this.gridNames = root.findViewById(R.id.names_grid);
         ArrayList<String> names = new ArrayList<>();
-        for(Participant participant: this.scanReceiptViewModel.getTheReceipt().getParticipants())
+        for(Participant participant: this.scanReceiptViewModel.getReceipt().getParticipants())
             names.add(participant.getName());
-        this.participantAdapter = new ParticipantAdapter(this.getContext(), this.scanReceiptViewModel.getTheReceipt());
+        this.participantAdapter = new ParticipantAdapter(this.getContext(), this.scanReceiptViewModel.getReceipt());
 
         gridNames.setAdapter(participantAdapter);
         gridNames.setVerticalScrollBarEnabled(false);
@@ -75,8 +72,8 @@ public class AddingParticipantsFragment extends Fragment {
             public void onClick(View v) {
                 TextInputEditText editName = (TextInputEditText) root.findViewById(R.id.name_input_text);
                 String inputText = editName.getText().toString();
-                if (inputText.trim().length() > 0 && scanReceiptViewModel.getTheReceipt().getParticipants().size() < 8) {
-                    scanReceiptViewModel.getTheReceipt().addParticipantByName(inputText);
+                if (inputText.trim().length() > 0 && scanReceiptViewModel.getReceipt().getParticipants().size() < 8) {
+                    scanReceiptViewModel.getReceipt().addParticipantByName(inputText);
                     editName.getText().clear();
                     participantAdapter.notifyDataSetChanged();
                 }
@@ -113,5 +110,4 @@ public class AddingParticipantsFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-
 }

@@ -1,23 +1,27 @@
 package com.example.receiptas.model.domain_model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
-
-import javax.inject.Inject;
+import java.util.Locale;
 
 public class Receipt {
     private String name;
     private Date date;
-    private String currency;
+    private Currency currency;
     private ArrayList<Item> items;
     private ArrayList<Participant> participants;
 
     public Receipt() {
-
+        this.name = "";
+        //TODO set date in scan receipt fragment/view
+        this.date = new Date();
+        this.currency = Currency.getInstance(Locale.getDefault());
+        this.items = new ArrayList<>();
+        this.participants = new ArrayList<>();
     }
 
-    public Receipt(String name, Date date, String currency, ArrayList<Item> items, ArrayList<Participant> participants) {
+    public Receipt(String name, Date date, Currency currency, ArrayList<Item> items, ArrayList<Participant> participants) {
         this.name = name;
         this.date = date;
         this.currency = currency;
@@ -31,6 +35,10 @@ public class Receipt {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
     }
 
     public void setItems(ArrayList<Item> items) {
@@ -49,7 +57,7 @@ public class Receipt {
         return date;
     }
 
-    public String getCurrency(){
+    public Currency getCurrency(){
         return currency;
     }
 

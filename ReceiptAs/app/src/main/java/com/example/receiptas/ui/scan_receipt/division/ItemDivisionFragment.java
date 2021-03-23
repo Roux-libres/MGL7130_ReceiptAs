@@ -1,26 +1,22 @@
 package com.example.receiptas.ui.scan_receipt.division;
 
-import androidx.lifecycle.ViewModelProvider;
-
-import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.receiptas.R;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
@@ -58,7 +54,7 @@ public class ItemDivisionFragment extends Fragment {
 
         TextView information_message = root.findViewById(R.id.information_message);
         String message = getContext().getString(R.string.information_message_division_participant);
-        information_message.setText(String.format("%s%s", scanReceiptViewModel.getTheReceipt().getParticipants().get(participantIndex).getName(), message));
+        information_message.setText(String.format("%s%s", scanReceiptViewModel.getReceipt().getParticipants().get(participantIndex).getName(), message));
 
         return root;
     }
@@ -68,7 +64,7 @@ public class ItemDivisionFragment extends Fragment {
         if(item.getItemId() == R.id.validate_button) {
             int nextParticipantIndex = participantIndex + 1;
 
-            if(scanReceiptViewModel.getTheReceipt().getParticipants().size() > nextParticipantIndex) {
+            if(scanReceiptViewModel.getReceipt().getParticipants().size() > nextParticipantIndex) {
                 ItemDivisionFragmentDirections.ActionItemDivisionSelf action1 =  ItemDivisionFragmentDirections.actionItemDivisionSelf();
                 action1.setParticipantIndex(nextParticipantIndex);
                 Navigation.findNavController(getView()).navigate(action1);
@@ -97,7 +93,7 @@ public class ItemDivisionFragment extends Fragment {
     }
 
     private void configureRecyclerView() {
-        itemDivisionAdapter = new ItemDivisionAdapter(scanReceiptViewModel.getTheReceipt(), getContext(), scanReceiptViewModel.getTheReceipt().getParticipants().get(this.participantIndex));
+        itemDivisionAdapter = new ItemDivisionAdapter(scanReceiptViewModel.getReceipt(), getContext(), scanReceiptViewModel.getReceipt().getParticipants().get(this.participantIndex));
         itemRecyclerView.setAdapter(itemDivisionAdapter);
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="currencies_array">
+    <string-array name="currency_array">
         <item>CAD</item>
         <item>EUR</item>
         <item>GBP</item>
