@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import com.example.receiptas.MainViewModel;
 import com.example.receiptas.R;
@@ -112,7 +114,6 @@ public class FinalizationFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.validate_button) {
             this.onValidateReceipt.onClick(getView());
-            //TODO naviguer history + clean scanreceipt
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -125,6 +126,12 @@ public class FinalizationFragment extends Fragment {
             ArrayList<Receipt> receipts = new ArrayList<>(mainViewModel.getReceipts().getValue());
             receipts.add(scanReceiptViewModel.getReceipt());
             mainViewModel.getReceipts().setValue(receipts);
+
+            NavDirections action = FinalizationFragmentDirections.showNewReceiptDetails(
+                receipts.size() - 1,
+                receipts.get(receipts.size() - 1).getName()
+            );
+            Navigation.findNavController(getView()).navigate(action);
         }
     };
 

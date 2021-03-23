@@ -113,6 +113,12 @@
         android:label="Finalization"
         tools:layout="@layout/fragment_finalization">
 
+        <action
+            android:id="@+id/show_new_receipt_details"
+            app:destination="@id/receiptDetailFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/nav_history"
+            app:popUpToInclusive="false"/>
     </fragment>
 
 </navigation>
