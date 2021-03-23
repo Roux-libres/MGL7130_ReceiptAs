@@ -81,6 +81,16 @@ public class Receipt {
         this.participants.add(new Participant(name, false));
     }
 
+    public void removeParticipant(Participant participant){
+        if(participants.contains(participant)) {
+            for(Item item: items) {
+                if(item.getParticipants().contains(participant))
+                    item.getParticipants().remove(participant);
+            }
+            participants.remove(participant);
+        }
+    }
+
     public float getUnassignedAmount(){
         float unassignedAmount = 0;
 

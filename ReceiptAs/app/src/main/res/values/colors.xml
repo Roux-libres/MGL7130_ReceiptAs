@@ -17,8 +17,8 @@
 
     <color name="red_participant">#ff0000</color>
     <color name="orange_participant">#ff8000</color>
-    <color name="yellow_participant">#D6D600</color>
-    <color name="green_participant">#00ff00</color>
+    <color name="yellow_participant">#FFFF00</color>
+    <color name="green_participant">#2FFF00</color>
     <color name="blue_participant">#00D9FF</color>
     <color name="indigo_participant">#0022FF</color>
     <color name="purple_participant">#8000ff</color>
@@ -27,12 +27,12 @@
     <array name="colors_participants">
         <item>@color/indigo_participant</item>
         <item>@color/red_participant</item>
-        <item>@color/green_participant</item>
+        <item>@color/blue_participant</item>p
+        <item>@color/purple_participant</item>
+        <item>@color/orange_participant</item>
         <item>@color/pink_participant</item>
         <item>@color/yellow_participant</item>
-        <item>@color/blue_participant</item>
-        <item>@color/orange_participant</item>
-        <item>@color/purple_participant</item>
+        <item>@color/green_participant</item>
     </array>
 
 </resources>

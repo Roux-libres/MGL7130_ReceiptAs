@@ -1,6 +1,8 @@
 package com.example.receiptas.ui.division;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,13 +25,14 @@ public class ItemDivisionAdapter extends RecyclerView.Adapter<ItemDivisionViewHo
 
     private final Receipt receipt;
     private Context context;
-    private TypedArray colors;
+    private Participant currentParticipant;
 
-    public ItemDivisionAdapter(Receipt receipt, Context context) {
+    public ItemDivisionAdapter(Receipt receipt, Context context, Participant currentParticipant) {
         this.receipt = receipt;
         this.context = context;
-        this.colors = context.getResources().obtainTypedArray(R.array.colors_participants);
+        this.currentParticipant = currentParticipant;
     }
+
 
     @NonNull
     @Override
@@ -38,20 +41,46 @@ public class ItemDivisionAdapter extends RecyclerView.Adapter<ItemDivisionViewHo
         return new ItemDivisionViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ItemDivisionViewHolder holder, int position) {
         holder.getItemName().setText(this.receipt.getItems().get(position).getName());
         holder.getItemPrice().setText(Float.toString(this.receipt.getItems().get(position).getPrice()));
-        for(Participant participant: this.receipt.getItems().get(position).getParticipants())
-            holder.getColorParticipantIndicators().get(this.receipt.getParticipants().indexOf(participant)).setVisibility(View.VISIBLE);
-       // holder.bindListener(this.listener);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // holder.itemView.setBackgroundColor(context.getResources().getColor(colors.getResourceId(position)));
-            }
-        });
 
+        ArrayList<Participant> itemParticipants = this.receipt.getItems().get(position).getParticipants();
+        ArrayList<Participant> participants = this.receipt.getParticipants();
+
+        if(this.currentParticipant != null) {
+            Resources res = this.context.getResources();
+            int currentColor = res.getColor(res.obtainTypedArray(R.array.colors_participants).getResourceId(participants.indexOf(currentParticipant), 0));
+
+            for (Participant participant : itemParticipants) {
+                if (participant == this.currentParticipant) {
+                    holder.itemView.setBackgroundColor(currentColor);
+                    holder.itemView.getBackground().setAlpha(50);
+                    holder.setSelected(true);
+                } else {
+                    if (participants.contains(participant))
+                        holder.getColorParticipantIndicators().get(participants.indexOf(participant)).setVisibility(View.VISIBLE);
+                }
+            }
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.setSelected(!holder.isSelected());
+
+                    if(holder.isSelected()) {
+                        itemParticipants.add(currentParticipant);
+                        holder.itemView.setBackgroundColor(currentColor);
+                        holder.itemView.getBackground().setAlpha(50);
+                    } else {
+                        itemParticipants.remove(currentParticipant);
+                        holder.itemView.setBackgroundColor(0);
+                    }
+                }
+            });
+        }
     }
 
     @Override
