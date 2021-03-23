@@ -86,7 +86,7 @@ public class ScanReceiptProcessImageFragment extends Fragment {
 
                 imageBitmap = Bitmap.createScaledBitmap(imageBitmap, newWidth, newHeight, true);
                 image_view.setImageBitmap(imageBitmap);
-                resizableView.compareSize(image_view, imageBitmap);
+                resizableView.compareSize(getContext(), image_view, imageBitmap);
             }
         });
 
