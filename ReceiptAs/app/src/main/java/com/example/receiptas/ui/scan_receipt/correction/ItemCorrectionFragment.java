@@ -83,7 +83,10 @@ public class ItemCorrectionFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.validate_button) {
+        if(item.getItemId() == R.id.validate_button
+            && scanReceiptViewModel.getPrices().getValue().getState().getValue() == DataState.State.SUCCESS
+            && scanReceiptViewModel.getItems().getValue().getState().getValue() == DataState.State.SUCCESS
+        ) {
             ArrayList<String> correctedItems = itemCorrectionViewModel.getCorrectedItems();
             openBlockingDialog(
                 R.string.item_correction_dialog_validate_title,
