@@ -54,6 +54,7 @@ public class ItemDivisionFragment extends Fragment {
 
         TextView information_message = root.findViewById(R.id.information_message);
         String message = getContext().getString(R.string.information_message_division_participant);
+        //TODO HANDLE NO PARTICIPANT
         information_message.setText(String.format("%s%s", scanReceiptViewModel.getReceipt().getParticipants().get(participantIndex).getName(), message));
 
         return root;
