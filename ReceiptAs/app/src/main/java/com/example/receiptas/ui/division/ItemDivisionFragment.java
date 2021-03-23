@@ -1,6 +1,5 @@
 package com.example.receiptas.ui.division;
 
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -18,14 +17,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.receiptas.R;
-import com.example.receiptas.model.domain_model.Receipt;
-import com.example.receiptas.ui.history.HistoryFragmentDirections;
-import com.example.receiptas.ui.history.OnRecyclerViewItemClickListener;
-import com.example.receiptas.ui.history.ReceiptAdapter;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.List;
 
 public class ItemDivisionFragment extends Fragment {
 
@@ -54,7 +47,7 @@ public class ItemDivisionFragment extends Fragment {
 
         TextView information_message = root.findViewById(R.id.information_message);
         String message = getContext().getString(R.string.information_message_division_participant) + " ";
-        information_message.setText(scanReceiptViewModel.getTheReceipt().getParticipants().get(participantIndex).getName() + message);
+        information_message.setText(scanReceiptViewModel.getReceipt().getParticipants().get(participantIndex).getName() + message);
 
         FloatingActionButton validation = root.findViewById(R.id.validate_button);
         validation.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +55,7 @@ public class ItemDivisionFragment extends Fragment {
             public void onClick(View view) {
                 int nextParticipantIndex = participantIndex + 1;
 
-                if(scanReceiptViewModel.getTheReceipt().getParticipants().size() > nextParticipantIndex) {
+                if(scanReceiptViewModel.getReceipt().getParticipants().size() > nextParticipantIndex) {
                     ItemDivisionFragmentDirections.ActionItemDivisionSelf action =  ItemDivisionFragmentDirections.actionItemDivisionSelf();
                     action.setParticipantIndex(nextParticipantIndex);
                     Navigation.findNavController(view).navigate(action);
@@ -89,7 +82,7 @@ public class ItemDivisionFragment extends Fragment {
     }
 
     private void configureRecyclerView() {
-        itemDivisionAdapter = new ItemDivisionAdapter(scanReceiptViewModel.getTheReceipt(), getContext());
+        itemDivisionAdapter = new ItemDivisionAdapter(scanReceiptViewModel.getReceipt(), getContext());
         itemRecyclerView.setAdapter(itemDivisionAdapter);
         itemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }

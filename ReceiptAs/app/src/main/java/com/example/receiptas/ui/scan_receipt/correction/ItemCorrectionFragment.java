@@ -19,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +30,6 @@ import com.example.receiptas.ui.history.OnRecyclerViewItemClickListener;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -91,11 +91,14 @@ public class ItemCorrectionFragment extends Fragment {
                 itemCorrectionViewModel.getPreview(
                     correctedItems,
                     itemCorrectionViewModel.getPrices(),
-                    scanReceiptViewModel.getReceiptCurrency().getValue().charAt(0),
+                    scanReceiptViewModel.getReceipt().getCurrency().getSymbol().charAt(0),
                     this.getContext()
                 ),
                 R.string.item_correction_dialog_validate,
-                null,
+                (dialog, which) -> {
+                    NavDirections action = ItemCorrectionFragmentDirections.actionToAddingParticipantsFragment();
+                    Navigation.findNavController(getView()).navigate(action);
+                },
                 R.string.dialog_negative,
                 null,
                 false);
@@ -229,10 +232,7 @@ public class ItemCorrectionFragment extends Fragment {
                 case SUCCESS:
                     try {
                         //TODO CURRENCY REFACTORING
-                        itemCorrectionViewModel.setPricesFromParsedText(
-                            scanReceiptViewModel.getPrices().getValue().getData(),
-                            Locale.FRANCE
-                        );
+                        itemCorrectionViewModel.setPricesFromParsedText(scanReceiptViewModel.getPrices().getValue().getData());
                     } catch (Exception e) {
                         scanReceiptViewModel.getPrices().getValue().setError(e);
                     }

@@ -1,6 +1,7 @@
 package com.example.receiptas.ui.scan_receipt.correction;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -9,9 +10,7 @@ import com.example.receiptas.R;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -52,12 +51,23 @@ public class ItemCorrectionViewModel extends ViewModel {
     return correctedItems;
     }
 
-    public void setPricesFromParsedText(ArrayList<String> parsedText, Locale locale) throws Exception {
-        NumberFormat formatter = DecimalFormat.getInstance(locale);
-        String regex = "[^0-9" + new DecimalFormatSymbols(locale).getDecimalSeparator() + "]";
+    public void setPricesFromParsedText(ArrayList<String> parsedText) throws Exception {
+        DecimalFormat formatter = new DecimalFormat();
+        DecimalFormatSymbols symbol = DecimalFormatSymbols.getInstance();
+        symbol.setDecimalSeparator('.');
+        formatter.setDecimalFormatSymbols(symbol);
+
+        String separatorFamily = ".,;:!?'\"";
+        String regexSeparatorFamily = "[" + separatorFamily + "]";
+        String regex = "[^0-9" + separatorFamily + "]";
         for(String text : parsedText) {
             text = text.replaceAll(regex, "");
-            this.prices.add(formatter.parse(text).floatValue());
+            text = text.replaceAll(regexSeparatorFamily, String.valueOf(formatter.getDecimalFormatSymbols().getDecimalSeparator()));
+            if(!TextUtils.isEmpty(text)) {
+                this.prices.add(formatter.parse(text).floatValue());
+            } else {
+                //do nothing
+            }
         }
     }
 

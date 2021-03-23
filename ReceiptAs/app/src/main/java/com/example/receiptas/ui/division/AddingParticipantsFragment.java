@@ -1,10 +1,7 @@
 package com.example.receiptas.ui.division;
 
-import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.content.res.ColorStateList;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,9 +12,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.receiptas.R;
@@ -27,7 +22,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class AddingParticipantsFragment extends Fragment {
 
@@ -100,7 +94,7 @@ public class AddingParticipantsFragment extends Fragment {
         ArrayList<String> names = this.namesAdapter.getNames();
         if(names.size() > 0) {
             for(String name: names) {
-                scanReceiptViewModel.getTheReceipt().addParticipantByName(name);
+                scanReceiptViewModel.getReceipt().addParticipantByName(name);
             }
             return true;
         }

@@ -75,7 +75,11 @@
         android:id="@+id/itemCorrectionFragment"
         android:name="com.example.receiptas.ui.scan_receipt.correction.ItemCorrectionFragment"
         android:label="Correction"
-        tools:layout="@layout/fragment_item_correction" />
+        tools:layout="@layout/fragment_item_correction" >
+        <action
+            android:id="@+id/action_to_addingParticipantsFragment"
+            app:destination="@id/addingParticipantsFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/addingParticipantsFragment"
