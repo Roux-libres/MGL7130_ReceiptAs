@@ -74,13 +74,11 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         super.onCreate(savedInstanceState);
         this.setHasOptionsMenu(true);
 
-        /*
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, "New scan receipt picture");
         values.put(MediaStore.Images.Media.DESCRIPTION, "From the Camera");
         imageUri = getActivity().getContentResolver().insert(
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-         */
     }
 
     @Override
