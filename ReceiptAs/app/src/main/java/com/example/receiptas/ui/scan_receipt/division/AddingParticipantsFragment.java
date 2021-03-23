@@ -1,5 +1,6 @@
 package com.example.receiptas.ui.scan_receipt.division;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
