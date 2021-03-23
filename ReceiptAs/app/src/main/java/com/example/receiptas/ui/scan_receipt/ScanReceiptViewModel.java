@@ -38,13 +38,7 @@ public class ScanReceiptViewModel extends ViewModel {
         this.selectedImages.setValue(new ArrayList<String>());
         this.processedImages.setValue(new ArrayList<Bitmap>());
         this.mainRepository = mainRepository;
-        //this.theReceipt = new Receipt();
-
-        ArrayList<Item> items = new ArrayList<>();
-        items.add(new Item("vanille", new Float(6.45),  new ArrayList<>()));
-        items.add(new Item("Chocolat", new Float(5.45),  new ArrayList<>()));
-        items.add(new Item("FRAISE", new Float(4.45),  new ArrayList<>()));
-        this.theReceipt = new Receipt("Courses Lidl", null, "CAD", items,  new ArrayList<>());
+        this.theReceipt = new Receipt();
     }
 
     public Receipt getTheReceipt() {
