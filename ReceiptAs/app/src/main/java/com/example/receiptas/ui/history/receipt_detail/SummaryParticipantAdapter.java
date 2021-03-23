@@ -19,12 +19,12 @@ import com.example.receiptas.model.domain_model.Receipt;
 
 import java.util.List;
 
-public class ParticipantAdapter extends ArrayAdapter<Participant> {
+public class SummaryParticipantAdapter extends ArrayAdapter<Participant> {
 
     private Receipt receipt;
     private int[] colors;
 
-    public ParticipantAdapter(@NonNull Context context, int resource, @NonNull Receipt receipt) {
+    public SummaryParticipantAdapter(@NonNull Context context, int resource, @NonNull Receipt receipt) {
         super(context, resource, receipt.getParticipantsPayerFirst());
         this.receipt = receipt;
         this.colors = context.getResources().getIntArray(R.array.colors_participants);

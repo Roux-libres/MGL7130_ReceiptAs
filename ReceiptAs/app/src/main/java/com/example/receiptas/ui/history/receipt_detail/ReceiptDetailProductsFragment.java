@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.receiptas.MainViewModel;
 import com.example.receiptas.R;
-import com.example.receiptas.ui.division.ItemDivisionAdapter;
+import com.example.receiptas.ui.scan_receipt.division.ItemDivisionAdapter;
 
 public class ReceiptDetailProductsFragment extends Fragment {
 

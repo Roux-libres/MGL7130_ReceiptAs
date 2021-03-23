@@ -1,4 +1,4 @@
-package com.example.receiptas.ui.division;
+package com.example.receiptas.ui.scan_receipt.division;
 
 import androidx.lifecycle.ViewModelProvider;
 

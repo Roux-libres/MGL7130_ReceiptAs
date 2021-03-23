@@ -1,24 +1,19 @@
-package com.example.receiptas.ui.division;
+package com.example.receiptas.ui.scan_receipt.division;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
 import com.example.receiptas.R;
 import com.example.receiptas.model.domain_model.Participant;
 import com.example.receiptas.model.domain_model.Receipt;
-import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.ArrayList;
 
