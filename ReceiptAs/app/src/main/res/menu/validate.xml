@@ -5,7 +5,7 @@
     <item
         android:id="@+id/validate_button"
         android:checkable="false"
-        android:icon="@drawable/baseline_done_24"
+        android:icon="@drawable/done_with_circle"
         android:title="validate"
         app:showAsAction="ifRoom" />
 </menu>

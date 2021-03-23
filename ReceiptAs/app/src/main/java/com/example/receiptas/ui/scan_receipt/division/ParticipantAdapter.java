@@ -1,35 +1,35 @@
-package com.example.receiptas.ui.division;
+package com.example.receiptas.ui.scan_receipt.division;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
 import com.example.receiptas.R;
-import com.google.android.material.textfield.TextInputEditText;
+import com.example.receiptas.model.domain_model.Participant;
+import com.example.receiptas.model.domain_model.Receipt;
 
 import java.util.ArrayList;
 
-public class NamesAdapter extends BaseAdapter {
+public class ParticipantAdapter extends BaseAdapter {
 
     private Context mContext;
-    private ArrayList<String> names;
+    private Receipt receipt;
+    private ArrayList<Participant> participants;
     private ArrayList<Integer> colorsParticipants;
 
 
-    public NamesAdapter(Context mContext, ArrayList<String> names) {
+    public ParticipantAdapter(Context mContext, Receipt receipt) {
         this.mContext = mContext;
-        this.names = (names == null) ? new ArrayList<String>(): names;
+        this.receipt = receipt;
+        ArrayList<Participant> receiptParticipants = this.receipt.getParticipants();
+        this.participants = (receiptParticipants == null) ? new ArrayList<Participant>(): receiptParticipants;
         this.colorsParticipants = new ArrayList<Integer>();
 
         Resources res = mContext.getResources();
@@ -42,21 +42,9 @@ public class NamesAdapter extends BaseAdapter {
         }
     }
 
-    public ArrayList<String> getNames() {
-        return names;
-    }
-
-    public boolean addName(String name) {
-        if (this.names.size() < 8) {
-            this.names.add(name);
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public int getCount() {
-        return names.size();
+        return this.participants.size();
     }
 
     @Override
@@ -76,9 +64,8 @@ public class NamesAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.division_name_item, null);
         }
 
-
         TextView nameItemText = (TextView) convertView.findViewById(R.id.name_item_text);
-        nameItemText.setText(this.names.get(position));
+        nameItemText.setText(this.participants.get(position).getName());
 
         FrameLayout nameItemColor = (FrameLayout) convertView.findViewById(R.id.name_item_color);
         nameItemColor.setBackgroundTintList(ColorStateList.valueOf(colorsParticipants.get(position)));
@@ -87,7 +74,7 @@ public class NamesAdapter extends BaseAdapter {
         removeNameIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                names.remove(position);
+                receipt.removeParticipant(participants.get(position));
                 notifyDataSetChanged();
             }
         });

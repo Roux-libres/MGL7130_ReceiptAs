@@ -15,6 +15,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/item_text_placeholder"
+        android:textSize="18sp"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/item_price"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,6 +30,9 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/item_text_placeholder"
+        android:textSize="18sp"
+        android:textAlignment="textEnd"
+        android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,10 +66,28 @@
             android:layout_margin="3dp"/>
 
         <View
-            android:id="@+id/green_indicator"
+            android:id="@+id/blue_indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/green_participant"
+            android:background="@color/blue_participant"
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:layout_margin="3dp"/>
+
+        <View
+            android:id="@+id/purple_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/purple_participant"
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:layout_margin="3dp"/>
+
+        <View
+            android:id="@+id/orange_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/orange_participant"
             android:visibility="invisible"
             android:layout_weight="1"
             android:layout_margin="3dp"/>
@@ -87,31 +111,14 @@
             android:layout_margin="3dp"/>
 
         <View
-            android:id="@+id/blue_indicator"
+            android:id="@+id/green_indicator"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blue_participant"
+            android:background="@color/green_participant"
             android:visibility="invisible"
             android:layout_weight="1"
             android:layout_margin="3dp"/>
 
-        <View
-            android:id="@+id/orange_indicator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/orange_participant"
-            android:visibility="invisible"
-            android:layout_weight="1"
-            android:layout_margin="3dp"/>
-
-        <View
-            android:id="@+id/purple_indicator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/purple_participant"
-            android:visibility="invisible"
-            android:layout_weight="1"
-            android:layout_margin="3dp"/>
 
     </LinearLayout>
 

@@ -89,14 +89,6 @@ public class ScanReceiptViewModel extends ViewModel {
         this.selectedImages.getValue().clear();
     }
 
-    public void addProcessedImage(Bitmap imageBitmap){
-        this.processedImages.getValue().add(imageBitmap);
-    }
-
-    public void removeProcessedImage(int index){
-        this.processedImages.getValue().remove(index);
-    }
-
     public Receipt getReceipt() {
         return receipt;
     }
@@ -119,6 +111,10 @@ public class ScanReceiptViewModel extends ViewModel {
 
     public MutableLiveData<Float> getReceiptSpecifiedPrice(){
         return this.receiptSpecifiedPrice;
+    }
+
+    public void removeProcessedImage(int index){
+        this.processedImages.getValue().remove(index);
     }
 
     public MutableLiveData<ArrayList<Bitmap>> getProcessedImages(){

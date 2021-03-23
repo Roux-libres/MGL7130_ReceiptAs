@@ -80,13 +80,25 @@ public class Receipt {
         }
 
         participants.remove(payer);
-        participants.add(0, payer);
+        //TODO refactor
+        if(payer != null)
+            participants.add(0, payer);
 
         return participants;
     }
 
     public void addParticipantByName(String name) {
         this.participants.add(new Participant(name, false));
+    }
+
+    public void removeParticipant(Participant participant){
+        if(participants.contains(participant)) {
+            for(Item item: items) {
+                if(item.getParticipants().contains(participant))
+                    item.getParticipants().remove(participant);
+            }
+            participants.remove(participant);
+        }
     }
 
     public float getUnassignedAmount(){

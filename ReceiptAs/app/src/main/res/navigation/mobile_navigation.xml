@@ -58,6 +58,9 @@
             android:name="numberOfImages"
             app:argType="integer"
             android:defaultValue="1" />
+        <argument
+            android:name="processed_images"
+            app:argType="java.util.ArrayList" />
         <action
             android:id="@+id/action_nav_scan_receipt_process_image_self"
             app:destination="@id/nav_scan_receipt_process_image" />
@@ -83,8 +86,8 @@
 
     <fragment
         android:id="@+id/addingParticipantsFragment"
-        android:name="com.example.receiptas.ui.division.AddingParticipantsFragment"
-        android:label="Adding Participant"
+        android:name="com.example.receiptas.ui.scan_receipt.division.AddingParticipantsFragment"
+        android:label="Participants"
         tools:layout="@layout/fragment_division_adding_participants" >
         <action
             android:id="@+id/action_addingParticipantsFragment_to_itemDivision"
@@ -93,8 +96,8 @@
 
     <fragment
         android:id="@+id/itemDivision"
-        android:name="com.example.receiptas.ui.division.ItemDivisionFragment"
-        android:label="Division Participants"
+        android:name="com.example.receiptas.ui.scan_receipt.division.ItemDivisionFragment"
+        android:label="Division"
         tools:layout="@layout/fragment_item_divison">
     <argument
         android:name="participantIndex"
@@ -103,6 +106,16 @@
         <action
             android:id="@+id/action_itemDivision_self"
             app:destination="@id/itemDivision" />
+        <action
+            android:id="@+id/action_itemDivision_to_finalizationFragment"
+            app:destination="@id/finalizationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/finalizationFragment"
+        android:name="com.example.receiptas.ui.scan_receipt.division.FinalizationFragment"
+        android:label="Finalization"
+        tools:layout="@layout/fragment_finalization">
+
     </fragment>
 
 </navigation>
