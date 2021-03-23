@@ -43,10 +43,11 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         if(this.localDataSet.get(position).isDeleted()) {
-                holder.getItemLabel().setTextColor(context.getResources().getColor(R.color.red));
-                holder.getItemLabel().setPaintFlags(holder.getItemLabel().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            holder.getItemLabel().setTextColor(context.getResources().getColor(R.color.red));
+            holder.getItemLabel().setPaintFlags(holder.getItemLabel().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else if(this.localDataSet.get(position).getCombinedItem() != null){
             holder.getItemLabel().setTextColor(context.getResources().getColor(R.color.purple_500));
+            holder.getItemLabel().setPaintFlags(holder.getItemLabel().getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
             holder.getItemLabel().setTextColor(context.getResources().getColor(R.color.black));
             holder.getItemLabel().setPaintFlags(holder.getItemLabel().getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
