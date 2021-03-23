@@ -7,20 +7,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.receiptas.MainViewModel;
 import com.example.receiptas.R;
 import com.example.receiptas.model.domain_model.Participant;
 import com.example.receiptas.model.domain_model.Receipt;
 import com.example.receiptas.ui.history.receipt_detail.SummaryParticipantAdapter;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
+
+import java.util.ArrayList;
 
 
 public class FinalizationFragment extends Fragment {
@@ -28,6 +31,8 @@ public class FinalizationFragment extends Fragment {
     private ListView participantList;
     private TextView receipt_title, receipt_total, receipt_remaining;
     private ScanReceiptViewModel scanReceiptViewModel;
+    private MainViewModel mainViewModel;
+    private View.OnClickListener onValidateReceipt;
 
     public static FinalizationFragment newInstance(String param1, String param2) {
         return new FinalizationFragment();
@@ -45,6 +50,13 @@ public class FinalizationFragment extends Fragment {
         super.onCreate(savedInstanceState);
         this.setHasOptionsMenu(true);
         scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
+        mainViewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
+
+        if(this.scanReceiptViewModel.getReceipt().getPayer() != null) {
+            onValidateReceipt = onValidateReceiptWithPayer;
+        } else {
+            onValidateReceipt = onValidateReceiptWithoutPayer;
+        }
     }
 
     @Override
@@ -77,20 +89,19 @@ public class FinalizationFragment extends Fragment {
 
         SummaryParticipantAdapter adapter = new SummaryParticipantAdapter(this.getContext(), R.layout.receipt_summary_participant, receipt);
 
-        this.participantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Participant participant = receipt.getParticipantsPayerFirst().get(position);
-                Participant payer = receipt.getPayer();
+        this.participantList.setOnItemClickListener((parent, view1, position, id) -> {
+            Participant participant = receipt.getParticipantsPayerFirst().get(position);
+            Participant payer = receipt.getPayer();
 
-                if(payer == participant){
-                    participant.setPayer(false);
-                } else if (payer == null){
-                    participant.setPayer(true);
-                }
-
-                participantList.setAdapter(new SummaryParticipantAdapter(getContext(), R.layout.receipt_summary_participant, receipt));
+            if(payer == participant){
+                participant.setPayer(false);
+                this.onValidateReceipt = onValidateReceiptWithoutPayer;
+            } else if (payer == null){
+                participant.setPayer(true);
+                this.onValidateReceipt = onValidateReceiptWithPayer;
             }
+
+            participantList.setAdapter(new SummaryParticipantAdapter(getContext(), R.layout.receipt_summary_participant, receipt));
         });
 
         this.participantList.setAdapter(adapter);
@@ -100,9 +111,32 @@ public class FinalizationFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.validate_button) {
+            this.onValidateReceipt.onClick(getView());
+            //TODO écrire dans le fichier json
+            //TODO naviguer history + clean scanreceipt
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
     }
+
+    private final View.OnClickListener onValidateReceiptWithPayer = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            ArrayList<Receipt> receipts = new ArrayList<>(mainViewModel.getReceipts().getValue());
+            receipts.add(scanReceiptViewModel.getReceipt());
+            mainViewModel.getReceipts().setValue(receipts);
+        }
+    };
+
+    private final View.OnClickListener onValidateReceiptWithoutPayer = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AlertDialog.Builder blockingDialog = new AlertDialog.Builder(getContext());
+            blockingDialog.setTitle(R.string.scan_receipt_missing_payer_title);
+            blockingDialog.setMessage(R.string.scan_receipt_missing_payer_description);
+            blockingDialog.setPositiveButton(R.string.dialog_positive, null);
+            blockingDialog.create().show();
+        }
+    };
 }

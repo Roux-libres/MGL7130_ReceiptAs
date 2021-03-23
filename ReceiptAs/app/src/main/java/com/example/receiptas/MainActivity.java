@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -18,30 +17,29 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.receiptas.model.domain_model.Receipt;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
+    private MainViewModel mainViewModel;
     private AppBarConfiguration mAppBarConfiguration;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
@@ -54,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         setContentView(R.layout.activity_drawer);
 
         this.toolbar = findViewById(R.id.toolbar);
@@ -93,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        this.writeFakeJson();
+        //this.writeFakeJson();
+        this.mainViewModel.getReceipts().observe(this, onReceiptsChange);
     }
 
     @Override
@@ -261,4 +261,11 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(ioException);
         }
     }
+
+    private final Observer<ArrayList<Receipt>> onReceiptsChange = new Observer<ArrayList<Receipt>>() {
+        @Override
+        public void onChanged(ArrayList<Receipt> receipts) {
+            mainViewModel.synchroniseModels(getApplicationContext());
+        }
+    };
 }

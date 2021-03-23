@@ -82,7 +82,7 @@ public class DataMapper implements EntityMapper<ReceiptDataEntity, Receipt> {
                 itemDataEntities,
                 participantDataEntities);
 
-        return null;
+        return receiptDataEntity;
     }
 
     public ArrayList<Receipt> mapFromEntities(ArrayList<ReceiptDataEntity> entities) {

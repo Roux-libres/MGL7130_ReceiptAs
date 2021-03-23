@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -85,13 +86,22 @@ public class AddingParticipantsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.validate_button) {
-            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-            View view = getActivity().getCurrentFocus();
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            //TODO REFACTO TOUT CA LA
+            if(!scanReceiptViewModel.getReceipt().getParticipants().isEmpty()) {
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                View view = getActivity().getCurrentFocus();
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
-            AddingParticipantsFragmentDirections.ActionAddingParticipantsFragmentToItemDivision action =
+                AddingParticipantsFragmentDirections.ActionAddingParticipantsFragmentToItemDivision action =
                     AddingParticipantsFragmentDirections.actionAddingParticipantsFragmentToItemDivision();
-            Navigation.findNavController(getView()).navigate(action);
+                Navigation.findNavController(getView()).navigate(action);
+            } else {
+                AlertDialog.Builder blockingDialog = new AlertDialog.Builder(getContext());
+                blockingDialog.setTitle("No participant");
+                blockingDialog.setMessage("Please add at least one participant");
+                blockingDialog.setPositiveButton(R.string.dialog_positive, null);
+                blockingDialog.create().show();
+            }
 
             return true;
         } else {

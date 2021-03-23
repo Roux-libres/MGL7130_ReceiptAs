@@ -2,7 +2,6 @@ package com.example.receiptas.model.repository;
 
 import com.example.receiptas.model.data_model.DataMapper;
 import com.example.receiptas.model.data_model.ReceiptDao;
-import com.example.receiptas.model.data_model.ReceiptDataEntity;
 import com.example.receiptas.model.domain_model.Receipt;
 import com.example.receiptas.model.service.OCRService;
 import com.example.receiptas.model.util.DataState;
@@ -13,11 +12,7 @@ import java.util.Arrays;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainRepository {
     private static final String API_KEY = "a4e5461ff488957";
@@ -78,12 +73,12 @@ public class MainRepository {
     }
 
     public ArrayList<Receipt> getReceipts(String pathFilesDirectory) {
-        ArrayList<Receipt> receipts;
+        ArrayList<Receipt> receipts = new ArrayList<>();
 
         try {
             receipts = this.dataMapper.mapFromEntities(this.receiptDao.getAll(pathFilesDirectory));
         } catch (Exception exception) {
-            receipts = new ArrayList<>();
+            exception.printStackTrace();
         }
 
         return receipts;

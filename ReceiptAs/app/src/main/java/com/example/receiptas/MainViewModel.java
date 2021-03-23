@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
+import dagger.hilt.android.qualifiers.ApplicationContext;
 
 @HiltViewModel
 public class MainViewModel extends ViewModel {
@@ -21,16 +22,21 @@ public class MainViewModel extends ViewModel {
     private MainRepository mainRepository;
 
     @Inject
-    public MainViewModel(MainRepository mainRepository) {
-        receipts = new MutableLiveData<>();
+    public MainViewModel(MainRepository mainRepository, @ApplicationContext Context context) {
+        this.receipts = new MutableLiveData<>();
         this.mainRepository = mainRepository;
+        this.setReceipts(context);
     }
 
-    public void setContext(Context context){
+    private void setReceipts(Context context){
         this.receipts.setValue(this.mainRepository.getReceipts(context.getFilesDir().toString()));
     }
 
     public MutableLiveData<ArrayList<Receipt>> getReceipts() {
         return this.receipts;
+    }
+
+    public void synchroniseModels(Context context) {
+        this.mainRepository.saveReceipts(context.getFilesDir().toString(), this.receipts.getValue());
     }
 }
