@@ -1,15 +1,6 @@
 package com.example.receiptas.ui.scan_receipt.division;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.receiptas.R;
 import com.example.receiptas.model.domain_model.Receipt;
@@ -69,7 +65,7 @@ public class FinalizationFragment extends Fragment {
         receipt_title = view.findViewById(R.id.receipt_title);
         receipt_remaining = view.findViewById(R.id.receipt_remaining);
 
-        Receipt receipt = this.scanReceiptViewModel.getTheReceipt();
+        Receipt receipt = this.scanReceiptViewModel.getReceipt();
 
         receipt_total.setText(getString(R.string.receipt_total, receipt.getTotalAmount(), receipt.getCurrency()));
         receipt_title.setText(receipt.getName());
