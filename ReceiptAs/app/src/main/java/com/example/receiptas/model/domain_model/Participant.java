@@ -18,5 +18,8 @@ public class Participant {
     public boolean isPayer() {
         return payer;
     }
-    
+
+    public void setPayer(boolean payer) {
+        this.payer = payer;
+    }
 }
