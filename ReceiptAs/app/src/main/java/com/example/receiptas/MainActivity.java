@@ -164,7 +164,9 @@ public class MainActivity extends AppCompatActivity {
     public void hideKeyboard(){
         InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         View view = getCurrentFocus();
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        if(view != null){
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     public boolean isTablet(){

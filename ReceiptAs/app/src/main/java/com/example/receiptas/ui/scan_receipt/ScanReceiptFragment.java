@@ -132,6 +132,8 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        hideKeyboard();
+
         if(item.getItemId() == R.id.validate_button) {
             if(this.saveInfos()) {
                 NavDirections goToItemCorrection =
@@ -141,8 +143,6 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                 this.openBlockingDialog();
             }
 
-            hideKeyboard();
-
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -151,7 +151,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
-        hideKeyboard();
+        this.hideKeyboard();
         switch (view.getId()) {
             case R.id.button_add_image:
                 this.showGalleryOverlay();
