@@ -106,9 +106,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if(hasFocus){
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                    View view = getActivity().getCurrentFocus();
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    ((MainActivity) getActivity()).hideKeyboard();
                 }
             }
         });
@@ -142,6 +140,9 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
             } else {
                 this.openBlockingDialog();
             }
+
+            hideKeyboard();
+
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -150,6 +151,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View view) {
+        hideKeyboard();
         switch (view.getId()) {
             case R.id.button_add_image:
                 this.showGalleryOverlay();
@@ -318,5 +320,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         blockingDialog.create().show();
     }
 
-
+    private void hideKeyboard(){
+        ((MainActivity) getActivity()).hideKeyboard();
+    }
 }

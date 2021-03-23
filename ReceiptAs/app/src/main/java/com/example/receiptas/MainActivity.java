@@ -1,12 +1,15 @@
 package com.example.receiptas;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -156,6 +159,12 @@ public class MainActivity extends AppCompatActivity {
                         .show();
             }
         }
+    }
+
+    public void hideKeyboard(){
+        InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+        View view = getCurrentFocus();
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     public boolean isTablet(){
