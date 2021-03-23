@@ -4,16 +4,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.receiptas.MainActivity;
 import com.example.receiptas.R;
@@ -21,6 +24,7 @@ import com.example.receiptas.ui.scan_receipt.resizableview.ResizableView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class ScanReceiptProcessImageFragment extends Fragment {
@@ -33,10 +37,12 @@ public class ScanReceiptProcessImageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ((MainActivity) getActivity()).lockDrawer();
+        ((MainActivity) getActivity()).unlockDrawer();
+        ((MainActivity) getActivity()).lockDrawerClosed();
         View root = inflater.inflate(R.layout.fragment_scan_receipt_process_image, container, false);
         this.scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
 
+        ArrayList<Bitmap> processedImages = (ArrayList<Bitmap>) getArguments().get("processed_images");
         int numberOfImages = getArguments().getInt("numberOfImages");
         TextView progressionTextView = root.findViewById(R.id.text_progression);
         if(numberOfImages > 1){
@@ -46,12 +52,12 @@ public class ScanReceiptProcessImageFragment extends Fragment {
             progressionTextView.setVisibility(View.INVISIBLE);
         }
 
-        this.isCameraCapture = (this.scanReceiptViewModel.getCameraCaptureBitmap() != null);
+        this.isCameraCapture = (this.scanReceiptViewModel.getCameraCaptureBitmap().getValue() != null);
 
         if(this.isCameraCapture) {
-            this.imageBitmap = this.scanReceiptViewModel.getCameraCaptureBitmap();
+            this.imageBitmap = this.scanReceiptViewModel.getCameraCaptureBitmap().getValue();
         } else {
-            String image_path = this.scanReceiptViewModel.getSelectedImages().get(0);
+            String image_path = this.scanReceiptViewModel.getSelectedImages().getValue().get(0);
             File imageFile = new File(image_path);
 
             if(!imageFile.exists()){
@@ -85,32 +91,40 @@ public class ScanReceiptProcessImageFragment extends Fragment {
         this.validation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                scanReceiptViewModel.addProcessedImage(shapeBitmap(imageBitmap, resizableView));
+                processedImages.add(shapeBitmap(imageBitmap, resizableView));
 
-                ((MainActivity) getActivity()).unlockDrawer();
+                if(((MainActivity) getActivity()).isTablet()){
+                    ((MainActivity) getActivity()).lockDrawerOpen();
+                } else {
+                    ((MainActivity) getActivity()).unlockDrawer();
+                }
 
-                if(scanReceiptViewModel.getNumberOfProcessedImages() % 2 == 1){
+                if(processedImages.size() % 2 == 1){
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageSelf action =
                             ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageSelf(
-                                    getString(R.string.scan_receipt_process_image_product_price));
+                                    getString(R.string.scan_receipt_process_image_product_price),
+                                    processedImages);
                     action.setNumberOfImages(numberOfImages);
                     Navigation.findNavController(view).navigate(action);
                 } else if(isCameraCapture){
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageToNavScanReceipt action =
                             ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageToNavScanReceipt();
-                    scanReceiptViewModel.setCameraCaptureBitmap(null);
+                    scanReceiptViewModel.getCameraCaptureBitmap().setValue(null);
+                    scanReceiptViewModel.getProcessedImages().getValue().addAll(processedImages);
                     Navigation.findNavController(view).navigate(action);
                 } else if(scanReceiptViewModel.getNumberOfSelectedImages() == 1){
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageToNavScanReceipt action =
                             ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageToNavScanReceipt();
-                    scanReceiptViewModel.getSelectedImages().remove(0);
+                    scanReceiptViewModel.getSelectedImages().getValue().remove(0);
+                    scanReceiptViewModel.getProcessedImages().getValue().addAll(processedImages);
                     Navigation.findNavController(view).navigate(action);
                 } else {
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageSelf action =
                             ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageSelf(
-                                    getString(R.string.scan_receipt_process_image_product_name));
+                                    getString(R.string.scan_receipt_process_image_product_name),
+                                    processedImages);
                     action.setNumberOfImages(numberOfImages);
-                    scanReceiptViewModel.getSelectedImages().remove(0);
+                    scanReceiptViewModel.getSelectedImages().getValue().remove(0);
                     Navigation.findNavController(view).navigate(action);
                 }
             }

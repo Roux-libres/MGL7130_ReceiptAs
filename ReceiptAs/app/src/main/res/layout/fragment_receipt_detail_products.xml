@@ -5,10 +5,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.history.receipt_detail.ReceiptDetailProductsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/top_border"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="PRODUCTS" />
+        android:layout_height="2dp"
+        android:background="@color/purple_500"
+        android:orientation="horizontal"
+        android:layout_gravity="top" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/item_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 </FrameLayout>

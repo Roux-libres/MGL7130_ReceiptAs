@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/item_text_placeholder"
+        android:textSize="18sp"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@+id/item_price"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/item_text_placeholder"
+        android:textSize="18sp"
+        android:textAlignment="textEnd"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/colors_views_list"
+        android:layout_width="match_parent"
+        android:layout_height="9dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="13dp"
+        android:layout_marginRight="13dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/item_name">
+
+
+        <View
+            android:id="@+id/indigo_participant"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/indigo_participant"
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:layout_margin="3dp"/>
+
+        <View
+            android:id="@+id/red_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/red_participant"
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:layout_margin="3dp"/>
+
+        <View
+            android:id="@+id/blue_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/blue_participant"
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:layout_margin="3dp"/>
+
+        <View
+            android:id="@+id/purple_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/purple_participant"
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:layout_margin="3dp"/>
+
+        <View
+            android:id="@+id/orange_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/orange_participant"
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:layout_margin="3dp"/>
+
+        <View
+            android:id="@+id/pink_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/pink_participant"
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:layout_margin="3dp"/>
+
+        <View
+            android:id="@+id/yellow_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/yellow_participant"
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:layout_margin="3dp"/>
+
+        <View
+            android:id="@+id/green_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/green_participant"
+            android:visibility="invisible"
+            android:layout_weight="1"
+            android:layout_margin="3dp"/>
+
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

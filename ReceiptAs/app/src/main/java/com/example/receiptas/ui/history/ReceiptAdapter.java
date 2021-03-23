@@ -8,15 +8,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.receiptas.R;
+import com.example.receiptas.model.domain_model.Receipt;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptViewHolder> {
 
-    private final List<String> localDataSet;
+    private final List<Receipt> localDataSet;
     private final OnRecyclerViewItemClickListener listener;
 
-    public ReceiptAdapter (List<String> dataSet, OnRecyclerViewItemClickListener listener) {
+    public ReceiptAdapter (List<Receipt> dataSet, OnRecyclerViewItemClickListener listener) {
         this.localDataSet = dataSet;
         this.listener = listener;
     }
@@ -30,9 +33,10 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ReceiptViewHolder holder, int position) {
-        holder.getLeftTextView().setText(localDataSet.get(position));
-        holder.getRightTextView().setText(localDataSet.get(position));
-        holder.bindListener(localDataSet.get(position), this.listener);
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        holder.getLeftTextView().setText(localDataSet.get(position).getName());
+        holder.getRightTextView().setText(dateFormat.format(localDataSet.get(position).getDate()));
+        holder.bindListener(position, localDataSet.get(position).getName(), this.listener);
     }
 
     @Override

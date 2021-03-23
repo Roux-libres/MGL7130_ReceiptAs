@@ -5,6 +5,7 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_history">
 
+
     <fragment
         android:id="@+id/nav_history"
         android:name="com.example.receiptas.ui.history.HistoryFragment"
@@ -13,6 +14,19 @@
         <action
             android:id="@+id/show_receipt_detail"
             app:destination="@id/receiptDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/receiptDetailFragment"
+        android:name="com.example.receiptas.ui.history.receipt_detail.ReceiptDetailFragment"
+        android:label="{receipt_name}"
+        tools:layout="@layout/fragment_receipt_detail" >
+        <argument
+            android:name="receipt_id"
+            app:argType="integer"/>
+        <argument
+            android:name="receipt_name"
+            app:argType="string"/>
     </fragment>
 
     <fragment
@@ -27,6 +41,9 @@
         <action
             android:id="@+id/action_nav_scan_receipt_to_nav_scan_receipt_process_image"
             app:destination="@id/nav_scan_receipt_process_image" />
+        <action
+            android:id="@+id/action_nav_scan_receipt_to_itemCorrectionFragment"
+            app:destination="@id/itemCorrectionFragment" />
     </fragment>
 
     <fragment
@@ -41,6 +58,9 @@
             android:name="numberOfImages"
             app:argType="integer"
             android:defaultValue="1" />
+        <argument
+            android:name="processed_images"
+            app:argType="java.util.ArrayList" />
         <action
             android:id="@+id/action_nav_scan_receipt_process_image_self"
             app:destination="@id/nav_scan_receipt_process_image" />
@@ -55,17 +75,47 @@
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
-        android:id="@+id/receiptDetailFragment"
-        android:name="com.example.receiptas.ui.history.receipt_detail.ReceiptDetailFragment"
-        android:label="{receipt_name}"
-        tools:layout="@layout/fragment_receipt_detail" >
-        <argument
-            android:name="receipt"
-            app:argType="string"
-            android:defaultValue=" " />
-        <argument
-            android:name="receipt_name"
-            app:argType="string"
-            android:defaultValue="Receipt name" />
+        android:id="@+id/itemCorrectionFragment"
+        android:name="com.example.receiptas.ui.scan_receipt.correction.ItemCorrectionFragment"
+        android:label="Correction"
+        tools:layout="@layout/fragment_item_correction" >
+        <action
+            android:id="@+id/action_to_addingParticipantsFragment"
+            app:destination="@id/addingParticipantsFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/addingParticipantsFragment"
+        android:name="com.example.receiptas.ui.scan_receipt.division.AddingParticipantsFragment"
+        android:label="Participants"
+        tools:layout="@layout/fragment_division_adding_participants" >
+        <action
+            android:id="@+id/action_addingParticipantsFragment_to_itemDivision"
+            app:destination="@id/itemDivision" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/itemDivision"
+        android:name="com.example.receiptas.ui.scan_receipt.division.ItemDivisionFragment"
+        android:label="Division"
+        tools:layout="@layout/fragment_item_divison">
+    <argument
+        android:name="participantIndex"
+        app:argType="integer"
+        android:defaultValue="0" />
+        <action
+            android:id="@+id/action_itemDivision_self"
+            app:destination="@id/itemDivision" />
+        <action
+            android:id="@+id/action_itemDivision_to_finalizationFragment"
+            app:destination="@id/finalizationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/finalizationFragment"
+        android:name="com.example.receiptas.ui.scan_receipt.division.FinalizationFragment"
+        android:label="Finalization"
+        tools:layout="@layout/fragment_finalization">
+
+    </fragment>
+
 </navigation>
