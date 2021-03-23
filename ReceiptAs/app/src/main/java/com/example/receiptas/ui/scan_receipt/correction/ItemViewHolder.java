@@ -27,7 +27,14 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
         return this.itemMenu;
     }
 
-    public void bindListener(final int id, final OnRecyclerViewItemClickListener<View> listener) {
+    public void bindOptionListener(final int id, final OnRecyclerViewItemClickListener<View> listener) {
         itemMenu.setOnClickListener(view -> listener.onItemClick(id, view));
+    }
+
+    public void bindItemListener(
+        final int id, ItemCorrectionViewModel.CorrectableItem item,
+        final OnRecyclerViewItemClickListener<ItemCorrectionViewModel.CorrectableItem> listener
+    ) {
+        this.itemLabel.setOnClickListener(view -> listener.onItemClick(id, item));
     }
 }

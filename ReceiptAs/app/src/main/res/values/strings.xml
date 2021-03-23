@@ -55,7 +55,7 @@
     <string name="unassigned_total">Total unassigned objects: %1$.2f %2$.3S</string>
 
     <string name="information_message_adding_participants">Enter the names of different participants. \n (8 participants max)</string>
-    <string name="information_message_item_correction">Select the lines to delete or combine</string>
+    <string name="information_message_item_correction">Select the lines to delete/undelete or use option menu to combine/detach</string>
     <string name="information_message_division_participant">, select your items.</string>
     <string name="information_message_choose_payer">Select the person who paid.</string>
     <string name="foo">element</string>
