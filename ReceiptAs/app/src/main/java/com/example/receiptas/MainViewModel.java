@@ -25,14 +25,18 @@ public class MainViewModel extends ViewModel {
     public MainViewModel(MainRepository mainRepository, @ApplicationContext Context context) {
         this.receipts = new MutableLiveData<>();
         this.mainRepository = mainRepository;
-        this.setContext(context);
+        this.setReceipts(context);
     }
 
-    private void setContext(Context context){
+    private void setReceipts(Context context){
         this.receipts.setValue(this.mainRepository.getReceipts(context.getFilesDir().toString()));
     }
 
     public MutableLiveData<ArrayList<Receipt>> getReceipts() {
         return this.receipts;
+    }
+
+    public void synchroniseModels(Context context) {
+        this.mainRepository.saveReceipts(context.getFilesDir().toString(), this.receipts.getValue());
     }
 }

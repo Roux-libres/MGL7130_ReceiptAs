@@ -23,6 +23,8 @@ import com.example.receiptas.model.domain_model.Receipt;
 import com.example.receiptas.ui.history.receipt_detail.SummaryParticipantAdapter;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
 
+import java.util.ArrayList;
+
 
 public class FinalizationFragment extends Fragment {
 
@@ -49,7 +51,12 @@ public class FinalizationFragment extends Fragment {
         this.setHasOptionsMenu(true);
         scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
         mainViewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
-        onValidateReceipt = onValidateReceiptWithoutPayer;
+
+        if(this.scanReceiptViewModel.getReceipt().getPayer() != null) {
+            onValidateReceipt = onValidateReceiptWithPayer;
+        } else {
+            onValidateReceipt = onValidateReceiptWithoutPayer;
+        }
     }
 
     @Override
@@ -116,7 +123,9 @@ public class FinalizationFragment extends Fragment {
     private final View.OnClickListener onValidateReceiptWithPayer = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            mainViewModel.getReceipts().getValue().add(scanReceiptViewModel.getReceipt());
+            ArrayList<Receipt> receipts = new ArrayList<>(mainViewModel.getReceipts().getValue());
+            receipts.add(scanReceiptViewModel.getReceipt());
+            mainViewModel.getReceipts().setValue(receipts);
         }
     };
 

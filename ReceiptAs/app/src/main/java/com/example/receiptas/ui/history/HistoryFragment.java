@@ -76,7 +76,6 @@ public class HistoryFragment extends Fragment {
     private final Observer<List<Receipt>> receiptListUpdateObserver = new Observer<List<Receipt>>() {
         @Override
         public void onChanged(List<Receipt> receipts) {
-            System.out.println("cc");
             historyRecyclerView.setAdapter(new ReceiptAdapter(receipts, onReceiptClicked));
         }
     };
