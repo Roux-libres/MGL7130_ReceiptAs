@@ -112,7 +112,6 @@ public class FinalizationFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.validate_button) {
             this.onValidateReceipt.onClick(getView());
-            //TODO écrire dans le fichier json
             //TODO naviguer history + clean scanreceipt
             return true;
         } else {
