@@ -56,8 +56,6 @@ public class ScanReceiptProcessImageFragment extends Fragment {
             progressionTextView.setVisibility(View.INVISIBLE);
         }
 
-
-
         this.imageBitmap = (Bitmap) getArguments().get("image_bitmap");
         this.isCameraCapture = (this.imageBitmap != null);
 
