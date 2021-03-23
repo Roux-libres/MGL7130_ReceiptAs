@@ -7,6 +7,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.receiptas.R;
+import com.example.receiptas.model.domain_model.Participant;
 import com.example.receiptas.model.domain_model.Receipt;
 import com.example.receiptas.ui.history.receipt_detail.SummaryParticipantAdapter;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
@@ -72,19 +74,35 @@ public class FinalizationFragment extends Fragment {
         receipt_remaining.setText(getString(R.string.receipt_remaining, receipt.getUnassignedAmount(), receipt.getCurrency()));
 
         this.participantList = view.findViewById(R.id.participant_list);
-        this.participantList.setAdapter(new SummaryParticipantAdapter(this.getContext(), R.layout.receipt_summary_participant, receipt));
+
+        SummaryParticipantAdapter adapter = new SummaryParticipantAdapter(this.getContext(), R.layout.receipt_summary_participant, receipt);
+
+        this.participantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Participant participant = receipt.getParticipantsPayerFirst().get(position);
+                Participant payer = receipt.getPayer();
+
+                if(payer == participant){
+                    participant.setPayer(false);
+                } else if (payer == null){
+                    participant.setPayer(true);
+                }
+
+                participantList.setAdapter(new SummaryParticipantAdapter(getContext(), R.layout.receipt_summary_participant, receipt));
+            }
+        });
+
+        this.participantList.setAdapter(adapter);
     }
 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.validate_button) {
-
             return true;
         } else {
             return super.onOptionsItemSelected(item);
-
         }
     }
-
 }

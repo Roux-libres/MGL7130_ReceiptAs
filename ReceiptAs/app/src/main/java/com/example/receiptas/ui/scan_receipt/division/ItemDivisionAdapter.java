@@ -21,13 +21,18 @@ public class ItemDivisionAdapter extends RecyclerView.Adapter<ItemDivisionViewHo
     private final Receipt receipt;
     private Context context;
     private Participant currentParticipant;
+    private int currentColor;
 
     public ItemDivisionAdapter(Receipt receipt, Context context, Participant currentParticipant) {
         this.receipt = receipt;
         this.context = context;
         this.currentParticipant = currentParticipant;
+        if(currentParticipant != null) {
+            Resources res = this.context.getResources();
+            this.currentColor = res.getColor(res.obtainTypedArray(R.array.colors_participants)
+                    .getResourceId(this.receipt.getParticipants().indexOf(currentParticipant), 0));
+        }
     }
-
 
     @NonNull
     @Override
@@ -45,21 +50,18 @@ public class ItemDivisionAdapter extends RecyclerView.Adapter<ItemDivisionViewHo
         ArrayList<Participant> itemParticipants = this.receipt.getItems().get(position).getParticipants();
         ArrayList<Participant> participants = this.receipt.getParticipants();
 
-        if(this.currentParticipant != null) {
-            Resources res = this.context.getResources();
-            int currentColor = res.getColor(res.obtainTypedArray(R.array.colors_participants).getResourceId(participants.indexOf(currentParticipant), 0));
-
-            for (Participant participant : itemParticipants) {
-                if (participant == this.currentParticipant) {
-                    holder.itemView.setBackgroundColor(currentColor);
-                    holder.itemView.getBackground().setAlpha(50);
-                    holder.setSelected(true);
-                } else {
-                    if (participants.contains(participant))
-                        holder.getColorParticipantIndicators().get(participants.indexOf(participant)).setVisibility(View.VISIBLE);
-                }
+        for (Participant participant : itemParticipants) {
+            if (participant == this.currentParticipant) {
+                holder.itemView.setBackgroundColor(currentColor);
+                holder.itemView.getBackground().setAlpha(50);
+                holder.setSelected(true);
+            } else {
+                if (participants.contains(participant))
+                    holder.getColorParticipantIndicators().get(participants.indexOf(participant)).setVisibility(View.VISIBLE);
             }
+        }
 
+        if(this.currentParticipant != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -10,12 +10,15 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.receiptas.MainViewModel;
 import com.example.receiptas.R;
+import com.example.receiptas.model.domain_model.Participant;
 import com.example.receiptas.model.domain_model.Receipt;
+import com.example.receiptas.ui.history.OnRecyclerViewItemClickListener;
 
 public class ReceiptDetailSummaryFragment extends Fragment {
 
@@ -66,6 +69,8 @@ public class ReceiptDetailSummaryFragment extends Fragment {
         receipt_total.setText(getString(R.string.receipt_total, receipt.getTotalAmount(), receipt.getCurrency()));
         unassigned_total.setText(getString(R.string.unassigned_total, receipt.getUnassignedAmount(), receipt.getCurrency()));
 
-        listView.setAdapter(new SummaryParticipantAdapter(this.getContext(), R.layout.receipt_summary_participant, receipt));
+        SummaryParticipantAdapter adapter = new SummaryParticipantAdapter(this.getContext(), R.layout.receipt_summary_participant, receipt);
+
+        listView.setAdapter(adapter);
     }
 }
