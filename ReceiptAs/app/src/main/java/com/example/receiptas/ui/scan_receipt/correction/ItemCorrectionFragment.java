@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.receiptas.R;
+import com.example.receiptas.model.domain_model.Item;
 import com.example.receiptas.model.util.DataState;
 import com.example.receiptas.ui.history.OnRecyclerViewItemClickListener;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
@@ -83,9 +84,8 @@ public class ItemCorrectionFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.validate_button) {
-            //TODO navigation + consolidation dans shared viewmodel (TheReceipt)
+            //TODO consolidation dans shared viewmodel (TheReceipt)
             ArrayList<String> correctedItems = itemCorrectionViewModel.getCorrectedItems();
-
             openBlockingDialog(
                 R.string.item_correction_dialog_validate_title,
                 itemCorrectionViewModel.getPreview(
@@ -96,6 +96,15 @@ public class ItemCorrectionFragment extends Fragment {
                 ),
                 R.string.item_correction_dialog_validate,
                 (dialog, which) -> {
+                    int referenceSize = Math.max(correctedItems.size(), itemCorrectionViewModel.getPrices().size());
+                    for(int i = 0; i < referenceSize; i++) {
+                        this.scanReceiptViewModel.getReceipt().getItems().add(new Item(
+                            i < correctedItems.size() ? correctedItems.get(i) : "no item",
+                            i < itemCorrectionViewModel.getPrices().size() ? itemCorrectionViewModel.getPrices().get(i) : 0,
+                            new ArrayList<>()
+                        ));
+                    }
+
                     NavDirections action = ItemCorrectionFragmentDirections.actionToAddingParticipantsFragment();
                     Navigation.findNavController(getView()).navigate(action);
                 },
