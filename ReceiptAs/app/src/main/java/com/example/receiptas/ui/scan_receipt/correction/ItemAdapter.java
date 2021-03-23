@@ -11,19 +11,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.receiptas.R;
 import com.example.receiptas.ui.history.OnRecyclerViewItemClickListener;
-import com.example.receiptas.ui.history.ReceiptViewHolder;
 
 import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder>{
 
     private final List<ItemCorrectionViewModel.CorrectableItem> localDataSet;
-    private final OnRecyclerViewItemClickListener<View> listener;
+    private final OnRecyclerViewItemClickListener<View> itemOptionListener;
+    private final OnRecyclerViewItemClickListener<ItemCorrectionViewModel.CorrectableItem> itemClickListener;
     private final Context context;
 
-    public ItemAdapter(List<ItemCorrectionViewModel.CorrectableItem> dataSet, OnRecyclerViewItemClickListener listener, Context context) {
+    public ItemAdapter(
+        List<ItemCorrectionViewModel.CorrectableItem> dataSet,
+        OnRecyclerViewItemClickListener itemClickListener,
+        OnRecyclerViewItemClickListener itemOptionListener,
+        Context context
+    ) {
         this.localDataSet = dataSet;
-        this.listener = listener;
+        this.itemOptionListener = itemOptionListener;
+        this.itemClickListener = itemClickListener;
         this.context = context;
     }
 
@@ -47,7 +53,8 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder>{
         }
 
         holder.getItemLabel().setText(localDataSet.get(position).getLabel());
-        holder.bindListener(position, this.listener);
+        holder.bindOptionListener(position, this.itemOptionListener);
+        holder.bindItemListener(position,localDataSet.get(position), this.itemClickListener);
     }
 
     @Override

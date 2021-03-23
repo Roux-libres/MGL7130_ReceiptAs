@@ -119,7 +119,7 @@ public class ItemCorrectionFragment extends Fragment {
     }
 
     private void configureRecyclerView() {
-        this.itemRecyclerView.setAdapter(new ItemAdapter(new ArrayList<>(), onItemOptionSelected, getContext()));
+        this.itemRecyclerView.setAdapter(new ItemAdapter(new ArrayList<>(), onItemClick, onItemOptionSelected, getContext()));
         this.itemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
@@ -132,14 +132,6 @@ public class ItemCorrectionFragment extends Fragment {
         ItemCorrectionViewModel.CorrectableItem item = itemCorrectionViewModel.getCorrectableItems().getValue().get(itemId);
         popup.setOnMenuItemClickListener(menuItem -> {
             switch(menuItem.getItemId()) {
-                case R.id.deleteItem:
-                    item.setDeleted(true);
-                    itemRecyclerView.getAdapter().notifyItemChanged(itemId);
-                    return true;
-                case R.id.undeleteItem:
-                    item.setDeleted(false);
-                    itemRecyclerView.getAdapter().notifyItemChanged(itemId);
-                    return true;
                 case R.id.combineAbove:
                     combineItemIntoRootItem(itemId-1, itemId);
                     return true;
@@ -163,8 +155,6 @@ public class ItemCorrectionFragment extends Fragment {
 
     private void configurePopupMenuItems(PopupMenu menu, ItemCorrectionViewModel.CorrectableItem item) {
         menu.inflate(R.menu.item_correction_popup);
-        menu.getMenu().findItem(R.id.deleteItem).setVisible(!item.isDeleted());
-        menu.getMenu().findItem(R.id.undeleteItem).setVisible(item.isDeleted());
 
         boolean isCombined = item.getCombinedItem() != null;
         menu.getMenu().findItem(R.id.detachFirst).setVisible(isCombined);
@@ -198,11 +188,16 @@ public class ItemCorrectionFragment extends Fragment {
         showPopup(view, itemId);
     };
 
+    private final OnRecyclerViewItemClickListener<ItemCorrectionViewModel.CorrectableItem> onItemClick  = (itemId, item) -> {
+            item.setDeleted(!item.isDeleted());
+            itemRecyclerView.getAdapter().notifyItemChanged(itemId);
+    };
+
     private final Observer<ArrayList<ItemCorrectionViewModel.CorrectableItem>> correctableItemObserver =
         new Observer<ArrayList<ItemCorrectionViewModel.CorrectableItem>>() {
             @Override
             public void onChanged(ArrayList<ItemCorrectionViewModel.CorrectableItem> correctableItems) {
-                itemRecyclerView.setAdapter(new ItemAdapter(correctableItems, onItemOptionSelected, getContext()));
+                itemRecyclerView.setAdapter(new ItemAdapter(correctableItems, onItemClick, onItemOptionSelected, getContext()));
         }
     };
 
@@ -241,7 +236,6 @@ public class ItemCorrectionFragment extends Fragment {
             switch(dataState) {
                 case SUCCESS:
                     try {
-                        //TODO CURRENCY REFACTORING
                         itemCorrectionViewModel.setPricesFromParsedText(scanReceiptViewModel.getPrices().getValue().getData());
                     } catch (Exception e) {
                         scanReceiptViewModel.getPrices().getValue().setError(e);
