@@ -76,6 +76,7 @@ public class HistoryFragment extends Fragment {
     private final Observer<List<Receipt>> receiptListUpdateObserver = new Observer<List<Receipt>>() {
         @Override
         public void onChanged(List<Receipt> receipts) {
+            //TODO avoid recreating adapter -> notifydatasetchanged
             historyRecyclerView.setAdapter(new ReceiptAdapter(receipts, onReceiptClicked));
         }
     };
