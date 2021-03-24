@@ -77,8 +77,12 @@ public class ItemCorrectionFragment extends Fragment {
 
         this.itemCorrectionViewModel.getCorrectableItems().observe(this.getViewLifecycleOwner(), correctableItemObserver);
         this.scanReceiptViewModel.parseTextFromImages();
+
         this.scanReceiptViewModel.getItems().getValue().getState().observe(this.getViewLifecycleOwner(), itemsObserver);
         this.scanReceiptViewModel.getPrices().getValue().getState().observe(this.getViewLifecycleOwner(), pricesObserver);
+
+        itemsObserver.onChanged(this.scanReceiptViewModel.getItems().getValue().getState().getValue());
+        pricesObserver.onChanged(this.scanReceiptViewModel.getPrices().getValue().getState().getValue());
     }
 
     @Override
@@ -282,7 +286,6 @@ public class ItemCorrectionFragment extends Fragment {
         blockingDialog.create().show();
 
         if (navigateUp) {
-            //TODO RESOLVE CRASH WHEN TIME OUT GO BACK TO PROCESS IMAGE FRAGMENT
             Navigation.findNavController(this.getView()).navigateUp();
         }
     }

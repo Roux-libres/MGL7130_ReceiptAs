@@ -52,6 +52,7 @@ public class ItemDivisionAdapter extends RecyclerView.Adapter<ItemDivisionViewHo
                 .append(this.receipt.getCurrency().getSymbol(Locale.getDefault()))
                 .toString()
         );
+        holder.itemView.setBackgroundColor(0);
 
         ArrayList<Participant> itemParticipants = this.receipt.getItems().get(position).getParticipants();
         ArrayList<Participant> participants = this.receipt.getParticipants();
@@ -60,10 +61,8 @@ public class ItemDivisionAdapter extends RecyclerView.Adapter<ItemDivisionViewHo
             if (participant == this.currentParticipant) {
                 holder.itemView.setBackgroundColor(currentColor);
                 holder.itemView.getBackground().setAlpha(50);
-                holder.setSelected(true);
             } else {
-                if (participants.contains(participant))
-                    holder.getColorParticipantIndicators().get(participants.indexOf(participant)).setVisibility(View.VISIBLE);
+                holder.getColorParticipantIndicators().get(participants.indexOf(participant)).setVisibility(View.VISIBLE);
             }
         }
 
@@ -71,16 +70,13 @@ public class ItemDivisionAdapter extends RecyclerView.Adapter<ItemDivisionViewHo
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    holder.setSelected(!holder.isSelected());
-
-                    if(holder.isSelected()) {
-                        itemParticipants.add(currentParticipant);
-                        holder.itemView.setBackgroundColor(currentColor);
-                        holder.itemView.getBackground().setAlpha(50);
-                    } else {
+                    if(receipt.getItems().get(position).getParticipants().contains(currentParticipant)) {
                         itemParticipants.remove(currentParticipant);
-                        holder.itemView.setBackgroundColor(0);
+                    } else {
+                        itemParticipants.add(currentParticipant);
                     }
+
+                    notifyItemChanged(position);
                 }
             });
         }

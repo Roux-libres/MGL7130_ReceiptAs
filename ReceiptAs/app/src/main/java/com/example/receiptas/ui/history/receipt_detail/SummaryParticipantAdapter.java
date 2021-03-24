@@ -10,14 +10,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 
 import com.example.receiptas.R;
 import com.example.receiptas.model.domain_model.Participant;
 import com.example.receiptas.model.domain_model.Receipt;
-
-import java.util.List;
 
 public class SummaryParticipantAdapter extends ArrayAdapter<Participant> {
 
@@ -59,7 +55,7 @@ public class SummaryParticipantAdapter extends ArrayAdapter<Participant> {
 
         total.setText(getContext().getString(R.string.participant_total,
                 receipt.getParticipantTotal(getItem(position)),
-                this.receipt.getCurrency()));
+                this.receipt.getCurrency().getSymbol()));
 
         return convertView;
     }

@@ -70,21 +70,16 @@ public class Receipt {
     }
 
     public ArrayList<Participant> getParticipantsPayerFirst() {
-        ArrayList<Participant> participants = (ArrayList<Participant>) this.getParticipants().clone();
-        Participant payer = null;
+        ArrayList<Participant> orderedParticipants = (ArrayList<Participant>) this.getParticipants().clone();
 
-        for(Participant participant : participants){
+        for(Participant participant : this.participants){
             if(participant.isPayer()){
-                payer = participant;
+                orderedParticipants.remove(participant);
+                orderedParticipants.add(0, participant);
             }
         }
 
-        participants.remove(payer);
-        //TODO refactor
-        if(payer != null)
-            participants.add(0, payer);
-
-        return participants;
+        return orderedParticipants;
     }
 
     public void addParticipantByName(String name) {
