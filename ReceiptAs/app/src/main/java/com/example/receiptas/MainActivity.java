@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_history, R.id.nav_scan_receipt, R.id.nav_settings)
+                R.id.nav_history, R.id.nav_scan_receipt, R.id.nav_sharing, R.id.nav_settings)
                 .setDrawerLayout(this.drawerLayout)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -98,7 +98,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(this.isTablet() && (this.currentFragmentId == R.id.nav_history || this.currentFragmentId == R.id.nav_scan_receipt || this.currentFragmentId == R.id.nav_settings)){
+        if(this.isTablet() && (this.currentFragmentId == R.id.nav_history || this.currentFragmentId == R.id.nav_scan_receipt
+                || this.currentFragmentId == R.id.nav_settings || this.currentFragmentId == R.id.nav_sharing)){
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         } else {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -189,78 +190,6 @@ public class MainActivity extends AppCompatActivity {
         return toolbar;
     }
 
-    private void writeFakeJson(){
-        String json = "[\n" +
-                "   {\n" +
-                "      \"name\":\"Glaces\",\n" +
-                "      \"date\":\"1616282781804\",\n" +
-                "      \"currency\":\"CAD\",\n" +
-                "      \"participants\":[\n" +
-                "         {\n" +
-                "            \"name\":\"Romain\",\n" +
-                "            \"payer\":false\n" +
-                "         },\n" +
-                "         {\n" +
-                "            \"name\":\"Aurélien\",\n" +
-                "            \"payer\":true\n" +
-                "         },\n" +
-                "         {\n" +
-                "            \"name\":\"Nelson\",\n" +
-                "            \"payer\":false\n" +
-                "         }\n" +
-                "      ],\n" +
-                "      \"items\":[\n" +
-                "         {\n" +
-                "            \"name\":\"Chocolat\",\n" +
-                "            \"price\":12.83,\n" +
-                "            \"participants\":[\n" +
-                "               \"Romain\",\n" +
-                "               \"Nelson\"\n" +
-                "            ]\n" +
-                "         },\n" +
-                "         {\n" +
-                "            \"name\":\"Vanille\",\n" +
-                "            \"price\":7.00,\n" +
-                "            \"participants\":[\n" +
-                "               \"Romain\"\n" +
-                "            ]\n" +
-                "         },\n" +
-                "         {\n" +
-                "            \"name\":\"Fraise\",\n" +
-                "            \"price\":9.99,\n" +
-                "            \"participants\":[\n" +
-                "               \"Romain\",\n" +
-                "               \"Aurélien\",\n" +
-                "               \"Nelson\"\n" +
-                "            ]\n" +
-                "         },\n" +
-                "         {\n" +
-                "            \"name\":\"Banana Marbré\",\n" +
-                "            \"price\":35,\n" +
-                "            \"participants\":[]\n" +
-                "         }\n" +
-                "      ]\n" +
-                "   }\n" +
-                "]";
-        String path = getFilesDir() + "/receipts.json";
-
-        File json_file = new File(path);
-        if(!json_file.exists()){
-            try {
-                json_file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        try {
-            FileWriter fileWriter = new FileWriter(path);
-            fileWriter.write(json);
-            fileWriter.close();
-        } catch (IOException ioException){
-            System.out.println(ioException);
-        }
-    }
 
     private final Observer<ArrayList<Receipt>> onReceiptsChange = new Observer<ArrayList<Receipt>>() {
         @Override

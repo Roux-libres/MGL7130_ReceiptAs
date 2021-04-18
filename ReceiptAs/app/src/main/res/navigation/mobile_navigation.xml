@@ -3,8 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_history">
+    app:startDestination="@+id/nav_scan_receipt">
 
+    <fragment
+        android:id="@+id/nav_sharing"
+        android:name="com.example.receiptas.ui.sharing.SharingFragment"
+        android:label="@string/menu_sharing"
+        tools:layout="@layout/sharing_fragment">
+    </fragment>
 
     <fragment
         android:id="@+id/nav_history"
