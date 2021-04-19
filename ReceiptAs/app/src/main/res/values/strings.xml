@@ -39,7 +39,8 @@
     <string name="validation_button_description">Validate</string>
 
 
-    <string name="menu_sharing">Share receipt</string>
+    <string name="menu_receive">Receive receipt</string>
+    <string name="send_receipt_title">Send receipt</string>
 
     <string name="menu_settings">Settings</string>
 

@@ -14,24 +14,24 @@ import android.view.ViewGroup;
 
 import com.example.receiptas.R;
 
-public class SharingFragment extends Fragment {
+public class SendReceiptFragment extends Fragment {
 
-    private SharingViewModel mViewModel;
+    private SendReceiptViewModel mViewModel;
 
-    public static SharingFragment newInstance() {
-        return new SharingFragment();
+    public static SendReceiptFragment newInstance() {
+        return new SendReceiptFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.sharing_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_send_receipt, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(SharingViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(SendReceiptViewModel.class);
         // TODO: Use the ViewModel
     }
 

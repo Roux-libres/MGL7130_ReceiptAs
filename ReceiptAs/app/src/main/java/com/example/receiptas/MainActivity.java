@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_history, R.id.nav_scan_receipt, R.id.nav_sharing, R.id.nav_settings)
+                R.id.nav_history, R.id.nav_scan_receipt, R.id.nav_receive, R.id.nav_settings)
                 .setDrawerLayout(this.drawerLayout)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if(this.isTablet() && (this.currentFragmentId == R.id.nav_history || this.currentFragmentId == R.id.nav_scan_receipt
-                || this.currentFragmentId == R.id.nav_settings || this.currentFragmentId == R.id.nav_sharing)){
+                || this.currentFragmentId == R.id.nav_settings || this.currentFragmentId == R.id.nav_receive)){
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         } else {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

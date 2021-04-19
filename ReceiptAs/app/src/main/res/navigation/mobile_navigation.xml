@@ -6,10 +6,10 @@
     app:startDestination="@+id/nav_scan_receipt">
 
     <fragment
-        android:id="@+id/nav_sharing"
-        android:name="com.example.receiptas.ui.sharing.SharingFragment"
-        android:label="@string/menu_sharing"
-        tools:layout="@layout/sharing_fragment">
+        android:id="@+id/nav_receive"
+        android:name="com.example.receiptas.ui.sharing.ReceiveReceiptFragment"
+        android:label="@string/menu_receive"
+        tools:layout="@layout/fragment_receive_receipt">
     </fragment>
 
     <fragment
@@ -23,6 +23,14 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_send_receipt"
+        android:name="com.example.receiptas.ui.sharing.SendReceiptFragment"
+        android:label="@string/send_receipt_title"
+        tools:layout="@layout/fragment_send_receipt">
+    </fragment>
+
+
+    <fragment
         android:id="@+id/receiptDetailFragment"
         android:name="com.example.receiptas.ui.history.receipt_detail.ReceiptDetailFragment"
         android:label="{receipt_name}"
@@ -33,6 +41,9 @@
         <argument
             android:name="receipt_name"
             app:argType="string"/>
+        <action
+            android:id="@+id/action_receiptDetailFragment_to_nav_send_receipt"
+            app:destination="@id/nav_send_receipt" />
     </fragment>
 
     <fragment

@@ -1,16 +1,23 @@
 package com.example.receiptas.ui.history.receipt_detail;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.example.receiptas.MainActivity;
@@ -28,6 +35,7 @@ public class ReceiptDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setHasOptionsMenu(true);
         this.tabsNames = getResources().getStringArray(R.array.receipt_detail_tabs_names);
         this.receiptId = getArguments().getInt("receipt_id");
 
@@ -54,6 +62,12 @@ public class ReceiptDetailFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.share, menu);
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -77,6 +91,16 @@ public class ReceiptDetailFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.share_button) {
+            Navigation.findNavController(getView()).navigate(ReceiptDetailFragmentDirections.actionReceiptDetailFragmentToNavSendReceipt());
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     private final TabLayout.OnTabSelectedListener tabSelectedListener = new TabLayout.OnTabSelectedListener() {
