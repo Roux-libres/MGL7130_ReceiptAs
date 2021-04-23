@@ -257,11 +257,11 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                     if(holder.image.getBackground().getConstantState() ==
                             getResources().getDrawable(R.drawable.gallery_border_unselected).getConstantState()){
                         validationSelection.setVisibility(View.VISIBLE);
-                        holder.image.setBackgroundResource(R.drawable.gallery_border_selected);
+                        holder.image.setBackground(getContext().getDrawable(R.drawable.gallery_border_selected));
                         paddingSize = (int) (3 * scale + 0.5f);
                         scanReceiptViewModel.addSelectedImage(path);
                     } else {
-                        holder.image.setBackgroundResource(R.drawable.gallery_border_unselected);
+                        holder.image.setBackground(getContext().getDrawable(R.drawable.gallery_border_unselected));
                         paddingSize = (int) (1 * scale + 0.5f);
                         holder.image.setPadding(paddingSize, paddingSize, paddingSize, paddingSize);
                         scanReceiptViewModel.removeSelectedImage(path);
