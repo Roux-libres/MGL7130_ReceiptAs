@@ -255,7 +255,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                     int paddingSize;
 
                     if(holder.image.getBackground().getConstantState() ==
-                            getResources().getDrawable(R.drawable.gallery_border_unselected).getConstantState()){
+                            getContext().getDrawable(R.drawable.gallery_border_unselected).getConstantState()){
                         validationSelection.setVisibility(View.VISIBLE);
                         holder.image.setBackground(getContext().getDrawable(R.drawable.gallery_border_selected));
                         paddingSize = (int) (3 * scale + 0.5f);

@@ -2,6 +2,7 @@ package com.example.receiptas.ui.scan_receipt.correction;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +50,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder>{
             holder.getItemLabel().setTextColor(context.getResources().getColor(R.color.purple_500));
             holder.getItemLabel().setPaintFlags(holder.getItemLabel().getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
-            holder.getItemLabel().setTextColor(context.getResources().getColor(R.color.black));
+            TypedValue typedValue = new TypedValue();
+            context.getTheme().resolveAttribute(R.attr.colorControlHighlight, typedValue, true);
+            holder.getItemLabel().setTextColor(context.getResources().getColor(typedValue.resourceId));
             holder.getItemLabel().setPaintFlags(holder.getItemLabel().getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
