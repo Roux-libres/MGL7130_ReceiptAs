@@ -6,7 +6,7 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingStart="25dp"
-    android:paddingEnd="25dp">
+    android:paddingEnd="25dp" >
 
     <TextView
         android:id="@+id/itemLabel"
@@ -21,7 +21,7 @@
         android:paddingEnd="20dp"
         android:text="@string/item_text_placeholder"
         android:textAlignment="gravity"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorControlHighlight"
         android:textSize="18sp" />
 
     <Button
@@ -31,5 +31,5 @@
         android:layout_weight="0.1"
         android:background="@android:color/transparent"
         app:icon="@drawable/more_vert_black_24dp"
-        app:iconTint="@color/black" />
+        app:iconTint="?attr/colorControlHighlight" />
 </LinearLayout>

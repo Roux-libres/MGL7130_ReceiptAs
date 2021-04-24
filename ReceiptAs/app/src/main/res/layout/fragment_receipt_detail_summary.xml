@@ -42,7 +42,7 @@
                 android:layout_weight="1"
                 android:text="@string/receipt_total"
                 android:textAlignment="center"
-                android:textColor="@color/black"
+                android:textColor="?attr/colorControlHighlight"
                 android:textSize="18sp" />
         </LinearLayout>
 

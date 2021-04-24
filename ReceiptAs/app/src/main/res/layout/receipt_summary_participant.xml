@@ -35,7 +35,7 @@
         android:paddingEnd="20dp"
         android:text="@string/item_text_placeholder"
         android:textAlignment="textStart"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorControlHighlight"
         android:textSize="18sp" />
 
     <TextView
@@ -47,7 +47,7 @@
         android:maxLines="1"
         android:text="@string/item_text_placeholder"
         android:textAlignment="textEnd"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorControlHighlight"
         android:textSize="18sp"
         android:textStyle="bold" />
 </LinearLayout>

@@ -47,7 +47,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if(position == 0) {
-            Glide.with(context).load(R.drawable.baseline_photo_camera_24).into(holder.image);
+            Glide.with(context).load(context.getDrawable(R.drawable.baseline_photo_camera_24)).into(holder.image);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

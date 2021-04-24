@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.writeFakeJson();
+
         this.mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         setContentView(R.layout.activity_drawer);
 
@@ -92,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        //this.writeFakeJson();
         this.mainViewModel.getReceipts().observe(this, onReceiptsChange);
     }
 
