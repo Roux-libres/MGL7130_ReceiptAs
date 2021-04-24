@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.writeFakeJson();
+        //this.writeFakeJson();
 
         this.mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         setContentView(R.layout.activity_drawer);

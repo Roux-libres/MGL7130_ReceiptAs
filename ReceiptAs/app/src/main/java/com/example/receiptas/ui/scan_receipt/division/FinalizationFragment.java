@@ -127,6 +127,8 @@ public class FinalizationFragment extends Fragment {
             receipts.add(scanReceiptViewModel.getReceipt());
             mainViewModel.getReceipts().setValue(receipts);
 
+            scanReceiptViewModel.removeSavedData();
+
             NavDirections action = FinalizationFragmentDirections.showNewReceiptDetails(
                 receipts.size() - 1,
                 receipts.get(receipts.size() - 1).getName()

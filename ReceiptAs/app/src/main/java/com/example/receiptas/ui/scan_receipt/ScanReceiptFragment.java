@@ -127,10 +127,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         });
 
         this.processedImagesRecyclerView = root.findViewById(R.id.processed_images_recycler_view);
-
-        if(this.scanReceiptViewModel.getNumberOfProcessedImages() > 0){
-            this.loadProcessedImages();
-        }
+        this.loadProcessedImages();
 
         ImageButton buttonLoadImage = root.findViewById(R.id.button_add_image);
         buttonLoadImage.setOnClickListener(this);
@@ -281,36 +278,42 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
     private void loadProcessedImages(){
         this.processedImagesRecyclerView.setHasFixedSize(true);
         this.processedImagesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        this.processedImageAdapter = new ProcessedImageAdapter(getContext(), this.scanReceiptViewModel.getProcessedImages().getValue(), new ProcessedImageAdapter.PhotoListener() {
-            @Override
-            public void onPhotoClick(GalleryAdapter.ViewHolder holder, Bitmap imageBitmap) {
-                new MaterialAlertDialogBuilder(getContext())
-                        .setTitle(getString(R.string.scan_receipt_remove_image_title))
-                        .setMessage(getString(R.string.scan_receipt_remove_image_message))
-                        .setNeutralButton(R.string.scan_receipt_remove_image_cancel, new DialogInterface.OnClickListener(){
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .setPositiveButton(R.string.scan_receipt_remove_image_accept, new DialogInterface.OnClickListener(){
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                int index = scanReceiptViewModel.getProcessedImages().getValue().indexOf(imageBitmap);
 
-                                if(index % 2 == 0){
-                                    scanReceiptViewModel.removeProcessedImage(index + 1);
-                                    scanReceiptViewModel.removeProcessedImage(index);
-                                } else {
-                                    scanReceiptViewModel.removeProcessedImage(index);
-                                    scanReceiptViewModel.removeProcessedImage(index - 1);
+        if(this.scanReceiptViewModel.getNumberOfProcessedImages() > 0) {
+            this.processedImageAdapter = new ProcessedImageAdapter(getContext(), this.scanReceiptViewModel.getProcessedImages().getValue(), new ProcessedImageAdapter.PhotoListener() {
+                @Override
+                public void onPhotoClick(GalleryAdapter.ViewHolder holder, Bitmap imageBitmap) {
+                    new MaterialAlertDialogBuilder(getContext())
+                            .setTitle(getString(R.string.scan_receipt_remove_image_title))
+                            .setMessage(getString(R.string.scan_receipt_remove_image_message))
+                            .setNeutralButton(R.string.scan_receipt_remove_image_cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
                                 }
+                            })
+                            .setPositiveButton(R.string.scan_receipt_remove_image_accept, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    int index = scanReceiptViewModel.getProcessedImages().getValue().indexOf(imageBitmap);
 
-                                loadProcessedImages();
-                            }
-                        })
-                        .show();
-            }
-        });
+                                    if (index % 2 == 0) {
+                                        scanReceiptViewModel.removeProcessedImage(index + 1);
+                                        scanReceiptViewModel.removeProcessedImage(index);
+                                    } else {
+                                        scanReceiptViewModel.removeProcessedImage(index);
+                                        scanReceiptViewModel.removeProcessedImage(index - 1);
+                                    }
+
+                                    loadProcessedImages();
+                                }
+                            })
+                            .show();
+                }
+            });
+        } else {
+            this.processedImageAdapter = new ProcessedImageAdapter(getContext(), this.scanReceiptViewModel.getProcessedImages().getValue(), null);
+        }
+
         this.processedImagesRecyclerView.setAdapter(this.processedImageAdapter);
     }
 
