@@ -43,19 +43,20 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
+        TypedValue textColor = new TypedValue();
+
         if(this.localDataSet.get(position).isDeleted()) {
-            holder.getItemLabel().setTextColor(context.getResources().getColor(R.color.red));
+            context.getTheme().resolveAttribute(R.attr.correctionItemDeletedColor, textColor, true);
             holder.getItemLabel().setPaintFlags(holder.getItemLabel().getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         } else if(this.localDataSet.get(position).getCombinedItem() != null){
-            holder.getItemLabel().setTextColor(context.getResources().getColor(R.color.purple_500));
+            context.getTheme().resolveAttribute(R.attr.correctionItemCombinedColor, textColor, true);
             holder.getItemLabel().setPaintFlags(holder.getItemLabel().getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
         } else {
-            TypedValue typedValue = new TypedValue();
-            context.getTheme().resolveAttribute(R.attr.colorControlHighlight, typedValue, true);
-            holder.getItemLabel().setTextColor(context.getResources().getColor(typedValue.resourceId));
+            context.getTheme().resolveAttribute(R.attr.correctionItemColor, textColor, true);
             holder.getItemLabel().setPaintFlags(holder.getItemLabel().getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
+        holder.getItemLabel().setTextColor(context.getResources().getColor(textColor.resourceId));
         holder.getItemLabel().setText(localDataSet.get(position).getLabel());
         holder.bindOptionListener(position, this.itemOptionListener);
         holder.bindItemListener(position,localDataSet.get(position), this.itemClickListener);

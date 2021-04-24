@@ -19,6 +19,15 @@
         <item name="colorControlHighlight">@color/black</item>
 
         <item name="backgroundColor">@color/background_material_light</item>
+
+        <item name="correctionItemColor">?attr/colorControlHighlight</item>
+        <item name="correctionItemCombinedColor">@color/purple_500</item>
+        <item name="correctionItemDeletedColor">@color/red</item>
+
+        <item name="participantStrokeColor">@color/purple_500</item>
+        <item name="participantFillColor">@color/purple_50</item>
+        <item name="payerStrokeColor">@color/teal_500</item>
+        <item name="payerFillColor">@color/teal_50</item>
     </style>
 
     <style name="Theme.ReceiptAs.NoActionBar">

@@ -46,10 +46,10 @@ public class SummaryParticipantAdapter extends ArrayAdapter<Participant> {
                                 this.receipt.getParticipantsPayerFirst().get(position))]);
 
         if(getItem(position).isPayer()) {
-            layout.setBackground(getContext().getResources().getDrawable(R.drawable.receipt_summary_payer_background));
+            layout.setBackground(getContext().getDrawable(R.drawable.receipt_summary_payer_background));
             participant.setText(getContext().getString(R.string.payer_name, getItem(position).getName()));
         } else {
-            layout.setBackground(getContext().getResources().getDrawable(R.drawable.name_added_item_background));
+            layout.setBackground(getContext().getDrawable(R.drawable.name_added_item_background));
             participant.setText(getItem(position).getName());
         }
 
