@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -52,6 +53,11 @@ public class HistoryFragment extends Fragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        return this.adapter.setSortMethod(item.getItemId());
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -61,7 +67,7 @@ public class HistoryFragment extends Fragment {
     }
 
     private void configureRecyclerView() {
-        adapter = new ReceiptAdapter(this.mainViewModel.getReceipts().getValue(), onReceiptClicked);
+        adapter = new ReceiptAdapter(this.mainViewModel.getReceipts().getValue(), onReceiptClicked, R.id.sort_receipt_alphabetical);
         historyRecyclerView.setAdapter(adapter);
         historyRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
@@ -76,8 +82,7 @@ public class HistoryFragment extends Fragment {
     private final Observer<List<Receipt>> receiptListUpdateObserver = new Observer<List<Receipt>>() {
         @Override
         public void onChanged(List<Receipt> receipts) {
-            //TODO avoid recreating adapter -> notifydatasetchanged
-            historyRecyclerView.setAdapter(new ReceiptAdapter(receipts, onReceiptClicked));
+            adapter.notifyDataSetChanged();
         }
     };
 }
