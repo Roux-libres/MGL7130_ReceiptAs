@@ -6,14 +6,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.receiptas.MainActivity;
+import com.example.receiptas.MainViewModel;
 import com.example.receiptas.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -22,12 +27,15 @@ public class ReceiptDetailFragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
+    private MainViewModel mainViewModel;
     private String[] tabsNames;
     private int receiptId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setHasOptionsMenu(true);
+        this.mainViewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
         this.tabsNames = getResources().getStringArray(R.array.receipt_detail_tabs_names);
         this.receiptId = getArguments().getInt("receipt_id");
 
@@ -54,6 +62,12 @@ public class ReceiptDetailFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.delete, menu);
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -71,6 +85,17 @@ public class ReceiptDetailFragment extends Fragment {
             viewPager.setAdapter(new ReceiptDetailAdapter(this, tabLayout.getTabCount(), this.receiptId));
 
             new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabsNames[position])).attach();
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.delete_button){
+            this.mainViewModel.deleteReceipt(this.receiptId);
+            ((MainActivity) getActivity()).onSupportNavigateUp();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 

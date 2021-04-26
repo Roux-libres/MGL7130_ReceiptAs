@@ -106,11 +106,6 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        /*if (this.currentFragmentId == R.id.nav_history) {
-            return true;
-        } else {
-            return false;
-        }*/
         return false;
     }
 

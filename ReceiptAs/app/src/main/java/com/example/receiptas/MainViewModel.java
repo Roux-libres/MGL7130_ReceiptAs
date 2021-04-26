@@ -36,6 +36,10 @@ public class MainViewModel extends ViewModel {
         return this.receipts;
     }
 
+    public void deleteReceipt(int index){
+        this.receipts.getValue().remove(index);
+    }
+
     public void synchroniseModels(Context context) {
         this.mainRepository.saveReceipts(context.getFilesDir().toString(), this.receipts.getValue());
     }
