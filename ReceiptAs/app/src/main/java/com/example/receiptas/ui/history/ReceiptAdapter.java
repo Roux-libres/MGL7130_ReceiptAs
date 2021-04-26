@@ -19,12 +19,14 @@ import java.util.List;
 
 public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptViewHolder> {
 
-    private List<Receipt> localDataSet;
+    private final List<Receipt> localDataSet;
+    private List<Receipt> sortedLocalDataSet;
     private final OnRecyclerViewItemClickListener listener;
     private int sortMethod;
 
     public ReceiptAdapter(List<Receipt> dataSet, OnRecyclerViewItemClickListener listener, int sortMethod) {
         this.localDataSet = dataSet;
+        this.sortedLocalDataSet = dataSet;
         this.listener = listener;
         this.sortMethod = sortMethod;
         this.sortDataSet();
@@ -37,6 +39,10 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptViewHolder> {
         switch(this.sortMethod){
             case R.id.sort_receipt_alphabetical:
                 comparator = (Receipt r1, Receipt r2) -> r1.getName().compareTo(r2.getName());
+                break;
+            case R.id.sort_receipt_alphabetical_reversed:
+                comparator = (Receipt r1, Receipt r2) -> r1.getName().compareTo(r2.getName());
+                reverse = true;
                 break;
             case R.id.sort_receipt_date_recent_first:
                 comparator = (Receipt r1, Receipt r2) -> r1.getDate().compareTo(r2.getDate());
@@ -57,10 +63,10 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptViewHolder> {
                 break;
         }
 
-        Collections.sort(this.localDataSet, comparator);
+        Collections.sort(this.sortedLocalDataSet, comparator);
 
         if(reverse){
-            Collections.reverse(this.localDataSet);
+            Collections.reverse(this.sortedLocalDataSet);
         }
 
         this.notifyDataSetChanged();
@@ -84,9 +90,10 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ReceiptViewHolder holder, int position) {
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        holder.getLeftTextView().setText(localDataSet.get(position).getName());
-        holder.getRightTextView().setText(dateFormat.format(localDataSet.get(position).getDate()));
-        holder.bindListener(position, localDataSet.get(position).getName(), this.listener);
+        int unsortedPosition = this.localDataSet.indexOf(this.sortedLocalDataSet.get(position));
+        holder.getLeftTextView().setText(localDataSet.get(unsortedPosition).getName());
+        holder.getRightTextView().setText(dateFormat.format(localDataSet.get(unsortedPosition).getDate()));
+        holder.bindListener(position, localDataSet.get(unsortedPosition).getName(), this.listener);
     }
 
     @Override

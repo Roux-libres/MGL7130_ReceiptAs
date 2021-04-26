@@ -10,6 +10,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/sort_receipt_alphabetical_reversed"
+        android:orderInCategory="100"
+        android:title="@string/sort_receipt_alphabetical_reversed"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/sort_receipt_date_recent_first"
         android:orderInCategory="100"
         android:title="@string/sort_receipt_date_recent_first"
