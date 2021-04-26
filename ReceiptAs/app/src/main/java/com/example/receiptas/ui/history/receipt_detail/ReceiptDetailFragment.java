@@ -1,5 +1,6 @@
 package com.example.receiptas.ui.history.receipt_detail;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import com.example.receiptas.MainActivity;
 import com.example.receiptas.MainViewModel;
 import com.example.receiptas.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -91,8 +93,21 @@ public class ReceiptDetailFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.delete_button){
-            this.mainViewModel.deleteReceipt(this.receiptId);
-            ((MainActivity) getActivity()).onSupportNavigateUp();
+            //TODO: popup
+            new MaterialAlertDialogBuilder(getContext())
+                    .setMessage(getString(R.string.receipt_detail_deletion_message))
+                    .setNeutralButton(R.string.receipt_detail_deletion_button_neutral, new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) { }
+                    })
+                    .setPositiveButton(R.string.receipt_detail_deletion_button_positive, new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mainViewModel.deleteReceipt(receiptId);
+                            ((MainActivity) getActivity()).onSupportNavigateUp();
+                        }
+                    })
+                    .show();
             return true;
         } else {
             return super.onOptionsItemSelected(item);

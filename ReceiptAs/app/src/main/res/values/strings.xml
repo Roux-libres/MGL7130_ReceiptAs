@@ -21,6 +21,10 @@
     <string name="sort_receipt_price_ascending">Price (Ascending)</string>
     <string name="sort_receipt_price_descending">Price (Descending)</string>
 
+    <string name="receipt_detail_deletion_message">Do you really want to delete this receipt</string>
+    <string name="receipt_detail_deletion_button_neutral">No</string>
+    <string name="receipt_detail_deletion_button_positive">Yes</string>
+
 
     <string name="menu_scan_receipt">Scan receipt</string>
     <string name="scan_receipt_process_image_product_name">Select products name</string>
