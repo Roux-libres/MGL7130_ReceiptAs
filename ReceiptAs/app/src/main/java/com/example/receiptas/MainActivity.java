@@ -2,9 +2,12 @@ package com.example.receiptas;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -51,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.loadThemePreference();
         super.onCreate(savedInstanceState);
-
-        //this.writeFakeJson();
+        this.writeFakeJson();
 
         this.mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         setContentView(R.layout.activity_drawer);
@@ -76,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
         this.requestPermissions();
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_history, R.id.nav_scan_receipt, R.id.nav_settings)
                 .setDrawerLayout(this.drawerLayout)
@@ -186,6 +188,27 @@ public class MainActivity extends AppCompatActivity {
         return toolbar;
     }
 
+    public void loadThemePreference(){
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+
+        String favoriteThemeDefault = getResources().getString(R.string.settings_favorite_theme_default);
+        String favoriteTheme = sharedPref.getString(getString(R.string.settings_favorite_theme), favoriteThemeDefault);
+
+        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+        String[] themes = getResources().getStringArray(R.array.settings_themes);
+
+        if(favoriteTheme == themes[0]){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+        } else if(favoriteTheme == themes[1] &&
+                nightModeFlags == Configuration.UI_MODE_NIGHT_YES){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        } else if(favoriteTheme == themes[2] &&
+                nightModeFlags == Configuration.UI_MODE_NIGHT_NO){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }
+    }
+
     private void writeFakeJson(){
         String json = "[\n" +
                 "   {\n" +
@@ -239,23 +262,20 @@ public class MainActivity extends AppCompatActivity {
                 "      ]\n" +
                 "   }\n" +
                 "]";
+
         String path = getFilesDir() + "/receipts.json";
 
         File json_file = new File(path);
         if(!json_file.exists()){
             try {
                 json_file.createNewFile();
+
+                FileWriter fileWriter = new FileWriter(path);
+                fileWriter.write(json);
+                fileWriter.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-
-        try {
-            FileWriter fileWriter = new FileWriter(path);
-            fileWriter.write(json);
-            fileWriter.close();
-        } catch (IOException ioException){
-            System.out.println(ioException);
         }
     }
 

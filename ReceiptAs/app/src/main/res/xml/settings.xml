@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory android:title="Settings">
+        <ListPreference
+            android:key="@string/settings_favorite_currency"
+            android:entries="@array/currency_array"
+            android:entryValues="@array/currency_array"
+            android:title="@string/settings_favorite_currency_title"
+            android:summary="@string/settings_favorite_currency_summary" />
+
+        <ListPreference
+            android:key="@string/settings_favorite_theme"
+            android:entries="@array/settings_themes"
+            android:entryValues="@array/settings_themes"
+            android:title="@string/settings_favorite_theme_title"
+            android:summary="@string/settings_favorite_theme_summary" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="About">
+        <PreferenceScreen
+            android:title="ALED"
+            android:summary="None"
+            android:key="wesh"/>
+    </PreferenceCategory>
+
+
+</androidx.preference.PreferenceScreen>
