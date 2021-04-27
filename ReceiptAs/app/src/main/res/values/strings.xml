@@ -41,6 +41,12 @@
 
     <string name="menu_receive">Receive receipt</string>
     <string name="send_receipt_title">Send receipt</string>
+    <string name="nfc_button_activate">Activate is NFC</string>
+    <string name="nfc_button_activated">NFC is activated</string>
+    <string name="nfc_activated_description">Put the other phone in reception mode (Menu) and approach it to this phone.</string>
+    <string name="nfc_disabled_description">NFC is disabled. Please activate it to allow sending.</string>
+    <string name="nfc_unavailable_description">Your phone is not equipped with the NFC service or has a version too old to allow peer to peer sending.</string>
+    <string name="nfc_error_availability">The phone does not have an NFC service. Please return to the receipt.</string>
 
     <string name="menu_settings">Settings</string>
 

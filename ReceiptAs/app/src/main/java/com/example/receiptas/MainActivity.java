@@ -119,6 +119,8 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
     }
 
+    //TODO Manage NFC Permission
+
     public void requestPermissions(){
         boolean hasReadFilePermission = (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
@@ -126,13 +128,16 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
         boolean hasCameraPermission = (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
+        boolean hasNFCPermission = (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.NFC) == PackageManager.PERMISSION_GRANTED);
 
-        if(!hasReadFilePermission || !hasCameraPermission || !hasWriteFilePermission){
+        if(!hasReadFilePermission || !hasCameraPermission || !hasWriteFilePermission || !hasNFCPermission){
             ActivityCompat.requestPermissions(this,
                     new String[]{
                             Manifest.permission.READ_EXTERNAL_STORAGE,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.CAMERA}, PERMISSION_CODE);
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.NFC}, PERMISSION_CODE);
         }
     }
 

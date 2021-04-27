@@ -7,14 +7,39 @@
     android:layout_height="match_parent"
     tools:context=".ui.sharing.SendReceiptFragment">
 
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/nfc_logo"
+        app:layout_constraintBottom_toTopOf="@+id/nfc_textview"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </ImageView>
+
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/nfc_textview"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:text="Envoie du recu"
+        android:layout_height="wrap_content"
+        android:text="@string/foo"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/activate_nfc_button"
+        android:layout_width="175dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nfc_textview">
+
+    </Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
