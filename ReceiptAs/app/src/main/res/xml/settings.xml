@@ -17,13 +17,19 @@
             android:entryValues="@array/settings_themes"
             android:title="@string/settings_favorite_theme_title"
             android:summary="@string/settings_favorite_theme_summary" />
+
+        <ListPreference
+            android:key="@string/settings_favorite_language"
+            android:entries="@array/settings_languages"
+            android:entryValues="@array/settings_languages"
+            android:title="@string/settings_favorite_language_title"
+            android:summary="@string/settings_favorite_language_summary" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="About">
-        <PreferenceScreen
-            android:title="ALED"
-            android:summary="None"
-            android:key="wesh"/>
+        <Preference
+            android:title="@string/settings_version_title"
+            android:key="@string/settings_version"/>
     </PreferenceCategory>
 
 

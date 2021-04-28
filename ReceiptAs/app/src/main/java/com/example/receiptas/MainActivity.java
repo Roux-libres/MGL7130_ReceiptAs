@@ -28,6 +28,7 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
 
 import com.example.receiptas.model.domain_model.Receipt;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -37,6 +38,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     public int currentFragmentId;
+    private SharedPreferences sharedPref;
 
     private boolean isTablet;
 
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        this.sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         this.loadThemePreference();
         super.onCreate(savedInstanceState);
         this.writeFakeJson();
@@ -189,30 +193,56 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void loadThemePreference(){
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
-
         String favoriteThemeDefault = getResources().getString(R.string.settings_favorite_theme_default);
-        String favoriteTheme = sharedPref.getString(getString(R.string.settings_favorite_theme), favoriteThemeDefault);
+        String favoriteTheme = this.sharedPref.getString(getString(R.string.settings_favorite_theme), favoriteThemeDefault);
 
         int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-
         String[] themes = getResources().getStringArray(R.array.settings_themes);
+        int nightMode;
 
-        if(favoriteTheme == themes[0]){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
-        } else if(favoriteTheme == themes[1] &&
+        if(favoriteTheme.equals(themes[0])){
+            nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+        } else if(favoriteTheme.equals(themes[1]) &&
                 nightModeFlags == Configuration.UI_MODE_NIGHT_YES){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        } else if(favoriteTheme == themes[2] &&
+            nightMode = AppCompatDelegate.MODE_NIGHT_NO;
+        } else if(favoriteTheme.equals(themes[2]) &&
                 nightModeFlags == Configuration.UI_MODE_NIGHT_NO){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            nightMode = AppCompatDelegate.MODE_NIGHT_YES;
+        } else {
+            return;
         }
+
+        AppCompatDelegate.setDefaultNightMode(nightMode);
+    }
+
+    public void loadLanguagePreference(){
+        String favoriteLanguageDefault = getResources().getString(R.string.settings_favorite_language_default);
+        String favoriteLanguage = this.sharedPref.getString(getString(R.string.settings_favorite_language), favoriteLanguageDefault);
+        Locale locale;
+
+        String[] languages = getResources().getStringArray(R.array.settings_languages);
+
+        if(favoriteLanguage.equals(languages[0])){
+            locale = new Locale("en");
+        } else if(favoriteLanguage.equals(languages[1])){
+            locale = new Locale("fr");
+        } else {
+            return;
+        }
+
+        Locale.setDefault(locale);
+
+        Configuration configuration = new Configuration();
+        configuration.setLocale(locale);
+
+        getBaseContext().getResources().updateConfiguration(configuration,
+                getBaseContext().getResources().getDisplayMetrics());
     }
 
     private void writeFakeJson(){
         String json = "[\n" +
                 "   {\n" +
-                "      \"name\":\"Glaces\",\n" +
+                "      \"name\":\"Example\",\n" +
                 "      \"date\":\"1616282781804\",\n" +
                 "      \"currency\":\"CAD\",\n" +
                 "      \"participants\":[\n" +

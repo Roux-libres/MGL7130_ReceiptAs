@@ -34,6 +34,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -117,9 +118,13 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         MaterialDropdownMenuArrayAdapter adapter = new MaterialDropdownMenuArrayAdapter(getContext(),
                 R.layout.list_item, currencyArray);
         this.receiptCurrency.setAdapter(adapter);
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         String favoriteCurrency = sharedPref.getString(getString(R.string.settings_favorite_currency),
-                scanReceiptViewModel.getReceipt().getCurrency().getCurrencyCode());
+                "None");
+        if(favoriteCurrency.equals("None")){
+            favoriteCurrency = scanReceiptViewModel.getReceipt().getCurrency().getCurrencyCode();
+        }
+
         this.receiptCurrency.setText((CharSequence) adapter.getItem(
                 adapter.getPosition(favoriteCurrency)), false);
 
