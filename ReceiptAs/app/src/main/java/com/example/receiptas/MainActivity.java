@@ -59,7 +59,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        this.loadLanguagePreference();
         this.loadThemePreference();
+
         super.onCreate(savedInstanceState);
         this.writeFakeJson();
 
@@ -230,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        Locale.setDefault(locale);
+        //Locale.setDefault(locale);
 
         Configuration configuration = new Configuration();
         configuration.setLocale(locale);

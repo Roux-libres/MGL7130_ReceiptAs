@@ -33,6 +33,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         this.preferenceListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                /*
                 if(key.equals(getString(R.string.settings_favorite_theme))){
                     //TODO: check if the restart of the activity is really necessary
                     //((MainActivity) getActivity()).loadThemePreference();
@@ -40,7 +41,24 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     getActivity().finish();
                     startActivity(intent);
+                } else if(key.equals(getString(R.string.settings_favorite_language))){
+                    //TODO: check if the restart of the activity is really necessary
+                    //((MainActivity) getActivity()).loadLanguagePreference();
+                    Intent intent = getActivity().getIntent();
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    getActivity().finish();
+                    startActivity(intent);
+                }*/
+
+                try{
+                    Intent intent = getActivity().getIntent();
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    getActivity().finish();
+                    startActivity(intent);
+                } catch (Exception exception){
+                    exception.printStackTrace();
                 }
+
             };
         };
 
