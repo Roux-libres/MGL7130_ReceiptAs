@@ -54,7 +54,12 @@ public class HistoryFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        return this.adapter.setSortMethod(item.getItemId());
+        //TODO: check for a better solution
+        if(item.getTitle() == null){
+            return super.onOptionsItemSelected(item);
+        } else {
+            return this.adapter.setSortMethod(item.getItemId());
+        }
     }
 
     @Override

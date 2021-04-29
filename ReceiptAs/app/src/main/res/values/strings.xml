@@ -21,7 +21,7 @@
     <string name="sort_receipt_price_ascending">Price (Ascending)</string>
     <string name="sort_receipt_price_descending">Price (Descending)</string>
 
-    <string name="receipt_detail_deletion_message">Do you really want to delete this receipt</string>
+    <string name="receipt_detail_deletion_message">Do you really want to delete this receipt ?</string>
     <string name="receipt_detail_deletion_button_neutral">No</string>
     <string name="receipt_detail_deletion_button_positive">Yes</string>
 
@@ -45,6 +45,33 @@
 
 
     <string name="menu_settings">Settings</string>
+
+    <string name="settings_favorite_currency">settings_favorite_currency</string>
+    <string name="settings_favorite_currency_title">Default currency</string>
+    <string name="settings_favorite_currency_summary">Choose the default currency for new receipts</string>
+
+    <string name="settings_favorite_theme_default">System default</string>
+    <string name="settings_favorite_theme">settings_favorite_theme</string>
+    <string name="settings_favorite_theme_title">Theme</string>
+    <string name="settings_favorite_theme_summary">Choose a theme for the application</string>
+    <string-array name="settings_themes">
+        <item name="settings_theme_system">System default</item>
+        <item name="settings_theme_light">Light</item>
+        <item name="settings_theme_dark">Dark</item>
+    </string-array>
+
+    <string name="settings_favorite_language_default">English</string>
+    <string name="settings_favorite_language">settings_favorite_language</string>
+    <string name="settings_favorite_language_title">Language</string>
+    <string name="settings_favorite_language_summary">Choose the language used in the application</string>
+    <string-array name="settings_languages">
+        <item name="settings_language_en">English</item>
+        <item name="settings_language_fr">Français</item>
+    </string-array>
+
+    <string name="settings_version">settings_version</string>
+    <string name="settings_version_title">Version</string>
+
 
     <string name="item_text_placeholder">Item</string>
 
