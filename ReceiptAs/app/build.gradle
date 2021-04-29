@@ -46,6 +46,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation "com.google.dagger:hilt-android:$hilt_version"
+    androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0-alpha05'
     annotationProcessor "com.google.dagger:hilt-compiler:$hilt_version"
     implementation 'com.google.code.gson:gson:2.8.6'
 
@@ -58,4 +59,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
 
     testImplementation "org.mockito:mockito-core:3.+"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.test:rules:1.1.0'
 }
