@@ -93,7 +93,6 @@ public class ReceiptDetailFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.delete_button){
-            //TODO: popup
             new MaterialAlertDialogBuilder(getContext())
                     .setMessage(getString(R.string.receipt_detail_deletion_message))
                     .setNeutralButton(R.string.receipt_detail_deletion_button_neutral, new DialogInterface.OnClickListener(){

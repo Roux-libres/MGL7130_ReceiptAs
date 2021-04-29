@@ -54,7 +54,6 @@ public class HistoryFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        //TODO: check for a better solution
         if(item.getTitle() == null){
             return super.onOptionsItemSelected(item);
         } else {

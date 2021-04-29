@@ -232,8 +232,6 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        //Locale.setDefault(locale);
-
         Configuration configuration = new Configuration();
         configuration.setLocale(locale);
 
