@@ -54,6 +54,7 @@ public class ResizableView extends View {
     }
 
     public void compareSize(Context context, ImageView imageView, Bitmap imageBitmap){
+        //TODO: change the cursor position on start
         this.horizontalDifference = (imageView.getWidth() - imageBitmap.getWidth()) / 2;
         this.verticalDifference = (imageView.getHeight() - imageBitmap.getHeight()) / 2;
 
