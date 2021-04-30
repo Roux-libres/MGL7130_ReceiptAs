@@ -2,6 +2,7 @@ package com.example.receiptas;
 
 import android.content.Context;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -29,10 +30,10 @@ public class MainViewModel extends ViewModel {
     }
 
     private void setReceipts(Context context){
-        this.receipts.setValue(this.mainRepository.getReceipts(context.getFilesDir().toString()));
+        this.receipts.setValue(this.mainRepository.loadReceipts(context.getFilesDir().toString()));
     }
 
-    public MutableLiveData<ArrayList<Receipt>> getReceipts() {
+    public LiveData<ArrayList<Receipt>> getReceipts() {
         return this.receipts;
     }
 
