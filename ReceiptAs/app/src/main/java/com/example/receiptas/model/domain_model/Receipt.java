@@ -100,9 +100,7 @@ public class Receipt {
         float unassignedAmount = 0;
 
         for(Item item : this.getItems()){
-            System.out.println(item.getParticipants());
             if(item.getParticipants().size() == 0){
-                System.out.println(item.getPrice());
                 unassignedAmount += item.getPrice();
             }
         }

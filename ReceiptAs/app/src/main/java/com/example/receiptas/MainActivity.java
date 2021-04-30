@@ -2,9 +2,12 @@ package com.example.receiptas;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -13,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -23,6 +27,7 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.preference.PreferenceManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
@@ -30,6 +35,8 @@ import com.google.android.material.navigation.NavigationView;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Locale;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -41,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     public int currentFragmentId;
+    private SharedPreferences sharedPref;
 
     private boolean isTablet;
 
@@ -48,9 +56,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        this.sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        this.loadLanguagePreference();
+        this.loadThemePreference();
 
-        //this.writeFakeJson();
+        super.onCreate(savedInstanceState);
+        this.writeFakeJson();
 
         this.mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         setContentView(R.layout.activity_drawer);
@@ -73,8 +84,6 @@ public class MainActivity extends AppCompatActivity {
 
         this.requestPermissions();
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_history, R.id.nav_scan_receipt, R.id.nav_settings)
                 .setDrawerLayout(this.drawerLayout)
@@ -181,10 +190,55 @@ public class MainActivity extends AppCompatActivity {
         return toolbar;
     }
 
+    public void loadThemePreference(){
+        String favoriteThemeDefault = getResources().getString(R.string.settings_favorite_theme_default);
+        String favoriteTheme = this.sharedPref.getString(getString(R.string.settings_favorite_theme), favoriteThemeDefault);
+
+        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        String[] themes = getResources().getStringArray(R.array.settings_themes);
+        int nightMode;
+
+        if(favoriteTheme.equals(themes[0])){
+            nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+        } else if(favoriteTheme.equals(themes[1]) &&
+                nightModeFlags == Configuration.UI_MODE_NIGHT_YES){
+            nightMode = AppCompatDelegate.MODE_NIGHT_NO;
+        } else if(favoriteTheme.equals(themes[2]) &&
+                nightModeFlags == Configuration.UI_MODE_NIGHT_NO){
+            nightMode = AppCompatDelegate.MODE_NIGHT_YES;
+        } else {
+            return;
+        }
+
+        AppCompatDelegate.setDefaultNightMode(nightMode);
+    }
+
+    public void loadLanguagePreference(){
+        String favoriteLanguageDefault = getResources().getString(R.string.settings_favorite_language_default);
+        String favoriteLanguage = this.sharedPref.getString(getString(R.string.settings_favorite_language), favoriteLanguageDefault);
+        Locale locale;
+
+        String[] languages = getResources().getStringArray(R.array.settings_languages);
+
+        if(favoriteLanguage.equals(languages[0])){
+            locale = new Locale("en");
+        } else if(favoriteLanguage.equals(languages[1])){
+            locale = new Locale("fr");
+        } else {
+            return;
+        }
+
+        Configuration configuration = new Configuration();
+        configuration.setLocale(locale);
+
+        getBaseContext().getResources().updateConfiguration(configuration,
+                getBaseContext().getResources().getDisplayMetrics());
+    }
+
     private void writeFakeJson(){
         String json = "[\n" +
                 "   {\n" +
-                "      \"name\":\"Glaces\",\n" +
+                "      \"name\":\"Example\",\n" +
                 "      \"date\":\"1616282781804\",\n" +
                 "      \"currency\":\"CAD\",\n" +
                 "      \"participants\":[\n" +
@@ -234,23 +288,20 @@ public class MainActivity extends AppCompatActivity {
                 "      ]\n" +
                 "   }\n" +
                 "]";
+
         String path = getFilesDir() + "/receipts.json";
 
         File json_file = new File(path);
         if(!json_file.exists()){
             try {
                 json_file.createNewFile();
+
+                FileWriter fileWriter = new FileWriter(path);
+                fileWriter.write(json);
+                fileWriter.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-
-        try {
-            FileWriter fileWriter = new FileWriter(path);
-            fileWriter.write(json);
-            fileWriter.close();
-        } catch (IOException ioException){
-            System.out.println(ioException);
         }
     }
 }

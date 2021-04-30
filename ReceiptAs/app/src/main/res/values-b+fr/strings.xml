@@ -1,0 +1,113 @@
+<resources>
+    <string name="app_name">Receipt\'As</string>
+    <string name="title_activity">Receipt\'As</string>
+    <string name="navigation_drawer_open">Ouvrir le tiroir de navigation</string>
+    <string name="navigation_drawer_close">Fermer le tiroir de navigation</string>
+    <string name="nav_header_title">Menu</string>
+    <string name="nav_header_desc">En-tête de navigation</string>
+
+    <string name="request_permission_title">Demande d\'autorisation</string>
+    <string name="request_permission_message">L\'application a besoin des permissions suivantes :\n - Lire le fichier externe\n - Accéder à la caméra</string>
+    <string name="request_permission_button_neutral">Quitter</string>
+    <string name="request_permission_button_accept">Accepter</string>
+
+
+    <string name="menu_history">Historique</string>
+
+    <string name="sort_receipt_alphabetical">Alphabétiquement (A - Z)</string>
+    <string name="sort_receipt_alphabetical_reversed">Alphabétiquement (Z - A)</string>
+    <string name="sort_receipt_date_recent_first">Date (Plus récent)</string>
+    <string name="sort_receipt_date_older_first">Date (Plus ancien)</string>
+    <string name="sort_receipt_price_ascending">Prix (Croissant)</string>
+    <string name="sort_receipt_price_descending">Prix (Décroissant)</string>
+
+    <string name="receipt_detail_deletion_message">Voulez-vous vraiment supprimer ce reçu ?</string>
+    <string name="receipt_detail_deletion_button_neutral">Non</string>
+    <string name="receipt_detail_deletion_button_positive">Oui</string>
+
+
+    <string name="menu_scan_receipt">Scan reçu</string>
+    <string name="scan_receipt_process_image_product_name">Sélectionnez les noms des produits</string>
+    <string name="scan_receipt_process_image_product_price">Sélectionnez les prix des produits</string>
+    <string name="scan_receipt_remove_image_title">Effacer l\'image</string>
+    <string name="scan_receipt_remove_image_message">Voulez-vous vraiment effacer cette image ?</string>
+    <string name="scan_receipt_remove_image_cancel">Annuler</string>
+    <string name="scan_receipt_remove_image_accept">Effacer</string>
+    <string name="scan_receipt_missing_info_title">Des informations sont manquantes</string>
+    <string name="scan_receipt_missing_info_description">Certaines informations obligatoires sont manquantes (titre, prix) ou aucune image n\'a été sélectionnée.</string>
+
+    <string name="scan_receipt_title">Titre du reçu</string>
+    <string name="scan_receipt_price">Prix du reçu</string>
+
+    <string name="name_input">Nom</string>
+    <string name="adding_button_description">Ajouter</string>
+    <string name="validation_button_description">Valider</string>
+
+
+    <string name="menu_settings">Paramètres</string>
+
+    <string name="settings_favorite_currency">settings_favorite_currency</string>
+    <string name="settings_favorite_currency_title">Devise par défaut</string>
+    <string name="settings_favorite_currency_summary">Choisir la devise par défaut pour les nouveaux reçus</string>
+
+    <string name="settings_favorite_theme_default">System default</string>
+    <string name="settings_favorite_theme">settings_favorite_theme</string>
+    <string name="settings_favorite_theme_title">Thème de l\'application</string>
+    <string name="settings_favorite_theme_summary">Choisissez un thème pour l\'application</string>
+    <string-array name="settings_themes">
+        <item name="settings_theme_system">System default</item>
+        <item name="settings_theme_light">Light</item>
+        <item name="settings_theme_dark">Dark</item>
+    </string-array>
+
+    <string name="settings_favorite_language_default">English</string>
+    <string name="settings_favorite_language">settings_favorite_language</string>
+    <string name="settings_favorite_language_title">Langage</string>
+    <string name="settings_favorite_language_summary">Choisissez la langue utilisée dans l\'application</string>
+    <string-array name="settings_languages">
+        <item name="settings_language_en">English</item>
+        <item name="settings_language_fr">Français</item>
+    </string-array>
+
+    <string name="settings_version">settings_version</string>
+    <string name="settings_version_title">Version</string>
+
+
+    <string name="item_text_placeholder">Produit</string>
+
+    <string name="receipt_name_placeholder">Nom du reçu</string>
+    <string-array name="receipt_detail_tabs_names">
+        <item>Produits</item>
+        <item>Récapitutalif</item>
+    </string-array>
+    <string name="receipt_total">Prix total : %1$.2f %2$.3S</string>
+    <string name="receipt_remaining">Restant : %1$.2f %2$.3S</string>
+    <string name="participant_total">%1$.2f %2$.3S</string>
+    <string name="payer_name">%1$s (payeur)</string>
+    <string name="unassigned_total">Total des produits non attribués: %1$.2f %2$.3S</string>
+
+    <string name="information_message_adding_participants">Saisissez les noms des différents participants.\n(8 participants max)</string>
+    <string name="information_message_item_correction">Sélectionnez les lignes à supprimer/rétablir ou utilisez le menu optionnel pour combiner/détacher</string>
+    <string name="information_message_division_participant">, sélectionnez vos produits.</string>
+    <string name="information_message_choose_payer">Sélectionner la personne ayant payé.</string>
+    <string name="foo">element</string>
+
+    <string name="error_parsing_items">Erreur lors de l\'analyse des éléments</string>
+    <string name="error_parsing_prices">Erreur lors de l\'analyse des prix</string>
+    <string name="item_correction_popup_menu_delete">Suprrimer</string>
+    <string name="item_correction_popup_menu_undelete">Rétablir</string>
+    <string name="item_correction_popup_menu_combine_above">Combiner avec le précédent</string>
+    <string name="item_correction_popup_menu_combine_below">Combiner avec le suivant</string>
+    <string name="item_correction_popup_menu_detach_first">Détacher le premier produit</string>
+    <string name="item_correction_popup_menu_detach_last">Détacher le dernier produit</string>
+
+    <string name="item_correction_dialog_validate_title">Valider la liste des produits ?</string>
+    <string name="item_correction_dialog_validate">Valider</string>
+    <string name="dialog_positive">Gotcha !</string>
+    <string name="dialog_negative">Annuler</string>
+    <string name="item_correction_dialog_quantity_caution">ATTENTION !! - LA QUANTITÉ DES ARTICLES NE CORRESPOND PAS À LA QUANTITÉ DES PRIX\n\n</string>
+    <string name="item_correction_dialog_preview">"[ Produit - Prix apercu ] :\n"</string>
+
+    <string name="scan_receipt_missing_payer_title">Il manque un payeur</string>
+    <string name="scan_receipt_missing_payer_description">Aucun payeur n\'a été spécifié. Veuillez en sélectionner un.</string>
+</resources>

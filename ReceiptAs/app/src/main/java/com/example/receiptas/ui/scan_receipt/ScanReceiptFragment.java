@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,6 +34,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -110,12 +113,20 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         this.receiptCurrency = root.findViewById(R.id.currency_menu_text_view);
         ArrayList<String> currencyArray = new ArrayList<String>(
                 Arrays.asList(getResources().getStringArray(R.array.currency_array)));
+        currencyArray.remove(0);
 
         MaterialDropdownMenuArrayAdapter adapter = new MaterialDropdownMenuArrayAdapter(getContext(),
                 R.layout.list_item, currencyArray);
         this.receiptCurrency.setAdapter(adapter);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String favoriteCurrency = sharedPref.getString(getString(R.string.settings_favorite_currency),
+                "None");
+        if(favoriteCurrency.equals("None")){
+            favoriteCurrency = scanReceiptViewModel.getReceipt().getCurrency().getCurrencyCode();
+        }
+
         this.receiptCurrency.setText((CharSequence) adapter.getItem(
-                    adapter.getPosition(scanReceiptViewModel.getReceipt().getCurrency().getCurrencyCode())), false);
+                adapter.getPosition(favoriteCurrency)), false);
 
         this.receiptCurrency.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
