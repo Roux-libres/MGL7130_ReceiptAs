@@ -89,11 +89,14 @@ public class MainRepository {
         return this.receipts;
     }
 
-    public ArrayList<Receipt> addReceipt(Receipt newReceipt) {
+    public void addReceipt(Receipt newReceipt, String receiptDirectory) {
         this.receipts.add(newReceipt);
-        this.saveReceipts();
-        return this.receipts;
+        this.saveReceipts(receiptDirectory);
+    }
 
+    public void removeReceipt(int index, String receiptDirectory) {
+        this.receipts.remove(index);
+        this.saveReceipts(receiptDirectory);
     }
 
     public void saveReceipts(String pathFilesDirectory){

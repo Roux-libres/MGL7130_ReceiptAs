@@ -17,7 +17,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -25,14 +24,12 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.receiptas.model.domain_model.Receipt;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.navigation.NavigationView;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
@@ -94,8 +91,6 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-        this.mainViewModel.getReceipts().observe(this, onReceiptsChange);
     }
 
     @Override
@@ -258,11 +253,4 @@ public class MainActivity extends AppCompatActivity {
             System.out.println(ioException);
         }
     }
-
-    private final Observer<ArrayList<Receipt>> onReceiptsChange = new Observer<ArrayList<Receipt>>() {
-        @Override
-        public void onChanged(ArrayList<Receipt> receipts) {
-            mainViewModel.synchroniseModels(getApplicationContext());
-        }
-    };
 }
