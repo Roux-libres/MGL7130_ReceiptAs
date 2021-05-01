@@ -46,10 +46,10 @@ public class ReceiptAdapter extends RecyclerView.Adapter<ReceiptViewHolder> {
                 break;
             case R.id.sort_receipt_date_recent_first:
                 comparator = (Receipt r1, Receipt r2) -> r1.getDate().compareTo(r2.getDate());
+                reverse = true;
                 break;
             case R.id.sort_receipt_date_older_first:
                 comparator = (Receipt r1, Receipt r2) -> r1.getDate().compareTo(r2.getDate());
-                reverse = true;
                 break;
             case R.id.sort_receipt_price_ascending:
                 comparator = (Receipt r1, Receipt r2) -> Float.compare(r1.getTotalAmount(), r2.getTotalAmount());
