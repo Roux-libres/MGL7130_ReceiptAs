@@ -17,7 +17,7 @@
         android:text="@string/item_text_placeholder"
         android:textSize="18sp"
         android:textAlignment="textStart"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorControlHighlight"
         app:layout_constraintEnd_toStartOf="@+id/item_price"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
         android:text="@string/item_text_placeholder"
         android:textSize="18sp"
         android:textAlignment="textEnd"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorControlHighlight"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

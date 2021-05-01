@@ -17,7 +17,6 @@
         android:backgroundTint="#00FFFFFF"
         android:scaleType="fitCenter"
         android:src="@drawable/baseline_add_photo_alternate_24"
-        android:tint="#D7000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -116,7 +115,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gallery_recycler_view"
-        android:background="@color/white"
+        android:background="?backgroundColor"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="30dp"

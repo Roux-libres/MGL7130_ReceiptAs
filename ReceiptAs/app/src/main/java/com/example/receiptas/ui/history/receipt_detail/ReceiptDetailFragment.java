@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.nfc.NfcAdapter;
 import android.nfc.NfcManager;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
@@ -24,7 +26,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 import com.example.receiptas.MainActivity;
+import com.example.receiptas.MainViewModel;
 import com.example.receiptas.R;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -32,13 +36,15 @@ public class ReceiptDetailFragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager;
+    private MainViewModel mainViewModel;
     private String[] tabsNames;
     private int receiptId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        this.setHasOptionsMenu(true);
+        this.mainViewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
         this.tabsNames = getResources().getStringArray(R.array.receipt_detail_tabs_names);
         this.receiptId = getArguments().getInt("receipt_id");
         NfcManager manager = (NfcManager) getContext().getSystemService(getContext().NFC_SERVICE);
@@ -75,6 +81,7 @@ public class ReceiptDetailFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.share, menu);
+        inflater.inflate(R.menu.delete, menu);
     }
 
     @Override
@@ -97,7 +104,30 @@ public class ReceiptDetailFragment extends Fragment {
             new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabsNames[position])).attach();
         }
     }
-
+/*
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.delete_button){
+            new MaterialAlertDialogBuilder(getContext())
+                    .setMessage(getString(R.string.receipt_detail_deletion_message))
+                    .setNeutralButton(R.string.receipt_detail_deletion_button_neutral, new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) { }
+                    })
+                    .setPositiveButton(R.string.receipt_detail_deletion_button_positive, new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mainViewModel.deleteReceipt(receiptId);
+                            ((MainActivity) getActivity()).onSupportNavigateUp();
+                        }
+                    })
+                    .show();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+*/
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

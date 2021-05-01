@@ -164,4 +164,12 @@ public class ScanReceiptViewModel extends ViewModel {
         return Bitmap.createBitmap(imageBitmap, 0, 0, imageBitmap.getWidth(), imageBitmap.getHeight(),
                 matrix, true);
     }
+
+    public void removeSavedData(){
+        this.receiptSpecifiedPrice.setValue(null);
+        this.processedImages.setValue(new ArrayList<Bitmap>());
+        this.items.setValue(new DataState<ArrayList<String>>());
+        this.prices.setValue(new DataState<ArrayList<String>>());
+        this.receipt = new Receipt();
+    }
 }

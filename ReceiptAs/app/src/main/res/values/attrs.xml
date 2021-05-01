@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <bool name="isTablet">false</bool>
+
+    <attr name="correctionItemColor" format="reference" />
+    <attr name="correctionItemCombinedColor" format="reference" />
+    <attr name="correctionItemDeletedColor" format="reference" />
+
+    <attr name="participantStrokeColor" format="reference" />
+    <attr name="participantFillColor" format="reference" />
+    <attr name="payerStrokeColor" format="reference" />
+    <attr name="payerFillColor" format="reference" />
 </resources>

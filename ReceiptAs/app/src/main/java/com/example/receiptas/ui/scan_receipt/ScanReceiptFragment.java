@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,6 +34,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -110,12 +113,20 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         this.receiptCurrency = root.findViewById(R.id.currency_menu_text_view);
         ArrayList<String> currencyArray = new ArrayList<String>(
                 Arrays.asList(getResources().getStringArray(R.array.currency_array)));
+        currencyArray.remove(0);
 
         MaterialDropdownMenuArrayAdapter adapter = new MaterialDropdownMenuArrayAdapter(getContext(),
                 R.layout.list_item, currencyArray);
         this.receiptCurrency.setAdapter(adapter);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String favoriteCurrency = sharedPref.getString(getString(R.string.settings_favorite_currency),
+                "None");
+        if(favoriteCurrency.equals("None")){
+            favoriteCurrency = scanReceiptViewModel.getReceipt().getCurrency().getCurrencyCode();
+        }
+
         this.receiptCurrency.setText((CharSequence) adapter.getItem(
-                    adapter.getPosition(scanReceiptViewModel.getReceipt().getCurrency().getCurrencyCode())), false);
+                adapter.getPosition(favoriteCurrency)), false);
 
         this.receiptCurrency.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -127,10 +138,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         });
 
         this.processedImagesRecyclerView = root.findViewById(R.id.processed_images_recycler_view);
-
-        if(this.scanReceiptViewModel.getNumberOfProcessedImages() > 0){
-            this.loadProcessedImages();
-        }
+        this.loadProcessedImages();
 
         ImageButton buttonLoadImage = root.findViewById(R.id.button_add_image);
         buttonLoadImage.setOnClickListener(this);
@@ -255,13 +263,13 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                     int paddingSize;
 
                     if(holder.image.getBackground().getConstantState() ==
-                            getResources().getDrawable(R.drawable.gallery_border_unselected).getConstantState()){
+                            getContext().getDrawable(R.drawable.gallery_border_unselected).getConstantState()){
                         validationSelection.setVisibility(View.VISIBLE);
-                        holder.image.setBackgroundResource(R.drawable.gallery_border_selected);
+                        holder.image.setBackground(getContext().getDrawable(R.drawable.gallery_border_selected));
                         paddingSize = (int) (3 * scale + 0.5f);
                         scanReceiptViewModel.addSelectedImage(path);
                     } else {
-                        holder.image.setBackgroundResource(R.drawable.gallery_border_unselected);
+                        holder.image.setBackground(getContext().getDrawable(R.drawable.gallery_border_unselected));
                         paddingSize = (int) (1 * scale + 0.5f);
                         holder.image.setPadding(paddingSize, paddingSize, paddingSize, paddingSize);
                         scanReceiptViewModel.removeSelectedImage(path);
@@ -281,36 +289,42 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
     private void loadProcessedImages(){
         this.processedImagesRecyclerView.setHasFixedSize(true);
         this.processedImagesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        this.processedImageAdapter = new ProcessedImageAdapter(getContext(), this.scanReceiptViewModel.getProcessedImages().getValue(), new ProcessedImageAdapter.PhotoListener() {
-            @Override
-            public void onPhotoClick(GalleryAdapter.ViewHolder holder, Bitmap imageBitmap) {
-                new MaterialAlertDialogBuilder(getContext())
-                        .setTitle(getString(R.string.scan_receipt_remove_image_title))
-                        .setMessage(getString(R.string.scan_receipt_remove_image_message))
-                        .setNeutralButton(R.string.scan_receipt_remove_image_cancel, new DialogInterface.OnClickListener(){
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                            }
-                        })
-                        .setPositiveButton(R.string.scan_receipt_remove_image_accept, new DialogInterface.OnClickListener(){
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                int index = scanReceiptViewModel.getProcessedImages().getValue().indexOf(imageBitmap);
 
-                                if(index % 2 == 0){
-                                    scanReceiptViewModel.removeProcessedImage(index + 1);
-                                    scanReceiptViewModel.removeProcessedImage(index);
-                                } else {
-                                    scanReceiptViewModel.removeProcessedImage(index);
-                                    scanReceiptViewModel.removeProcessedImage(index - 1);
+        if(this.scanReceiptViewModel.getNumberOfProcessedImages() > 0) {
+            this.processedImageAdapter = new ProcessedImageAdapter(getContext(), this.scanReceiptViewModel.getProcessedImages().getValue(), new ProcessedImageAdapter.PhotoListener() {
+                @Override
+                public void onPhotoClick(GalleryAdapter.ViewHolder holder, Bitmap imageBitmap) {
+                    new MaterialAlertDialogBuilder(getContext())
+                            .setTitle(getString(R.string.scan_receipt_remove_image_title))
+                            .setMessage(getString(R.string.scan_receipt_remove_image_message))
+                            .setNeutralButton(R.string.scan_receipt_remove_image_cancel, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
                                 }
+                            })
+                            .setPositiveButton(R.string.scan_receipt_remove_image_accept, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    int index = scanReceiptViewModel.getProcessedImages().getValue().indexOf(imageBitmap);
 
-                                loadProcessedImages();
-                            }
-                        })
-                        .show();
-            }
-        });
+                                    if (index % 2 == 0) {
+                                        scanReceiptViewModel.removeProcessedImage(index + 1);
+                                        scanReceiptViewModel.removeProcessedImage(index);
+                                    } else {
+                                        scanReceiptViewModel.removeProcessedImage(index);
+                                        scanReceiptViewModel.removeProcessedImage(index - 1);
+                                    }
+
+                                    loadProcessedImages();
+                                }
+                            })
+                            .show();
+                }
+            });
+        } else {
+            this.processedImageAdapter = new ProcessedImageAdapter(getContext(), this.scanReceiptViewModel.getProcessedImages().getValue(), null);
+        }
+
         this.processedImagesRecyclerView.setAdapter(this.processedImageAdapter);
     }
 

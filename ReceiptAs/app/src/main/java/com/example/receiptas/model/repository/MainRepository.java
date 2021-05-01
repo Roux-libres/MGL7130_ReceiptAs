@@ -23,6 +23,8 @@ public class MainRepository {
     private final OCRService ocrService;
     private final DataMapper dataMapper;
 
+    private ArrayList<Receipt> receipts;
+
     public MainRepository(ReceiptDao receiptDao, OCRService ocrService, DataMapper dataMapper) {
         this.receiptDao = receiptDao;
         this.ocrService = ocrService;
@@ -72,21 +74,34 @@ public class MainRepository {
         );
     }
 
-    public ArrayList<Receipt> getReceipts(String pathFilesDirectory) {
-        ArrayList<Receipt> receipts = new ArrayList<>();
+    public ArrayList<Receipt> loadReceipts(String pathFilesDirectory) {
 
         try {
-            receipts = this.dataMapper.mapFromEntities(this.receiptDao.getAll(pathFilesDirectory));
+            this.receipts = this.dataMapper.mapFromEntities(this.receiptDao.getAll(pathFilesDirectory));
         } catch (Exception exception) {
             exception.printStackTrace();
         }
 
-        return receipts;
+        return this.receipts;
     }
 
-    public void saveReceipts(String pathFilesDirectory, ArrayList<Receipt> receipts){
+    public ArrayList<Receipt> getReceipts() {
+        return this.receipts;
+    }
+
+    public void addReceipt(Receipt newReceipt, String receiptDirectory) {
+        this.receipts.add(newReceipt);
+        this.saveReceipts(receiptDirectory);
+    }
+
+    public void removeReceipt(int index, String receiptDirectory) {
+        this.receipts.remove(index);
+        this.saveReceipts(receiptDirectory);
+    }
+
+    public void saveReceipts(String pathFilesDirectory){
         try {
-            this.receiptDao.setAll(pathFilesDirectory, this.dataMapper.mapToEntities(receipts));
+            this.receiptDao.setAll(pathFilesDirectory, this.dataMapper.mapToEntities(this.receipts));
         } catch (Exception exception) {
             System.out.println(exception);
         }

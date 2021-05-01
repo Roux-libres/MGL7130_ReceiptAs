@@ -25,8 +25,6 @@ import com.example.receiptas.model.domain_model.Receipt;
 import com.example.receiptas.ui.history.receipt_detail.SummaryParticipantAdapter;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
 
-import java.util.ArrayList;
-
 
 public class FinalizationFragment extends Fragment {
 
@@ -123,13 +121,12 @@ public class FinalizationFragment extends Fragment {
     private final View.OnClickListener onValidateReceiptWithPayer = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            ArrayList<Receipt> receipts = new ArrayList<>(mainViewModel.getReceipts().getValue());
-            receipts.add(scanReceiptViewModel.getReceipt());
-            mainViewModel.getReceipts().setValue(receipts);
+            int index = mainViewModel.createReceipt(scanReceiptViewModel.getReceipt());
+            scanReceiptViewModel.removeSavedData();
 
             NavDirections action = FinalizationFragmentDirections.showNewReceiptDetails(
-                receipts.size() - 1,
-                receipts.get(receipts.size() - 1).getName()
+                index,
+                mainViewModel.getReceipt(index).getName()
             );
             Navigation.findNavController(getView()).navigate(action);
         }

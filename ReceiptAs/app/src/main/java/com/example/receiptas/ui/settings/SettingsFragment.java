@@ -1,37 +1,64 @@
 package com.example.receiptas.ui.settings;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.preference.PreferenceManager;
 
+import com.example.receiptas.MainActivity;
 import com.example.receiptas.R;
 
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends PreferenceFragmentCompat {
 
-    private SettingsViewModel settingsViewModel;
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceListener;
+    private SharedPreferences sharedPreferences;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        settingsViewModel =
-                new ViewModelProvider(this).get(SettingsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_settings, container, false);
-        final TextView textView = root.findViewById(R.id.text_settings);
-        settingsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
+    @Override
+    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
+        setPreferencesFromResource(R.xml.settings, rootKey);
 
+        try {
+            String version = getContext().getPackageManager().getPackageInfo(getContext().getPackageName(), 0).versionName;
+            findPreference(getString(R.string.settings_version)).setSummary(version);
+        } catch (PackageManager.NameNotFoundException e) {
+            findPreference(getString(R.string.settings_version)).setVisible(false);
+            e.printStackTrace();
+        }
 
-        return root;
+        this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+        this.preferenceListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+                if(key.equals(getString(R.string.settings_favorite_theme))){
+                    //TODO: check if the restart of the activity is really necessary
+                    //((MainActivity) getActivity()).loadThemePreference();
+                    try{
+                        Intent intent = getActivity().getIntent();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        getActivity().finish();
+                        startActivity(intent);
+                    } catch (Exception exception){
+                        exception.printStackTrace();
+                    }
+                } else if(key.equals(getString(R.string.settings_favorite_language))){
+                    //TODO: check if the restart of the activity is really necessary
+                    //((MainActivity) getActivity()).loadLanguagePreference();
+                    try{
+                        Intent intent = getActivity().getIntent();
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        getActivity().finish();
+                        startActivity(intent);
+                    } catch (Exception exception){
+                        exception.printStackTrace();
+                    }
+                }
+            };
+        };
+
+        this.sharedPreferences.registerOnSharedPreferenceChangeListener(preferenceListener);
     }
 }
