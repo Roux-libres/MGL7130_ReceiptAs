@@ -2,11 +2,14 @@ package com.example.receiptas.ui.settings;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import androidx.preference.Preference;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
 
@@ -17,6 +20,12 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceListener;
     private SharedPreferences sharedPreferences;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.setHasOptionsMenu(true);
+    }
 
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -33,28 +42,19 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         this.sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         this.preferenceListener = new SharedPreferences.OnSharedPreferenceChangeListener() {
             public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-                if(key.equals(getString(R.string.settings_favorite_theme))){
-                    //TODO: check if the restart of the activity is really necessary
-                    //((MainActivity) getActivity()).loadThemePreference();
-                    try{
+                try{
+                    if(key.equals(getString(R.string.settings_favorite_theme))){
+                        ((MainActivity) getActivity()).loadThemePreference();
+                    } else if(key.equals(getString(R.string.settings_favorite_language))){
+                        ((MainActivity) getActivity()).loadLanguagePreference();
                         Intent intent = getActivity().getIntent();
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         getActivity().finish();
+                        intent.putExtra("fromSettings", true);
                         startActivity(intent);
-                    } catch (Exception exception){
-                        exception.printStackTrace();
                     }
-                } else if(key.equals(getString(R.string.settings_favorite_language))){
-                    //TODO: check if the restart of the activity is really necessary
-                    //((MainActivity) getActivity()).loadLanguagePreference();
-                    try{
-                        Intent intent = getActivity().getIntent();
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                        getActivity().finish();
-                        startActivity(intent);
-                    } catch (Exception exception){
-                        exception.printStackTrace();
-                    }
+                } catch (Exception e){
+                    e.printStackTrace();
                 }
             };
         };
