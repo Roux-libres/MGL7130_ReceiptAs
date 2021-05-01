@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_scan_receipt">
+    app:startDestination="@+id/nav_history">
 
     <fragment
         android:id="@+id/nav_receive"
@@ -44,6 +44,7 @@
         <action
             android:id="@+id/action_receiptDetailFragment_to_nav_send_receipt"
             app:destination="@id/nav_send_receipt" />
+
     </fragment>
 
     <fragment
