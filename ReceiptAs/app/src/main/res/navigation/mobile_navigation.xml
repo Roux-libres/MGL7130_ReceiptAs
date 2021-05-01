@@ -6,6 +6,13 @@
     app:startDestination="@+id/nav_history">
 
     <fragment
+        android:id="@+id/nav_receive"
+        android:name="com.example.receiptas.ui.sharing.ReceiveReceiptFragment"
+        android:label="@string/menu_receive"
+        tools:layout="@layout/fragment_receive_receipt">
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_history"
         android:name="com.example.receiptas.ui.history.HistoryFragment"
         android:label="@string/menu_history"
@@ -26,6 +33,9 @@
         <argument
             android:name="receipt_name"
             app:argType="string"/>
+        <action
+            android:id="@+id/action_receiptDetailFragment_to_nav_send_receipt"
+            app:destination="@id/nav_send_receipt" />
     </fragment>
 
     <fragment
