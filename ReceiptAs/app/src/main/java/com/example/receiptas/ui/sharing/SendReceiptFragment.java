@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.NdefMessage;
@@ -24,6 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.receiptas.R;
 
@@ -53,6 +55,7 @@ public class SendReceiptFragment extends Fragment implements NfcAdapter.CreateNd
             return;
         } else {
             nfcAdapter.setNdefPushMessageCallback(this, this.getActivity());
+            Toast.makeText(getContext(), "NFC Message ready", Toast.LENGTH_LONG).show();
             nfcIsAvailable = true;
         }
         //TODO Créer un observeur sur le changement d'état du NFC avec NfcAdapter.ACTION_ADAPTER_STATE_CHANGED et le principe de broadcastreceiver
