@@ -104,7 +104,7 @@ public class ReceiptDetailFragment extends Fragment {
             new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabsNames[position])).attach();
         }
     }
-/*
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.delete_button){
@@ -123,24 +123,17 @@ public class ReceiptDetailFragment extends Fragment {
                     })
                     .show();
             return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-    }
-*/
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.share_button) {
+        } else if(item.getItemId() == R.id.share_button) {
             Navigation.findNavController(getView()).navigate(ReceiptDetailFragmentDirections.actionReceiptDetailFragmentToNavSendReceipt());
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     private final TabLayout.OnTabSelectedListener tabSelectedListener = new TabLayout.OnTabSelectedListener() {
