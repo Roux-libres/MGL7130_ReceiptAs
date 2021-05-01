@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         this.requestPermissions();
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_history, R.id.nav_scan_receipt, R.id.nav_settings)
+                R.id.nav_history, R.id.nav_scan_receipt, R.id.nav_receive, R.id.nav_settings)
                 .setDrawerLayout(this.drawerLayout)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -110,7 +110,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(this.isTablet() && (this.currentFragmentId == R.id.nav_history || this.currentFragmentId == R.id.nav_scan_receipt || this.currentFragmentId == R.id.nav_settings)){
+        if(this.isTablet() && (this.currentFragmentId == R.id.nav_history ||
+                               this.currentFragmentId == R.id.nav_scan_receipt ||
+                               this.currentFragmentId == R.id.nav_receive ||
+                               this.currentFragmentId == R.id.nav_settings)){
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         } else {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -132,13 +135,16 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
         boolean hasCameraPermission = (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
+        boolean hasNFCPermission = (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.NFC) == PackageManager.PERMISSION_GRANTED);
 
-        if(!hasReadFilePermission || !hasCameraPermission || !hasWriteFilePermission){
+        if(!hasReadFilePermission || !hasCameraPermission || !hasWriteFilePermission || !hasNFCPermission){
             ActivityCompat.requestPermissions(this,
                     new String[]{
                             Manifest.permission.READ_EXTERNAL_STORAGE,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.CAMERA}, PERMISSION_CODE);
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.NFC}, PERMISSION_CODE);
         }
     }
 

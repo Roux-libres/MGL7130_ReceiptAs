@@ -1,6 +1,8 @@
 package com.example.receiptas.ui.history.receipt_detail;
 
 import android.content.DialogInterface;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
@@ -41,6 +44,14 @@ public class ReceiptDetailFragment extends Fragment {
         this.tabsNames = getResources().getStringArray(R.array.receipt_detail_tabs_names);
         this.receiptId = getArguments().getInt("receipt_id");
 
+        NfcManager manager = (NfcManager) getContext().getSystemService(getContext().NFC_SERVICE);
+        NfcAdapter nfcAdapter = manager.getDefaultAdapter();
+
+        //if (this.nfcAdapter != null && this.nfcAdapter.isEnabled()) {
+        if (true) {
+            this.setHasOptionsMenu(true);
+        }
+
         if(((MainActivity) getActivity()).isTablet()) {
             Bundle arguments = new Bundle();
             arguments.putInt("receipt_id", this.receiptId);
@@ -66,6 +77,7 @@ public class ReceiptDetailFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.share, menu);
         inflater.inflate(R.menu.delete, menu);
     }
 
