@@ -44,6 +44,17 @@
     <string name="validation_button_description">Valider</string>
 
 
+    <string name="menu_receive">Réceiption reçu</string>
+
+    <string name="send_receipt_title">Envoyer reçu</string>
+    <string name="nfc_button_activate">Activate is NFC</string>
+    <string name="nfc_button_activated">NFC est activé</string>
+    <string name="nfc_activated_description">Mettez l\'autre téléphone en mode réception (Menu) et approchez-le de ce téléphone.</string>
+    <string name="nfc_disabled_description">La fonction NFC est désactivée. Veuillez l\'activer pour permettre l\'envoi.</string>
+    <string name="nfc_unavailable_description">Votre téléphone n\'est pas équipé du service NFC ou a une version trop ancienne pour permettre l\'envoi de pair à pair.</string>
+    <string name="nfc_error_availability">Le téléphone ne dispose pas d\'un service NFC. Veuillez retourner au reçu.</string>
+
+
     <string name="menu_settings">Paramètres</string>
     <string name="settings_category_general">Paramètres généraux</string>
 
