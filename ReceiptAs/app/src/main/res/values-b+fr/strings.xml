@@ -45,8 +45,10 @@
 
 
     <string name="menu_settings">Paramètres</string>
+    <string name="settings_category_general">Paramètres généraux</string>
 
     <string name="settings_favorite_currency">settings_favorite_currency</string>
+    <string name="settings_favorite_currency_default">None</string>
     <string name="settings_favorite_currency_title">Devise par défaut</string>
     <string name="settings_favorite_currency_summary">Choisir la devise par défaut pour les nouveaux reçus</string>
 
@@ -69,6 +71,7 @@
         <item name="settings_language_fr">Français</item>
     </string-array>
 
+    <string name="settings_category_about">À propos</string>
     <string name="settings_version">settings_version</string>
     <string name="settings_version_title">Version</string>
 

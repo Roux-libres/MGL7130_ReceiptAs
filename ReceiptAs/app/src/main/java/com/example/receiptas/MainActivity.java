@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -24,6 +25,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -59,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         this.sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         this.loadLanguagePreference();
         this.loadThemePreference();
-
         super.onCreate(savedInstanceState);
+
         this.writeFakeJson();
 
         this.mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
@@ -85,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         this.requestPermissions();
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_history, R.id.nav_scan_receipt, R.id.nav_receive, R.id.nav_settings)
+                R.id.nav_history, R.id.nav_scan_receipt, R.id.nav_settings)
                 .setDrawerLayout(this.drawerLayout)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -100,12 +102,15 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        if(getIntent().getBooleanExtra("fromSettings", false)){
+            navController.navigate(R.id.nav_settings);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(this.isTablet() && (this.currentFragmentId == R.id.nav_history || this.currentFragmentId == R.id.nav_scan_receipt
-                || this.currentFragmentId == R.id.nav_settings || this.currentFragmentId == R.id.nav_receive)){
+        if(this.isTablet() && (this.currentFragmentId == R.id.nav_history || this.currentFragmentId == R.id.nav_scan_receipt || this.currentFragmentId == R.id.nav_settings)){
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         } else {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -127,16 +132,13 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
         boolean hasCameraPermission = (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
-        boolean hasNFCPermission = (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.NFC) == PackageManager.PERMISSION_GRANTED);
 
-        if(!hasReadFilePermission || !hasCameraPermission || !hasWriteFilePermission || !hasNFCPermission){
+        if(!hasReadFilePermission || !hasCameraPermission || !hasWriteFilePermission){
             ActivityCompat.requestPermissions(this,
                     new String[]{
                             Manifest.permission.READ_EXTERNAL_STORAGE,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.CAMERA,
-                            Manifest.permission.NFC}, PERMISSION_CODE);
+                            Manifest.permission.CAMERA}, PERMISSION_CODE);
         }
     }
 
