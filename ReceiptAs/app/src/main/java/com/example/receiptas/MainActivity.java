@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Path;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -24,6 +25,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
+import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -59,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         this.sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         this.loadLanguagePreference();
         this.loadThemePreference();
-
         super.onCreate(savedInstanceState);
+
         this.writeFakeJson();
 
         this.mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
@@ -100,6 +102,10 @@ public class MainActivity extends AppCompatActivity {
 
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        if(getIntent().getBooleanExtra("fromSettings", false)){
+            navController.navigate(R.id.nav_settings);
+        }
     }
 
     @Override
