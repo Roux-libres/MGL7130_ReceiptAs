@@ -2,6 +2,7 @@ package com.example.receiptas.ui.scan_receipt.correction;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -11,8 +12,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.receiptas.MainActivity;
-import com.example.receiptas.MainViewModel;
 import com.example.receiptas.R;
+import com.example.receiptas.model.util.DataState;
 import com.example.receiptas.ui.history.receipt_detail.ReceiptDetailProductsFragment;
 import com.example.receiptas.ui.history.receipt_detail.ReceiptDetailSummaryFragment;
 import com.google.android.material.tabs.TabLayout;
@@ -49,5 +50,17 @@ public class ReceiptCorrectionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_receipt_correction, container, false);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.validate_button
+            && scanReceiptViewModel.getPrices().getValue().getState().getValue() == DataState.State.SUCCESS
+            && scanReceiptViewModel.getItems().getValue().getState().getValue() == DataState.State.SUCCESS
+        ) {
+
+        } else {
+            //do nothing
+        }
     }
 }
