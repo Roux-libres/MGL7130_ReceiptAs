@@ -15,7 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -41,7 +40,6 @@ public class ItemCorrectionFragment extends Fragment {
     private ItemCorrectionViewModel itemCorrectionViewModel;
     private RecyclerView itemRecyclerView;
     private ProgressBar progressBar;
-    private Toolbar toolbar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
