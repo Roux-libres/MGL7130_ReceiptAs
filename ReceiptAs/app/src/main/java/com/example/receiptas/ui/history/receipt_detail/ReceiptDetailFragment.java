@@ -1,6 +1,8 @@
 package com.example.receiptas.ui.history.receipt_detail;
 
 import android.content.DialogInterface;
+import android.nfc.NfcAdapter;
+import android.nfc.NfcManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -41,6 +43,14 @@ public class ReceiptDetailFragment extends Fragment {
         this.mainViewModel = new ViewModelProvider(getActivity()).get(MainViewModel.class);
         this.tabsNames = getResources().getStringArray(R.array.receipt_detail_tabs_names);
         this.receiptId = getArguments().getInt("receipt_id");
+
+        NfcManager manager = (NfcManager) getContext().getSystemService(getContext().NFC_SERVICE);
+        NfcAdapter nfcAdapter = manager.getDefaultAdapter();
+
+        //if (this.nfcAdapter != null && this.nfcAdapter.isEnabled()) {
+        if (true) {
+            this.setHasOptionsMenu(true);
+        }
 
         if(((MainActivity) getActivity()).isTablet()) {
             Bundle arguments = new Bundle();

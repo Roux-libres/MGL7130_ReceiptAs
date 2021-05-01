@@ -47,7 +47,7 @@
     <string name="menu_receive">Receive receipt</string>
 
     <string name="send_receipt_title">Send receipt</string>
-    <string name="nfc_button_activate">Activate is NFC</string>
+    <string name="nfc_button_activate">Activate NFC</string>
     <string name="nfc_button_activated">NFC is activated</string>
     <string name="nfc_activated_description">Put the other phone in reception mode (Menu) and approach it to this phone.</string>
     <string name="nfc_disabled_description">NFC is disabled. Please activate it to allow sending.</string>
