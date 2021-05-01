@@ -38,6 +38,7 @@ public class SendReceiptFragment extends Fragment implements NfcAdapter.CreateNd
     private boolean nfcIsAvailable;
 
 
+
     public static SendReceiptFragment newInstance() {
         return new SendReceiptFragment();
     }
