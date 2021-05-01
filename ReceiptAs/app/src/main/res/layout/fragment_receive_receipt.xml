@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:text="@string/foo"
         android:gravity="center"
-        android:textColor="@color/black"
+        android:textColor="?attr/colorControlHighlight"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,6 +36,7 @@
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:textColor="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nfc_textview">
