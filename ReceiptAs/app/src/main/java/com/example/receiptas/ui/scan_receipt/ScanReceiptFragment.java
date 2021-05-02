@@ -2,15 +2,12 @@ package com.example.receiptas.ui.scan_receipt;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
-import android.content.ContentResolver;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,7 +18,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -160,7 +156,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         if(item.getItemId() == R.id.validate_button) {
             if(this.saveInfos()) {
                 NavDirections goToItemCorrection =
-                    ScanReceiptFragmentDirections.actionNavScanReceiptToItemCorrectionFragment();
+                    ScanReceiptFragmentDirections.scanReceiptToCorrection();
                 Navigation.findNavController(getView()).navigate(goToItemCorrection);
             } else {
                 this.openBlockingDialog();

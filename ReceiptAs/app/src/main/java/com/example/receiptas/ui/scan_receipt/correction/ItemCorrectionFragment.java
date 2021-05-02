@@ -1,11 +1,7 @@
 package com.example.receiptas.ui.scan_receipt.correction;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.PopupMenu;
@@ -14,18 +10,13 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavDirections;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.receiptas.R;
-import com.example.receiptas.model.domain_model.Item;
-import com.example.receiptas.model.util.DataState;
 import com.example.receiptas.ui.history.OnRecyclerViewItemClickListener;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
 
@@ -48,7 +39,6 @@ public class ItemCorrectionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setHasOptionsMenu(true);
         scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
         itemCorrectionViewModel = new ViewModelProvider(this).get(ItemCorrectionViewModel.class);
     }
@@ -61,12 +51,6 @@ public class ItemCorrectionFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.validate, menu);
-    }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.progressBar = view.findViewById(R.id.progressBar);
@@ -76,18 +60,10 @@ public class ItemCorrectionFragment extends Fragment {
 
         this.itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
         this.configureRecyclerView();
-
-        this.itemCorrectionViewModel.getCorrectableItems().observe(this.getViewLifecycleOwner(), correctableItemObserver);
-        this.scanReceiptViewModel.parseTextFromImages();
-
-        this.scanReceiptViewModel.getItems().getValue().getState().observe(this.getViewLifecycleOwner(), itemsObserver);
-        this.scanReceiptViewModel.getPrices().getValue().getState().observe(this.getViewLifecycleOwner(), pricesObserver);
-
-        itemsObserver.onChanged(this.scanReceiptViewModel.getItems().getValue().getState().getValue());
-        pricesObserver.onChanged(this.scanReceiptViewModel.getPrices().getValue().getState().getValue());
     }
 
-    @Override
+    //TODO delete
+    /*@Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.validate_button
             && scanReceiptViewModel.getPrices().getValue().getState().getValue() == DataState.State.SUCCESS
@@ -125,15 +101,11 @@ public class ItemCorrectionFragment extends Fragment {
         } else {
             return super.onOptionsItemSelected(item);
         }
-    }
+    }*/
 
     private void configureRecyclerView() {
         this.itemRecyclerView.setAdapter(new ItemAdapter(new ArrayList<>(), onItemClick, onItemOptionSelected, getContext()));
         this.itemRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    }
-
-    private void displayProgressBar(boolean isDisplayed) {
-        this.progressBar.setVisibility(isDisplayed ? View.VISIBLE : View.GONE);
     }
 
     private void showPopup(View v, int itemId) {
@@ -210,85 +182,4 @@ public class ItemCorrectionFragment extends Fragment {
         }
     };
 
-
-
-    private final Observer<DataState.State> itemsObserver = new Observer<DataState.State>() {
-        @Override
-        public void onChanged(DataState.State dataState) {
-            switch(dataState) {
-                case SUCCESS:
-                    itemCorrectionViewModel.setCorrectableItemsFromList(scanReceiptViewModel.getItems().getValue().getData());
-                    displayProgressBar(false);
-                    break;
-                case ERROR:
-                    scanReceiptViewModel.getPrices().getValue().getState().removeObserver(pricesObserver);
-                    openBlockingDialog(
-                        R.string.error_parsing_items,
-                        scanReceiptViewModel.getItems().getValue().getError().getMessage(),
-                        R.string.dialog_positive,
-                        null,
-                        R.string.dialog_negative,
-                        null,
-                        true
-                    );
-                    displayProgressBar(false);
-                    break;
-                case LOADING:
-                    displayProgressBar(true);
-                    break;
-                default:
-                    //do nothing
-            }
-        }
-    };
-
-    private final Observer<DataState.State> pricesObserver = new Observer<DataState.State>() {
-        @Override
-        public void onChanged(DataState.State dataState) {
-            switch(dataState) {
-                case SUCCESS:
-                    try {
-                        itemCorrectionViewModel.setPricesFromParsedText(scanReceiptViewModel.getPrices().getValue().getData());
-                    } catch (Exception e) {
-                        scanReceiptViewModel.getPrices().getValue().setError(e);
-                    }
-                    break;
-                case ERROR:
-                    scanReceiptViewModel.getItems().getValue().getState().removeObserver(itemsObserver);
-                    openBlockingDialog(
-                        R.string.error_parsing_prices,
-                            scanReceiptViewModel.getPrices().getValue().getError().getMessage(),
-                            R.string.dialog_positive,
-                            null,
-                            R.string.dialog_negative,
-                            null,
-                            true
-                    );
-                    break;
-                default:
-                    //do nothing
-            }
-        }
-    };
-
-    private void openBlockingDialog(
-        int titleId,
-        String message,
-        int positiveMessageId,
-        DialogInterface.OnClickListener positiveListener,
-        int negativeMessageId,
-        DialogInterface.OnClickListener negativeListener,
-        boolean navigateUp
-    ) {
-        AlertDialog.Builder blockingDialog = new AlertDialog.Builder(getContext());
-        blockingDialog.setTitle(titleId);
-        blockingDialog.setMessage(message);
-        blockingDialog.setPositiveButton(positiveMessageId, positiveListener);
-        blockingDialog.setNegativeButton(negativeMessageId, negativeListener);
-        blockingDialog.create().show();
-
-        if (navigateUp) {
-            Navigation.findNavController(this.getView()).navigateUp();
-        }
-    }
 }

@@ -92,6 +92,10 @@
     <string name="information_message_choose_payer">Sélectionner la personne ayant payé.</string>
     <string name="foo">element</string>
 
+    <string-array name="receipt_correction_tabs_names">
+        <item>Correction des libellés</item>
+        <item>Correction avancée</item>
+    </string-array>
     <string name="error_parsing_items">Erreur lors de l\'analyse des éléments</string>
     <string name="error_parsing_prices">Erreur lors de l\'analyse des prix</string>
     <string name="item_correction_popup_menu_delete">Suprrimer</string>

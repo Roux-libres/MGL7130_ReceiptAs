@@ -38,8 +38,8 @@
             android:id="@+id/action_nav_scan_receipt_to_nav_scan_receipt_process_image"
             app:destination="@id/nav_scan_receipt_process_image" />
         <action
-            android:id="@+id/action_nav_scan_receipt_to_itemCorrectionFragment"
-            app:destination="@id/itemCorrectionFragment" />
+            android:id="@+id/scan_receipt_to_correction"
+            app:destination="@id/receiptCorrectionFragment" />
     </fragment>
 
     <fragment
@@ -71,15 +71,6 @@
         android:name="com.example.receiptas.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
-    <fragment
-        android:id="@+id/itemCorrectionFragment"
-        android:name="com.example.receiptas.ui.scan_receipt.correction.ItemCorrectionFragment"
-        android:label="Correction"
-        tools:layout="@layout/fragment_item_correction" >
-        <action
-            android:id="@+id/action_to_addingParticipantsFragment"
-            app:destination="@id/addingParticipantsFragment" />
-    </fragment>
 
     <fragment
         android:id="@+id/addingParticipantsFragment"
@@ -119,6 +110,14 @@
             app:launchSingleTop="true"
             app:popUpTo="@+id/nav_history"
             app:popUpToInclusive="false"/>
+    </fragment>
+    <fragment
+        android:id="@+id/receiptCorrectionFragment"
+        android:name="com.example.receiptas.ui.scan_receipt.correction.ReceiptCorrectionFragment"
+        android:label="ReceiptCorrectionFragment" >
+        <action
+            android:id="@+id/correction_to_participant"
+            app:destination="@id/addingParticipantsFragment" />
     </fragment>
 
 </navigation>
