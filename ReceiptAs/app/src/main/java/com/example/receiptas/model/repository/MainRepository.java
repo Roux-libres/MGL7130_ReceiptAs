@@ -40,22 +40,22 @@ public class MainRepository {
         try {
             Observable<JsonObject> request = ocrService.getParsedText(API_KEY, images.get(0), OCR_ENGINE, IS_TABLE);
 
-            for(String image : images.subList(1, images.size())) {
+            for (String image : images.subList(1, images.size())) {
                 request = request.concatMapEager(result -> {
                     texts.addAll(parseJsonObjectParsedText(result));
                     return ocrService.getParsedText(API_KEY, image, OCR_ENGINE, IS_TABLE);
                 });
             }
             request.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
-                        texts.addAll(parseJsonObjectParsedText(result));
-                        dataState.setSuccess(texts);
-                    }, throwable -> {
-                        throwable.printStackTrace();
-                        dataState.setError(throwable);
-                    }
-                );
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(result -> {
+                                texts.addAll(parseJsonObjectParsedText(result));
+                                dataState.setSuccess(texts);
+                            }, throwable -> {
+                                throwable.printStackTrace();
+                                dataState.setError(throwable);
+                            }
+                    );
         } catch (Exception exception) {
             dataState.setError(exception);
         }
@@ -66,12 +66,12 @@ public class MainRepository {
     private ArrayList<String> parseJsonObjectParsedText(JsonObject jsonObject) {
         //TODO REFACTO WITH IS TABLE TRUE
         return new ArrayList<>(
-            Arrays.asList(
-                jsonObject.get("ParsedResults")
-                    .getAsJsonArray().get(0)
-                    .getAsJsonObject().get("ParsedText")
-                    .getAsString().split(OCR_ENGINE == 1 ? "\r\n" : "\n")
-            )
+                Arrays.asList(
+                        jsonObject.get("ParsedResults")
+                                .getAsJsonArray().get(0)
+                                .getAsJsonObject().get("ParsedText")
+                                .getAsString().split(OCR_ENGINE == 1 ? "\r\n" : "\n")
+                )
         );
     }
 
@@ -107,6 +107,18 @@ public class MainRepository {
         return this.receiptDao.getReceiptAsJsonText(receiptDataEntity);
     }
 
+
+    public boolean addReceiptFromJsonString(String json, String pathFilesDirectory) {
+        try {
+            ReceiptDataEntity receiptDataEntity = this.receiptDao.createReceiptFromJson(json);
+            Receipt receipt = this.dataMapper.mapFromEntity(receiptDataEntity);
+            this.addReceipt(receipt, pathFilesDirectory);
+            return true;
+        } catch (Exception exception) {
+            System.out.println(exception);
+            return false;
+        }
+    }
 
     public void saveReceipts(String pathFilesDirectory){
         try {

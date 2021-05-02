@@ -47,8 +47,7 @@ public class ReceiptDetailFragment extends Fragment {
         NfcManager manager = (NfcManager) getContext().getSystemService(getContext().NFC_SERVICE);
         NfcAdapter nfcAdapter = manager.getDefaultAdapter();
 
-        //if (this.nfcAdapter != null && this.nfcAdapter.isEnabled()) {
-        if (true) {
+        if(nfcAdapter != null) {
             this.setHasOptionsMenu(true);
         }
 
