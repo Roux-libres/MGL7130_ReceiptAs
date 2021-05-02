@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.receiptas.R;
 
@@ -64,7 +65,12 @@ public class ReceiveReceiptFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Intent intent = this.getActivity().getIntent();
+
+        Toast.makeText(getContext(), "NFC Message reception ready", Toast.LENGTH_LONG).show();
+
         if(NfcAdapter.ACTION_NDEF_DISCOVERED.equals(intent.getAction())) {
+            Toast.makeText(getContext(), "Receiving NFC message", Toast.LENGTH_LONG).show();
+
             Parcelable[] rawMessages = intent.getParcelableArrayExtra(
                     NfcAdapter.EXTRA_NDEF_MESSAGES);
             NdefMessage message = (NdefMessage) rawMessages[0]; // only one message transferred
