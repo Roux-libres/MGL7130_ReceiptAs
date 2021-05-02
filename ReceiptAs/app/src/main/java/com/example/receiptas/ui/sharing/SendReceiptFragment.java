@@ -38,6 +38,7 @@ public class SendReceiptFragment extends Fragment implements NfcAdapter.CreateNd
     private Button nfcButton;
     private TextView nfcTextView;
     private boolean nfcIsAvailable;
+    private int receiptId;
 
 
     public static SendReceiptFragment newInstance() {
@@ -47,6 +48,9 @@ public class SendReceiptFragment extends Fragment implements NfcAdapter.CreateNd
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        this.receiptId = getArguments().getInt("receipt_id");
 
         this.nfcAdapter = NfcAdapter.getDefaultAdapter(this.getContext());
         if (this.nfcAdapter == null || (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)) {
@@ -69,7 +73,6 @@ public class SendReceiptFragment extends Fragment implements NfcAdapter.CreateNd
 
         this.nfcButton = (Button) root.findViewById(R.id.activate_nfc_button);
         this.nfcTextView = (TextView) root.findViewById(R.id.nfc_textview);
-
 
         if(this.nfcIsAvailable) {
             this.manageNFCState();
@@ -168,8 +171,9 @@ public class SendReceiptFragment extends Fragment implements NfcAdapter.CreateNd
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(SendReceiptViewModel.class);
-        // TODO: Use the ViewModel
+        mViewModel = new ViewModelProvider(this.getActivity()).get(SendReceiptViewModel.class);
+        this.nfcTextView.setText(this.mViewModel.getReceiptAsJsonString(this.receiptId));
+
     }
 
 

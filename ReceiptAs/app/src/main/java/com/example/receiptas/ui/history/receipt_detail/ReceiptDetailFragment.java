@@ -121,7 +121,9 @@ public class ReceiptDetailFragment extends Fragment {
                     .show();
             return true;
         } else if(item.getItemId() == R.id.share_button) {
-            Navigation.findNavController(getView()).navigate(ReceiptDetailFragmentDirections.actionReceiptDetailFragmentToNavSendReceipt());
+            ReceiptDetailFragmentDirections.ActionReceiptDetailFragmentToNavSendReceipt action =
+                    ReceiptDetailFragmentDirections.actionReceiptDetailFragmentToNavSendReceipt(this.receiptId);
+            Navigation.findNavController(getView()).navigate(action);
             return true;
         } else {
             return super.onOptionsItemSelected(item);

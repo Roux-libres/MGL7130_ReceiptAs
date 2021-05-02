@@ -2,6 +2,7 @@ package com.example.receiptas.model.repository;
 
 import com.example.receiptas.model.data_model.DataMapper;
 import com.example.receiptas.model.data_model.ReceiptDao;
+import com.example.receiptas.model.data_model.ReceiptDataEntity;
 import com.example.receiptas.model.domain_model.Receipt;
 import com.example.receiptas.model.service.OCRService;
 import com.example.receiptas.model.util.DataState;
@@ -98,6 +99,14 @@ public class MainRepository {
         this.receipts.remove(index);
         this.saveReceipts(receiptDirectory);
     }
+
+    public String getReceiptAsJsonString(int receipt_id) {
+        Receipt receipt = this.receipts.get(receipt_id);
+        ReceiptDataEntity receiptDataEntity = this.dataMapper.mapToEntity(receipt);
+
+        return this.receiptDao.getReceiptAsJsonText(receiptDataEntity);
+    }
+
 
     public void saveReceipts(String pathFilesDirectory){
         try {

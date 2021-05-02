@@ -27,6 +27,9 @@
         android:name="com.example.receiptas.ui.sharing.SendReceiptFragment"
         android:label="@string/send_receipt_title"
         tools:layout="@layout/fragment_send_receipt">
+        <argument
+            android:name="receipt_id"
+            app:argType="integer"/>
     </fragment>
 
 
