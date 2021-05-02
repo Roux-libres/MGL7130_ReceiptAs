@@ -92,6 +92,10 @@
     <string name="information_message_choose_payer">Select the person who paid.</string>
     <string name="foo">element</string>
 
+    <string-array name="receipt_correction_tabs_names">
+        <item>Item correction</item>
+        <item>Advanced correction</item>
+    </string-array>
     <string name="error_parsing_items">Error while parsing items</string>
     <string name="error_parsing_prices">Error while parsing prices</string>
     <string name="item_correction_popup_menu_delete">Delete</string>

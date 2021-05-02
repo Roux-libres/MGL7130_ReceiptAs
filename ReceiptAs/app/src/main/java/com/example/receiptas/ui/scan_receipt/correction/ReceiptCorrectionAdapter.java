@@ -4,14 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.receiptas.ui.history.receipt_detail.ReceiptDetailProductsFragment;
-import com.example.receiptas.ui.history.receipt_detail.ReceiptDetailSummaryFragment;
-
-public class ItemCorrectionAdapter extends FragmentStateAdapter {
+public class ReceiptCorrectionAdapter extends FragmentStateAdapter {
 
     private final int pageCount;
 
-    public ItemCorrectionAdapter(@NonNull Fragment fragment, int pageCount) {
+    public ReceiptCorrectionAdapter(@NonNull Fragment fragment, int pageCount) {
         super(fragment);
         this.pageCount = pageCount;
     }
@@ -22,10 +19,10 @@ public class ItemCorrectionAdapter extends FragmentStateAdapter {
         Fragment fragment;
         switch (position) {
             case 0:
-                fragment = ReceiptDetailProductsFragment.newInstance();
+                fragment = ItemCorrectionFragment.newInstance();
                 break;
             default:
-                fragment = ReceiptDetailSummaryFragment.newInstance();
+                fragment = AdvancedCorrectionFragment.newInstance();
         }
 
         return fragment;

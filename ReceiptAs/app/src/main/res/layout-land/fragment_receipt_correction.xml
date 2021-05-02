@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/item_correction_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/advanced_correction_header"/>
+
+    <TextView
+        android:id="@+id/advanced_correction_header"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/item_correction_header"/>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/include_fragment_item_correction"
+        layout="@layout/fragment_item_correction"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/include_fragment_advanced_correction"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_correction_header"/>
+
+    <LinearLayout
+        android:id="@+id/top_border"
+        android:layout_width="2dp"
+        android:layout_height="match_parent"
+        android:background="@color/purple_500"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/include_fragment_item_correction"
+        app:layout_constraintEnd_toStartOf="@+id/include_fragment_advanced_correction" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/include_fragment_advanced_correction"
+        layout="@layout/fragment_advanced_correction"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/include_fragment_item_correction"
+        app:layout_constraintTop_toBottomOf="@+id/advanced_correction_header" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

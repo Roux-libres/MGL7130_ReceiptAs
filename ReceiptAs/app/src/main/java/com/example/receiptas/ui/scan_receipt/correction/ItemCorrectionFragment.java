@@ -41,6 +41,10 @@ public class ItemCorrectionFragment extends Fragment {
     private RecyclerView itemRecyclerView;
     private ProgressBar progressBar;
 
+    public static ItemCorrectionFragment newInstance() {
+        return new ItemCorrectionFragment();
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
