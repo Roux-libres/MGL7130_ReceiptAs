@@ -41,7 +41,8 @@
 
     <string name="name_input">Name</string>
     <string name="adding_button_description">Add</string>
-    <string name="validation_button_description">Validate</string>
+    <string name="adding_participant_dialog_no_participant_title">No participant</string>
+    <string name="adding_participant_dialog_no_participant_message">Please add at least one participant</string>
 
 
     <string name="menu_receive">Receive receipt</string>

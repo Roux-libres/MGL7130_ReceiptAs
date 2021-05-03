@@ -2,7 +2,6 @@ package com.example.receiptas.ui.scan_receipt;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,16 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.exifinterface.media.ExifInterface;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.NavigationUI;
 
 import com.example.receiptas.MainActivity;
 import com.example.receiptas.R;
@@ -27,7 +20,6 @@ import com.example.receiptas.ui.scan_receipt.resizableview.ResizableView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -49,8 +41,8 @@ public class ScanReceiptProcessImageFragment extends Fragment {
         ArrayList<Bitmap> processedImages = (ArrayList<Bitmap>) getArguments().get("processed_images");
         int numberOfImages = getArguments().getInt("numberOfImages");
         TextView progressionTextView = root.findViewById(R.id.text_progression);
-        if(numberOfImages > 1){
-            String progression = String.valueOf(numberOfImages - this.scanReceiptViewModel.getNumberOfSelectedImages() + 1) + "/" + String.valueOf(numberOfImages);
+        if (numberOfImages > 1) {
+            String progression = (numberOfImages - this.scanReceiptViewModel.getNumberOfSelectedImages() + 1) + "/" + numberOfImages;
             progressionTextView.setText(progression);
         } else {
             progressionTextView.setVisibility(View.INVISIBLE);
@@ -59,11 +51,11 @@ public class ScanReceiptProcessImageFragment extends Fragment {
         this.imageBitmap = (Bitmap) getArguments().get("image_bitmap");
         this.isCameraCapture = (this.imageBitmap != null);
 
-        if(!this.isCameraCapture) {
+        if (!this.isCameraCapture) {
             String image_path = this.scanReceiptViewModel.getSelectedImages().getValue().get(0);
             File imageFile = new File(image_path);
 
-            if(!imageFile.exists()){
+            if (!imageFile.exists()) {
                 return root;
             }
 
@@ -96,13 +88,13 @@ public class ScanReceiptProcessImageFragment extends Fragment {
             public void onClick(View view) {
                 processedImages.add(shapeBitmap(imageBitmap, resizableView));
 
-                if(((MainActivity) getActivity()).isTablet()){
+                if (((MainActivity) getActivity()).isTablet()) {
                     ((MainActivity) getActivity()).lockDrawerOpen();
                 } else {
                     ((MainActivity) getActivity()).unlockDrawer();
                 }
 
-                if(!isCameraCapture && processedImages.size() % 2 == 1){
+                if (!isCameraCapture && processedImages.size() % 2 == 1) {
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageSelf action =
                             ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageSelf(
                                     getString(R.string.scan_receipt_process_image_product_price),
@@ -110,7 +102,7 @@ public class ScanReceiptProcessImageFragment extends Fragment {
                                     null);
                     action.setNumberOfImages(numberOfImages);
                     Navigation.findNavController(view).navigate(action);
-                } else if(isCameraCapture && processedImages.size() % 2 == 1){
+                } else if (isCameraCapture && processedImages.size() % 2 == 1) {
                     ScanReceiptProcessImageFragmentDirections.ActionNavScanReceiptProcessImageSelf action =
                             ScanReceiptProcessImageFragmentDirections.actionNavScanReceiptProcessImageSelf(
                                     getString(R.string.scan_receipt_process_image_product_price),
@@ -118,10 +110,10 @@ public class ScanReceiptProcessImageFragment extends Fragment {
                                     imageBitmap);
                     action.setNumberOfImages(numberOfImages);
                     Navigation.findNavController(view).navigate(action);
-                } else if(isCameraCapture){
+                } else if (isCameraCapture) {
                     scanReceiptViewModel.getProcessedImages().getValue().addAll(processedImages);
                     Navigation.findNavController(view).popBackStack(R.id.nav_scan_receipt, false);
-                } else if(scanReceiptViewModel.getNumberOfSelectedImages() == 1){
+                } else if (scanReceiptViewModel.getNumberOfSelectedImages() == 1) {
                     scanReceiptViewModel.getSelectedImages().getValue().remove(0);
                     scanReceiptViewModel.getProcessedImages().getValue().addAll(processedImages);
                     Navigation.findNavController(view).popBackStack(R.id.nav_scan_receipt, false);
@@ -141,7 +133,7 @@ public class ScanReceiptProcessImageFragment extends Fragment {
         return root;
     }
 
-    private Bitmap shapeBitmap(Bitmap imageBitmap, ResizableView resizableView){
+    private Bitmap shapeBitmap(Bitmap imageBitmap, ResizableView resizableView) {
         Point[] points = resizableView.getPoints();
         points = this.swapPoints(points);
 
@@ -154,18 +146,18 @@ public class ScanReceiptProcessImageFragment extends Fragment {
         return imageBitmapCropped;
     }
 
-    private Point[] swapPoints(Point[] points){
+    private Point[] swapPoints(Point[] points) {
         Point lowestPoint = points[0];
 
-        for(Point point : points){
-            if(point.x <= lowestPoint.x && point.y <= lowestPoint.y){
+        for (Point point : points) {
+            if (point.x <= lowestPoint.x && point.y <= lowestPoint.y) {
                 lowestPoint = point;
             }
         }
 
         Point tempPoint;
 
-        switch(Arrays.asList(points).indexOf(lowestPoint)){
+        switch (Arrays.asList(points).indexOf(lowestPoint)) {
             case 0:
                 break;
             case 1:

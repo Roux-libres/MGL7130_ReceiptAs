@@ -14,8 +14,6 @@ public class Receipt {
 
     public Receipt() {
         this.name = "";
-        //TODO set date in scan receipt fragment/view
-        this.date = new Date();
         this.currency = Currency.getInstance(Locale.getDefault());
         this.items = new ArrayList<>();
         this.participants = new ArrayList<>();
