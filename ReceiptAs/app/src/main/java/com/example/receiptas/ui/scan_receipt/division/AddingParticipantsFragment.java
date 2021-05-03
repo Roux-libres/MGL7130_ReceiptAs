@@ -1,7 +1,9 @@
 package com.example.receiptas.ui.scan_receipt.division;
 
 import android.app.Activity;
+import android.graphics.Path;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.example.receiptas.MainActivity;
 import com.example.receiptas.R;
 import com.example.receiptas.model.domain_model.Participant;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
@@ -86,27 +89,23 @@ public class AddingParticipantsFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.validate_button) {
-            //TODO REFACTO TOUT CA LA
-            if(!scanReceiptViewModel.getReceipt().getParticipants().isEmpty()) {
-                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                View view = getActivity().getCurrentFocus();
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            ((MainActivity) getActivity()).hideKeyboard();
 
-                AddingParticipantsFragmentDirections.ActionAddingParticipantsFragmentToItemDivision action =
-                    AddingParticipantsFragmentDirections.actionAddingParticipantsFragmentToItemDivision();
-                Navigation.findNavController(getView()).navigate(action);
-            } else {
+            if(scanReceiptViewModel.getReceipt().getParticipants().isEmpty()) {
                 AlertDialog.Builder blockingDialog = new AlertDialog.Builder(getContext());
-                blockingDialog.setTitle("No participant");
-                blockingDialog.setMessage("Please add at least one participant");
+                blockingDialog.setTitle(getString(R.string.adding_participant_dialog_no_participant_title));
+                blockingDialog.setMessage(getString(R.string.adding_participant_dialog_no_participant_message));
                 blockingDialog.setPositiveButton(R.string.dialog_positive, null);
                 blockingDialog.create().show();
+            } else {
+                AddingParticipantsFragmentDirections.ActionAddingParticipantsFragmentToItemDivision action =
+                        AddingParticipantsFragmentDirections.actionAddingParticipantsFragmentToItemDivision();
+                Navigation.findNavController(getView()).navigate(action);
             }
 
             return true;
         } else {
             return super.onOptionsItemSelected(item);
-
         }
     }
 
