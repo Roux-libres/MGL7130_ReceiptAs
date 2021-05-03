@@ -10,28 +10,27 @@ import java.util.ArrayList;
 
 public class ImagesGallery {
 
-    public static ArrayList<String> listOfImages(Context context){
-        Uri uri;
+    public static ArrayList<String> listOfImages(Context context) {
         Cursor cursor;
-        int column_index_data, column_index_folder_name;
+        int column_index_data;
         ArrayList<String> listOfAllImages = new ArrayList<>();
         String absolutePathOfImage;
-        uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+        Uri uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 
         String[] projection = {MediaStore.MediaColumns.DATA,
-            MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
+                MediaStore.Images.Media.BUCKET_DISPLAY_NAME};
 
-        String orderBy = MediaStore.Video.Media.DATE_TAKEN;
+        String orderBy = MediaStore.Video.Media.DATE_MODIFIED;
         cursor = context.getContentResolver().query(uri, projection, null,
                 null, orderBy + " DESC");
 
         column_index_data = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
 
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             absolutePathOfImage = cursor.getString(column_index_data);
 
             File imageFile = new File(absolutePathOfImage);
-            if(imageFile.exists()){
+            if (imageFile.exists()) {
                 listOfAllImages.add(absolutePathOfImage);
             }
         }
