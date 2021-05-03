@@ -32,15 +32,18 @@ public class ItemCorrectionFragment extends Fragment {
     private RecyclerView itemRecyclerView;
     private ProgressBar progressBar;
 
-    public static ItemCorrectionFragment newInstance() {
-        return new ItemCorrectionFragment();
+    public ItemCorrectionFragment(ItemCorrectionViewModel itemCorrectionViewModel) {
+        this.itemCorrectionViewModel = itemCorrectionViewModel;
+    }
+
+    public static ItemCorrectionFragment newInstance(ItemCorrectionViewModel itemCorrectionViewModel) {
+        return new ItemCorrectionFragment(itemCorrectionViewModel);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
-        itemCorrectionViewModel = new ViewModelProvider(this).get(ItemCorrectionViewModel.class);
     }
 
     @Override
@@ -57,6 +60,8 @@ public class ItemCorrectionFragment extends Fragment {
 
         TextView informationMessage = view.findViewById(R.id.information_message);
         informationMessage.setText(getResources().getString(R.string.information_message_item_correction));
+
+        this.itemCorrectionViewModel.getCorrectableItems().observe(this.getViewLifecycleOwner(), correctableItemObserver);
 
         this.itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
         this.configureRecyclerView();

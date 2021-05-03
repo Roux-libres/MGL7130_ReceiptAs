@@ -86,14 +86,13 @@ public class ReceiptCorrectionFragment extends Fragment {
             viewPager = view.findViewById(R.id.pager);
 
             tabLayout.addOnTabSelectedListener(tabSelectedListener);
-            viewPager.setAdapter(new ReceiptCorrectionAdapter(this, tabLayout.getTabCount()));
+            viewPager.setAdapter(new ReceiptCorrectionAdapter(this, this.itemCorrectionViewModel, tabLayout.getTabCount()));
 
             new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabsNames[position])).attach();
         }
 
         this.progressBar = view.findViewById(R.id.progressBar);
 
-        this.itemCorrectionViewModel.getCorrectableItems().observe(this.getViewLifecycleOwner(), correctableItemObserver);
         this.scanReceiptViewModel.parseTextFromImages();
 
         this.scanReceiptViewModel.getItems().getValue().getState().observe(this.getViewLifecycleOwner(), itemsObserver);

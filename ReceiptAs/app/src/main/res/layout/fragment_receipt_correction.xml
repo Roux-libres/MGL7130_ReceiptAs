@@ -22,12 +22,6 @@
 
     </com.google.android.material.tabs.TabLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/pager"
         android:layout_width="match_parent"
@@ -35,5 +29,11 @@
         android:layout_weight="1" >
 
     </androidx.viewpager2.widget.ViewPager2>
+
+    <!--ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" /-->
 
 </LinearLayout>

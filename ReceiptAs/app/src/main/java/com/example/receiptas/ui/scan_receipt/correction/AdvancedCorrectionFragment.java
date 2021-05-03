@@ -13,8 +13,14 @@ import com.example.receiptas.R;
 
 public class AdvancedCorrectionFragment extends Fragment {
 
-    public static AdvancedCorrectionFragment newInstance() {
-        return new AdvancedCorrectionFragment();
+    private final ItemCorrectionViewModel itemCorrectionViewModel;
+
+    public AdvancedCorrectionFragment(ItemCorrectionViewModel itemCorrectionViewModel) {
+        this.itemCorrectionViewModel = itemCorrectionViewModel;
+    }
+
+    public static AdvancedCorrectionFragment newInstance(ItemCorrectionViewModel itemCorrectionViewModel) {
+        return new AdvancedCorrectionFragment(itemCorrectionViewModel);
     }
 
     @Override

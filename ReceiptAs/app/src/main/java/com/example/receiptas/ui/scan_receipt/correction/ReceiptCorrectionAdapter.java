@@ -7,9 +7,11 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 public class ReceiptCorrectionAdapter extends FragmentStateAdapter {
 
     private final int pageCount;
+    private final ItemCorrectionViewModel itemCorrectionViewModel;
 
-    public ReceiptCorrectionAdapter(@NonNull Fragment fragment, int pageCount) {
+    public ReceiptCorrectionAdapter(@NonNull Fragment fragment, ItemCorrectionViewModel itemCorrectionViewModel, int pageCount) {
         super(fragment);
+        this.itemCorrectionViewModel = itemCorrectionViewModel;
         this.pageCount = pageCount;
     }
 
@@ -19,10 +21,10 @@ public class ReceiptCorrectionAdapter extends FragmentStateAdapter {
         Fragment fragment;
         switch (position) {
             case 0:
-                fragment = ItemCorrectionFragment.newInstance();
+                fragment = ItemCorrectionFragment.newInstance(this.itemCorrectionViewModel);
                 break;
             default:
-                fragment = AdvancedCorrectionFragment.newInstance();
+                fragment = AdvancedCorrectionFragment.newInstance(this.itemCorrectionViewModel);
         }
 
         return fragment;
