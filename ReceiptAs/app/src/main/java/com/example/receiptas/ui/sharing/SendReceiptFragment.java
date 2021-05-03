@@ -1,74 +1,82 @@
 package com.example.receiptas.ui.sharing;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.lifecycle.ViewModelProvider;
-
-import android.app.Dialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
-import android.nfc.NfcAdapter;
-import android.nfc.NfcEvent;
-import android.nfc.NfcManager;
-import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.os.ParcelUuid;
-import android.provider.Settings;
-import android.renderscript.ScriptIntrinsicYuvToRGB;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.receiptas.R;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.Set;
 import java.util.UUID;
 
 
 public class SendReceiptFragment extends Fragment {
 
-
-    private BluetoothAdapter bluetoothAdapter;
-    private BluetoothDevice selectedDevice;
-    private BluetoothSocket bluetoothSocket;
-
-    //Todo create function init
     private static final UUID MY_UUID = UUID.fromString("10011001-0000-1000-8000-00805f8b34fb");
-    private final String NAME = getResources().getString(R.string.app_name);
     private static final int MESSAGE_WRITE = 1;
     private static final int MESSAGE_ERROR = 2;
     private static final int REQUEST_ENABLE_BT = 10;
-
-
+    private final Handler handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
+        @Override
+        public boolean handleMessage(@NonNull Message message) {
+            switch (message.what) {
+                case MESSAGE_WRITE:
+                    //TODO
+                    System.out.println("Message envoye" + message.obj);
+                    break;
+                case MESSAGE_ERROR:
+                    //TODO
+                    System.out.println("Erreur de l'envoi du message");
+                    break;
+            }
+            return true;
+        }
+    });
+    private BluetoothAdapter bluetoothAdapter;
+    private BluetoothDevice selectedDevice;
+    private ConnectThread connectThread;
+    private ConnectedThread connectedThread;
+    private String NAME;
     private SendReceiptViewModel mViewModel;
     private Button nfcButton;
     private TextView nfcTextView;
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
+                    BluetoothAdapter.STATE_OFF);
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                if (state == BluetoothAdapter.STATE_OFF) {
+                    changeViewBluetoothDisabled();
+                    askForBluetoothActivation();
+                } else if (state == BluetoothAdapter.STATE_ON)
+                    changeViewBluetoothActivated();
+            }
+        }
+    };
     private int receiptId;
-
 
     public static SendReceiptFragment newInstance() {
         return new SendReceiptFragment();
@@ -81,70 +89,42 @@ public class SendReceiptFragment extends Fragment {
 
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         this.getActivity().registerReceiver(mReceiver, filter);
+        this.NAME = getResources().getString(R.string.app_name);
     }
-
-    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
-            final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
-                    BluetoothAdapter.STATE_OFF);
-            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-                if(state == BluetoothAdapter.STATE_OFF)
-                    changeViewBluetoothActivated();
-                else if(state == BluetoothAdapter.STATE_ON)
-                    changeViewBluetoothDisabled();
-            }
-        }
-    };
-
-    private final Handler handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
-        @Override
-        public boolean handleMessage(@NonNull Message message) {
-            switch (message.what) {
-                case MESSAGE_WRITE:
-                    //TODO
-                    System.out.println("Message envoyé" + message.obj);
-                    break;
-                case MESSAGE_ERROR:
-                    //TODO
-                    System.out.println("Erreur de l'envoi du message");
-                    break;
-            }
-            return true;
-        }
-    });
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_send_receipt, container, false);
 
-        this.initBluetooth();
+        this.nfcButton = root.findViewById(R.id.activate_nfc_button);
+        this.nfcTextView = root.findViewById(R.id.nfc_textview);
 
-        this.nfcButton = (Button) root.findViewById(R.id.activate_nfc_button);
-        this.nfcTextView = (TextView) root.findViewById(R.id.nfc_textview);
+        this.initBluetooth();
 
         this.nfcButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                selectDevice();
             }
         });
 
         return root;
     }
 
+    private void askForBluetoothActivation() {
+        Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+        this.getActivity().startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+    }
 
     private void initBluetooth() {
-        this.bluetoothAdapter =  BluetoothAdapter.getDefaultAdapter();
+        this.bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter != null) {
-            if (!bluetoothAdapter.isEnabled()) {
-                changeViewBluetoothActivated();
+            if (bluetoothAdapter.isEnabled()) {
+                this.changeViewBluetoothActivated();
             } else {
-                changeViewBluetoothDisabled();
-                Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                this.getActivity().startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
+                this.changeViewBluetoothDisabled();
+                this.askForBluetoothActivation();
             }
         } else {
             this.manageUnavailableBluetooth();
@@ -153,25 +133,33 @@ public class SendReceiptFragment extends Fragment {
 
     private void changeViewBluetoothActivated() {
         this.nfcButton.setEnabled(true);
-        this.nfcButton.setText(R.string.nfc_button_activate);
-        this.nfcTextView.setText(R.string.nfc_disabled_description);
+        this.nfcButton.setText(R.string.nfc_button_activated);
+        this.nfcTextView.setText(R.string.nfc_activated_description);
     }
 
     private void changeViewBluetoothDisabled() {
         this.nfcButton.setEnabled(false);
         this.nfcButton.setText(R.string.nfc_button_activated);
-        this.nfcTextView.setText(R.string.nfc_activated_description);
+        this.nfcTextView.setText(R.string.nfc_disabled_description);
     }
 
-    public void manageUnavailableBluetooth() {
+    private void manageUnavailableBluetooth() {
         //TODO
     }
 
-    public void updateBoundedDevices() {
+    private void selectDevice() {
+        this.updateBoundedDevices();
+        this.selectedDevice = (BluetoothDevice) this.bluetoothAdapter.getBondedDevices().toArray()[8];
+        System.out.println(this.selectedDevice.getName());
+        this.connectThread = new ConnectThread(this.selectedDevice);
+        this.connectThread.start();
+    }
+
+    private void updateBoundedDevices() {
         Set<BluetoothDevice> bondedDevices = this.bluetoothAdapter.getBondedDevices();
 
-        if(bondedDevices.size() > 0) {
-            for (BluetoothDevice device: bondedDevices) {
+        if (bondedDevices.size() > 0) {
+            for (BluetoothDevice device : bondedDevices) {
                 System.out.println(device.getName());
                 //TODO Actualize list
             }
@@ -179,6 +167,25 @@ public class SendReceiptFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (this.connectThread != null) {
+            this.connectThread.cancel();
+            this.connectThread.interrupt();
+        }
+        if (this.connectedThread != null) {
+            this.connectedThread.cancel();
+            this.connectedThread.interrupt();
+        }
+    }
+
+    public void manageMyConnectedSocket(BluetoothSocket socket) {
+        this.connectedThread = new ConnectedThread(socket);
+        this.connectedThread.start();
+        String receiptAsJson = this.mViewModel.getReceiptAsJsonString(this.receiptId);
+        this.connectedThread.write(receiptAsJson.getBytes());
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -204,8 +211,7 @@ public class SendReceiptFragment extends Fragment {
         }
 
         public void run() {
-            bluetoothAdapter.cancelDiscovery();
-
+            //   bluetoothAdapter.cancelDiscovery();
             try {
                 mmSocket.connect();
             } catch (IOException connectException) {
@@ -214,7 +220,7 @@ public class SendReceiptFragment extends Fragment {
                 return;
             }
 
-            bluetoothSocket = mmSocket;
+            manageMyConnectedSocket(mmSocket);
         }
 
         public void cancel() {
@@ -251,7 +257,6 @@ public class SendReceiptFragment extends Fragment {
         public void write(byte[] bytes) {
             try {
                 mmOutStream.write(bytes);
-
                 Message writtenMsg = handler.obtainMessage(
                         MESSAGE_WRITE, -1, -1, bytes);
                 writtenMsg.sendToTarget();
@@ -264,7 +269,6 @@ public class SendReceiptFragment extends Fragment {
             }
         }
 
-        // Call this method from the main activity to shut down the connection.
         public void cancel() {
             try {
                 mmSocket.close();
