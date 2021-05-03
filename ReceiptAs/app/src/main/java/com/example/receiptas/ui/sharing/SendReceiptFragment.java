@@ -4,9 +4,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -32,12 +34,12 @@ import com.example.receiptas.R;
 
 public class SendReceiptFragment extends Fragment implements NfcAdapter.CreateNdefMessageCallback {
 
+
     private SendReceiptViewModel mViewModel;
-    private String NFC_ERROR_AVAILABILITY = "The phone does not have an NFC service. Please return to the receipt.";
     private NfcAdapter nfcAdapter;
     private Button nfcButton;
     private TextView nfcTextView;
-    private boolean nfcIsAvailable;
+    private int receiptId;
 
 
     public static SendReceiptFragment newInstance() {
@@ -47,19 +49,26 @@ public class SendReceiptFragment extends Fragment implements NfcAdapter.CreateNd
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.receiptId = getArguments().getInt("receipt_id");
 
         this.nfcAdapter = NfcAdapter.getDefaultAdapter(this.getContext());
-        if (this.nfcAdapter == null || (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)) {
-            this.getCustomAlertDialog(this.NFC_ERROR_AVAILABILITY);
-            nfcIsAvailable = false;
-            return;
-        } else {
-            nfcAdapter.setNdefPushMessageCallback(this, this.getActivity());
-            Toast.makeText(getContext(), "NFC Message ready", Toast.LENGTH_LONG).show();
-            nfcIsAvailable = true;
-        }
-        //TODO Créer un observeur sur le changement d'état du NFC avec NfcAdapter.ACTION_ADAPTER_STATE_CHANGED et le principe de broadcastreceiver
+
+        IntentFilter filter = new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED);
+        this.getActivity().registerReceiver(mReceiver, filter);
     }
+
+
+    private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            final String action = intent.getAction();
+            final int state = intent.getIntExtra(NfcAdapter.EXTRA_ADAPTER_STATE,
+                    NfcAdapter.STATE_OFF);
+            if (action.equals(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED) && (state == NfcAdapter.STATE_OFF || state == NfcAdapter.STATE_ON)) {
+                manageNFCState();
+            }
+        }
+    };
 
 
     @Override
@@ -70,18 +79,18 @@ public class SendReceiptFragment extends Fragment implements NfcAdapter.CreateNd
         this.nfcButton = (Button) root.findViewById(R.id.activate_nfc_button);
         this.nfcTextView = (TextView) root.findViewById(R.id.nfc_textview);
 
-
-        if(this.nfcIsAvailable) {
+        if (this.nfcAdapter == null || (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1)) {
+            this.nfcTextView.setText(R.string.nfc_error_availability);
+            this.nfcButton.setEnabled(false);
+        } else {
             this.manageNFCState();
+            nfcAdapter.setNdefPushMessageCallback(this, this.getActivity()); //TODO Change
             this.nfcButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     openNFCSettings();
                 }
             });
-        } else {
-            this.nfcTextView.setText(R.string.nfc_error_availability);
-            this.nfcButton.setEnabled(false);
         }
 
         return root;
@@ -90,15 +99,15 @@ public class SendReceiptFragment extends Fragment implements NfcAdapter.CreateNd
 
     @Override
     public NdefMessage createNdefMessage(NfcEvent event) {
-        String receiptInformation = "Ceci est un recu";
+        String receiptInformation = this.mViewModel.getReceiptAsJsonString(this.receiptId);
         NdefRecord ndefRecord = NdefRecord.createMime("text/plain", receiptInformation.getBytes());
         NdefMessage ndefMessage = new NdefMessage(ndefRecord);
         return ndefMessage;
     }
 
+
     private void manageNFCState() {
         if (!this.nfcAdapter.isEnabled()) {
-            this.getDialogForUserToActivateNFC().show();
             this.nfcButton.setEnabled(true);
             this.nfcButton.setText(R.string.nfc_button_activate);
             this.nfcTextView.setText(R.string.nfc_disabled_description);
@@ -121,56 +130,17 @@ public class SendReceiptFragment extends Fragment implements NfcAdapter.CreateNd
         startActivity(intent);
     }
 
-    private Dialog getDialogForUserToActivateNFC() {
-        Dialog dialog;
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-        builder.setMessage("The NFC is required to send a receipt. Would you like to activate it?");
-        builder.setCancelable(false);
-        builder.setTitle("NFC Activation");
-
-        builder.setPositiveButton("Yes",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        openNFCSettings();
-                    }
-                });
-
-        builder.setNegativeButton("No",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
-
-        dialog = builder.create();
-        return dialog;
-    }
-
-    private Dialog getCustomAlertDialog(String message) {
-        Dialog dialog;
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-
-        builder.setMessage(message);
-        builder.setCancelable(true);
-        builder.setTitle("Information");
-
-        builder.setNeutralButton("Ok",  new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-        dialog = builder.create();
-        return dialog;
-    }
-
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(SendReceiptViewModel.class);
-        // TODO: Use the ViewModel
+        mViewModel = new ViewModelProvider(this.getActivity()).get(SendReceiptViewModel.class);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        this.getActivity().unregisterReceiver(mReceiver);
+    }
 
 }

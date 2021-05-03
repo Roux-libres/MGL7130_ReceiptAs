@@ -73,7 +73,7 @@ public class ReceiveReceiptFragment extends Fragment {
 
             Parcelable[] rawMessages = intent.getParcelableArrayExtra(
                     NfcAdapter.EXTRA_NDEF_MESSAGES);
-            NdefMessage message = (NdefMessage) rawMessages[0]; // only one message transferred
+            NdefMessage message = (NdefMessage) rawMessages[0];
             this.nfcTextView.setText(new String(message.getRecords()[0].getPayload()));
 
         } else
@@ -85,8 +85,7 @@ public class ReceiveReceiptFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ReceiveReceiptViewModel.class);
-        // TODO: Use the ViewModel
+        this.mViewModel = new ViewModelProvider(this.getActivity()).get(ReceiveReceiptViewModel.class);
     }
 
 }

@@ -43,4 +43,12 @@ public class ReceiptDao {
             System.out.println(ioException);
         }
     }
+
+    public String getReceiptAsJsonText(ReceiptDataEntity receiptDataEntity) {
+        return this.gson.toJson(receiptDataEntity);
+    }
+
+    public ReceiptDataEntity createReceiptFromJson(String json) {
+        return this.gson.fromJson(json, ReceiptDataEntity.class);
+    }
 }
