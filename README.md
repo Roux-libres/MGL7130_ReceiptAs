@@ -106,18 +106,24 @@ Le traitement des photos se fait en deux étapes, il faut tout d'abord sélectio
 
 Avant de valider la création du reçu, il est possible de modifier les informations entrées et de supprimer les photos traitées. Si tout est bon, il faut cliquer sur le bouton de validation en bas à droite.
 
+
+
 <strong>À MODIFIER UNE FOIS L'ÉCRAN D'OREL FINI</strong>
+
 S'ensuit l'écran de corrections, celui-ci sert à fusionner des noms de produits ou bien à les supprimer. Une fois la correction finie, il faut valider les modifications.
+
 <strong>À MODIFIER UNE FOIS L'ÉCRAN D'OREL FINI</strong>
+
+
 
 Ensuite c'est au tour de l'ajout des participants, il faut rentrer leurs noms dans la zone de texte et cliquer sur le bouton marqué d'un <strong>+</strong>. Une fois tous les participants ajoutés, il faut valider les modifications.
 
 Il faut ensuite que chaque participant sélectionne les produits auxquels il a participé pour l'achat. Une fois que le dernier participant a fini il faut valider.
 
 Enfin l'écran de finalisation apparait, les informations suivantes sont affichés :
-* Le titre du reçu
-* Le prix total du reçu
-* Le prix total des articles qui n'ont pas de participant
+* Le titre du reçu ;
+* Le prix total du reçu ;
+* Le prix total des articles qui n'ont pas de participant ;
 * les participants et le montant qu'il doivent rembourser au payeur.
 
 Il faut enfin sélectionner le payeur et valider le reçu. Le détail du reçu s'affiche et vous pouvez revenir à l'historique à l'aide de la flèche de retour en haut à gauche.
