@@ -39,26 +39,58 @@
     <string name="scan_receipt_title">Receipt title</string>
     <string name="scan_receipt_price">Receipt price</string>
 
+    <string name="scan_receipt_correction_label">Correction</string>
+
+    <string name="scan_receipt_participant_label">Participants</string>
     <string name="name_input">Name</string>
     <string name="adding_button_description">Add</string>
-    <string name="validation_button_description">Validate</string>
+    <string name="adding_participant_dialog_no_participant_title">No participant</string>
+    <string name="adding_participant_dialog_no_participant_message">Please add at least one participant</string>
+
+    <string name="scan_receipt_division_label">Division</string>
+
+    <string name="scan_receipt_finalization_label">Finalization</string>
+
+
+    <string name="menu_receive">Receive receipt</string>
+
+    <string name="send_receipt_title">Send receipt</string>
+    <string name="bluetooth_state_off">The Bluetooth is DISABLED, \n Please activate it to send receipt.</string>
+    <string name="bluetooth_state_on">The Bluetooth is ACTIVATED</string>
+    <string name="bluetooth_state_unavailable">The Bluetooth is UNAVAILABLE.</string>
+    <string name="bluetooth_button_activate">Activate Bluetooth</string>
+    <string name="bluetooth_information_wait_reception">Waiting for reception...</string>
+    <string name="bluetooth_information_reception_progress"> Reception in progress... </string>
+    <string name="bluetooth_information_reception">Receipt added : </string>
+    <string name="bluetooth_information_reception_error">Reception error. Please try again.</string>
+    <string name="bluetooth_dialog_title">Choose a device :</string>
+    <string name="bluetooth_button_select">Select</string>
+    <string name="bluetooth_button_send">Send receipt</string>
+    <string name="bluetooth_information_sending_init">Select a destination device to sending.</string>
+    <string name="bluetooth_information_sending"> Sending ...</string>
+    <string name="bluetooth_information_device_init">Device name</string>
+    <string name="bluetooth_information_sending_error">Sending error. Please try again.</string>
+    <string name="bluetooth_information_device_error">Device unavailable. Try again or select an other device.</string>
+    <string name="bluetooth_information_sending_success">Receipt sent successfully.</string>
 
 
     <string name="menu_settings">Settings</string>
+    <string name="settings_category_general">General settings</string>
 
     <string name="settings_favorite_currency">settings_favorite_currency</string>
+    <string name="settings_favorite_currency_default">None</string>
     <string name="settings_favorite_currency_title">Default currency</string>
     <string name="settings_favorite_currency_summary">Choose the default currency for new receipts</string>
 
-    <string name="settings_favorite_theme_default">System default</string>
     <string name="settings_favorite_theme">settings_favorite_theme</string>
+    <string name="settings_favorite_theme_default">@string/settings_theme_system</string>
     <string name="settings_favorite_theme_title">Theme</string>
     <string name="settings_favorite_theme_summary">Choose a theme for the application</string>
-    <string-array name="settings_themes">
-        <item name="settings_theme_system">System default</item>
-        <item name="settings_theme_light">Light</item>
-        <item name="settings_theme_dark">Dark</item>
-    </string-array>
+
+    <string name="settings_theme_system">System default</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+
 
     <string name="settings_favorite_language_default">English</string>
     <string name="settings_favorite_language">settings_favorite_language</string>
@@ -69,6 +101,7 @@
         <item name="settings_language_fr">Français</item>
     </string-array>
 
+    <string name="settings_category_about">About</string>
     <string name="settings_version">settings_version</string>
     <string name="settings_version_title">Version</string>
 

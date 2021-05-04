@@ -25,6 +25,8 @@ import com.example.receiptas.model.domain_model.Receipt;
 import com.example.receiptas.ui.history.receipt_detail.SummaryParticipantAdapter;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
 
+import java.util.Date;
+
 
 public class FinalizationFragment extends Fragment {
 
@@ -34,7 +36,7 @@ public class FinalizationFragment extends Fragment {
     private MainViewModel mainViewModel;
     private View.OnClickListener onValidateReceipt;
 
-    public static FinalizationFragment newInstance(String param1, String param2) {
+    public static FinalizationFragment newInstance() {
         return new FinalizationFragment();
     }
 
@@ -121,6 +123,8 @@ public class FinalizationFragment extends Fragment {
     private final View.OnClickListener onValidateReceiptWithPayer = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            scanReceiptViewModel.getReceipt().setDate(new Date());
+
             int index = mainViewModel.createReceipt(scanReceiptViewModel.getReceipt());
             scanReceiptViewModel.removeSavedData();
 

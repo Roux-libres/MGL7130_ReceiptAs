@@ -39,26 +39,58 @@
     <string name="scan_receipt_title">Titre du reçu</string>
     <string name="scan_receipt_price">Prix du reçu</string>
 
+    <string name="scan_receipt_correction_label">Correction</string>
+
+    <string name="scan_receipt_participant_label">Participants</string>
+
     <string name="name_input">Nom</string>
     <string name="adding_button_description">Ajouter</string>
-    <string name="validation_button_description">Valider</string>
+    <string name="adding_participant_dialog_no_participant_title">Pas de participant</string>
+    <string name="adding_participant_dialog_no_participant_message">Veuillez ajouter au moins un participant</string>
+
+    <string name="scan_receipt_division_label">Division</string>
+
+    <string name="scan_receipt_finalization_label">Finalisation</string>
+
+
+    <string name="menu_receive">Réception reçu</string>
+
+    <string name="send_receipt_title">Envoyer reçu</string>
+    <string name="bluetooth_state_off"> Le Bluetooth est DÉSACTIVÉ, \n Veuillez l\'activer pour envoyer un reçu. </string>
+    <string name="bluetooth_state_on"> Le Bluetooth est ACTIVÉ </string>
+    <string name="bluetooth_state_unavailable"> Le Bluetooth est INDISPONIBLE. </string>
+    <string name="bluetooth_button_activate"> Activer Bluetooth </string>
+    <string name="bluetooth_information_wait_reception"> En attente de réception ... </string>
+    <string name="bluetooth_information_reception"> Reçu ajouté: </string>
+    <string name="bluetooth_information_reception_progress"> Réception en cours ... </string>
+    <string name="bluetooth_information_reception_error"> Erreur de réception. Veuillez réessayer. </string>
+    <string name="bluetooth_dialog_title"> Choisissez un appareil: </string>
+    <string name="bluetooth_button_select">Choisir</string>
+    <string name="bluetooth_button_send"> Envoyer un reçu </string>
+    <string name="bluetooth_information_sending_init"> Sélectionnez un appareil de destination pour l\'envoi. </string>
+    <string name="bluetooth_information_sending"> En cours d\'envoi... </string>
+    <string name="bluetooth_information_device_init"> Sélectionnez un appareil </string>
+    <string name="bluetooth_information_sending_error"> Erreur d\'envoi. Veuillez réessayer. </string>
+    <string name="bluetooth_information_device_error"> Périphérique indisponible. Réessayez ou sélectionnez un autre appareil. </string>
+    <string name="bluetooth_information_sending_success"> Reçu envoyé avec succès. </string>
 
 
     <string name="menu_settings">Paramètres</string>
+    <string name="settings_category_general">Paramètres généraux</string>
 
     <string name="settings_favorite_currency">settings_favorite_currency</string>
+    <string name="settings_favorite_currency_default">Aucune</string>
     <string name="settings_favorite_currency_title">Devise par défaut</string>
     <string name="settings_favorite_currency_summary">Choisir la devise par défaut pour les nouveaux reçus</string>
 
-    <string name="settings_favorite_theme_default">System default</string>
     <string name="settings_favorite_theme">settings_favorite_theme</string>
+    <string name="settings_favorite_theme_default">@string/settings_theme_system</string>
     <string name="settings_favorite_theme_title">Thème de l\'application</string>
     <string name="settings_favorite_theme_summary">Choisissez un thème pour l\'application</string>
-    <string-array name="settings_themes">
-        <item name="settings_theme_system">System default</item>
-        <item name="settings_theme_light">Light</item>
-        <item name="settings_theme_dark">Dark</item>
-    </string-array>
+
+    <string name="settings_theme_system">Thème système</string>
+    <string name="settings_theme_light">Clair</string>
+    <string name="settings_theme_dark">Sombre</string>
 
     <string name="settings_favorite_language_default">English</string>
     <string name="settings_favorite_language">settings_favorite_language</string>
@@ -69,6 +101,7 @@
         <item name="settings_language_fr">Français</item>
     </string-array>
 
+    <string name="settings_category_about">À propos</string>
     <string name="settings_version">settings_version</string>
     <string name="settings_version_title">Version</string>
 

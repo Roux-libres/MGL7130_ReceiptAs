@@ -95,7 +95,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         getActivity().invalidateOptionsMenu();
 
         this.inputReceiptName = root.findViewById(R.id.input_scan_receipt_name);
-        if(!TextUtils.isEmpty(scanReceiptViewModel.getReceipt().getName())){
+        if (!TextUtils.isEmpty(scanReceiptViewModel.getReceipt().getName())) {
             this.inputReceiptName.setText(scanReceiptViewModel.getReceipt().getName());
         }
 
@@ -104,7 +104,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         this.inputReceiptPrice = root.findViewById(R.id.input_scan_receipt_price);
 
         Float price;
-        if((price = scanReceiptViewModel.getReceiptSpecifiedPrice().getValue()) != null) {
+        if ((price = scanReceiptViewModel.getReceiptSpecifiedPrice().getValue()) != null) {
             this.inputReceiptPrice.setText(String.valueOf(price));
         }
 
@@ -118,8 +118,8 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         this.receiptCurrency.setAdapter(adapter);
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         String favoriteCurrency = sharedPref.getString(getString(R.string.settings_favorite_currency),
-                "None");
-        if(favoriteCurrency.equals("None")){
+                getString(R.string.settings_favorite_currency_default));
+        if (favoriteCurrency.equals("None")) {
             favoriteCurrency = scanReceiptViewModel.getReceipt().getCurrency().getCurrencyCode();
         }
 
@@ -129,7 +129,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         this.receiptCurrency.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
+                if (hasFocus) {
                     ((MainActivity) getActivity()).hideKeyboard();
                 }
             }
@@ -155,8 +155,8 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         hideKeyboard();
 
-        if(item.getItemId() == R.id.validate_button) {
-            if(this.saveInfos()) {
+        if (item.getItemId() == R.id.validate_button) {
+            if (this.saveInfos()) {
                 NavDirections goToItemCorrection =
                     ScanReceiptFragmentDirections.scanReceiptToCorrection();
                 Navigation.findNavController(getView()).navigate(goToItemCorrection);
@@ -196,17 +196,17 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    private boolean saveInfos(){
+    private boolean saveInfos() {
         String inputReceiptNameString = this.inputReceiptName.getText().toString();
         String inputReceiptPriceString = this.inputReceiptPrice.getText().toString();
 
         boolean allInfoSpecified =
-            !TextUtils.isEmpty(inputReceiptNameString)
-            && !this.scanReceiptViewModel.getProcessedImages().getValue().isEmpty();
+                !TextUtils.isEmpty(inputReceiptNameString)
+                        && !this.scanReceiptViewModel.getProcessedImages().getValue().isEmpty();
 
         this.scanReceiptViewModel.getReceipt().setName(inputReceiptNameString);
-        
-        if(!TextUtils.isEmpty(inputReceiptPriceString)) {
+
+        if (!TextUtils.isEmpty(inputReceiptPriceString)) {
             this.scanReceiptViewModel.getReceiptSpecifiedPrice().setValue(Float.parseFloat(inputReceiptPriceString));
         } else {
             allInfoSpecified = false;
@@ -214,7 +214,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
 
         try {
             this.scanReceiptViewModel.getReceipt().setCurrency(Currency.getInstance(this.receiptCurrency.getText().toString()));
-        } catch(Exception exception) {
+        } catch (Exception exception) {
             exception.printStackTrace();
             allInfoSpecified = false;
         }
@@ -222,21 +222,21 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         return allInfoSpecified;
     }
 
-    private void hideGalleryOverlay(){
+    private void hideGalleryOverlay() {
         this.galleryRecyclerView.setVisibility(View.INVISIBLE);
         this.shape.setVisibility(View.INVISIBLE);
         this.validationSelection.setVisibility(View.INVISIBLE);
     }
 
-    private void showGalleryOverlay(){
+    private void showGalleryOverlay() {
         this.galleryRecyclerView.setVisibility(View.VISIBLE);
         this.shape.setVisibility(View.VISIBLE);
     }
 
-    private void loadGalleryImages(){
+    private void loadGalleryImages() {
         this.galleryRecyclerView.setHasFixedSize(true);
 
-        if(((MainActivity) getActivity()).isTablet()){
+        if (((MainActivity) getActivity()).isTablet()) {
             this.galleryRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 4));
         } else {
             this.galleryRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
@@ -246,22 +246,22 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         this.galleryAdapter = new GalleryAdapter(getContext(), scanReceiptViewModel.getImages().getValue(), new GalleryAdapter.PhotoListener() {
             @Override
             public void onPhotoClick(GalleryAdapter.ViewHolder holder, String path) {
-                if(path == ""){
-                    try{
+                if (path == "") {
+                    try {
                         saveInfos();
 
                         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                         startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                    } catch(ActivityNotFoundException e){
+                    } catch (ActivityNotFoundException e) {
                         System.out.println(e);
                     }
                 } else {
                     float scale = getResources().getDisplayMetrics().density;
                     int paddingSize;
 
-                    if(holder.image.getBackground().getConstantState() ==
-                            getContext().getDrawable(R.drawable.gallery_border_unselected).getConstantState()){
+                    if (holder.image.getBackground().getConstantState() ==
+                            getContext().getDrawable(R.drawable.gallery_border_unselected).getConstantState()) {
                         validationSelection.setVisibility(View.VISIBLE);
                         holder.image.setBackground(getContext().getDrawable(R.drawable.gallery_border_selected));
                         paddingSize = (int) (3 * scale + 0.5f);
@@ -271,7 +271,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
                         paddingSize = (int) (1 * scale + 0.5f);
                         holder.image.setPadding(paddingSize, paddingSize, paddingSize, paddingSize);
                         scanReceiptViewModel.removeSelectedImage(path);
-                        if(scanReceiptViewModel.getSelectedImages().getValue().size() == 0){
+                        if (scanReceiptViewModel.getSelectedImages().getValue().size() == 0) {
                             validationSelection.setVisibility(View.INVISIBLE);
                         }
                     }
@@ -284,11 +284,11 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         this.galleryRecyclerView.setAdapter(this.galleryAdapter);
     }
 
-    private void loadProcessedImages(){
+    private void loadProcessedImages() {
         this.processedImagesRecyclerView.setHasFixedSize(true);
         this.processedImagesRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
-        if(this.scanReceiptViewModel.getNumberOfProcessedImages() > 0) {
+        if (this.scanReceiptViewModel.getNumberOfProcessedImages() > 0) {
             this.processedImageAdapter = new ProcessedImageAdapter(getContext(), this.scanReceiptViewModel.getProcessedImages().getValue(), new ProcessedImageAdapter.PhotoListener() {
                 @Override
                 public void onPhotoClick(GalleryAdapter.ViewHolder holder, Bitmap imageBitmap) {
@@ -351,10 +351,12 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    public String getRealPathFromURI(Uri contentUri) {String res = null;
-        String[] proj = { MediaStore.Images.Media.DATA };
+    public String getRealPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = getActivity().getContentResolver().query(contentUri, proj, null, null, null);
-        if(cursor.moveToFirst()){;
+        if (cursor.moveToFirst()) {
+            ;
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
             res = cursor.getString(column_index);
         }
@@ -370,7 +372,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         blockingDialog.create().show();
     }
 
-    private void hideKeyboard(){
+    private void hideKeyboard() {
         ((MainActivity) getActivity()).hideKeyboard();
     }
 }
