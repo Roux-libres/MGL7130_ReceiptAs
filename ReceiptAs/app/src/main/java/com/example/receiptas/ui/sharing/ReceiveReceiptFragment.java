@@ -42,6 +42,10 @@ public class ReceiveReceiptFragment extends Fragment {
     private AcceptThread acceptThread;
     private ConnectedThread connectedThread;
 
+    private int numberOfChunks = 0;
+    private int indexChunk = 0;
+    private String readMessage = "";
+
     private ReceiveReceiptViewModel mViewModel;
     private Button bluetoothStateButton;
     private TextView bluetoothStateTextView;
@@ -53,11 +57,20 @@ public class ReceiveReceiptFragment extends Fragment {
         public boolean handleMessage(@NonNull Message message) {
             switch (message.what) {
                 case MESSAGE_READ:
-                    String readMessage = new String((byte[]) message.obj, 0, message.arg1);
-                    String receiptTitle = mViewModel.addReceiptFromJsonString(readMessage);
-                    if (receiptTitle != null) {
-                        bluetoothInformationTextView.setText(getString(R.string.bluetooth_information_reception) + " " + receiptTitle);
-                    } else {
+                    try {
+                        if(numberOfChunks == 0) {
+                            bluetoothInformationTextView.setText(getString(R.string.bluetooth_information_reception_progress));
+                            String receivedMessage = new String((byte[]) message.obj, 0, message.arg1);
+                            numberOfChunks = Integer.parseInt(receivedMessage.substring(0, receivedMessage.indexOf("{")).replaceAll("[^\\d.]", ""));
+                            readMessage = receivedMessage.substring(receivedMessage.indexOf("{"));
+                            indexChunk++;
+                            checkChunkNumberToAddReceipt();
+                        } else if (numberOfChunks > 0) {
+                            readMessage += new String((byte[]) message.obj, 0, message.arg1);
+                            indexChunk++;
+                            checkChunkNumberToAddReceipt();
+                        }
+                    } catch (Exception e) {
                         bluetoothInformationTextView.setText(R.string.bluetooth_information_reception_error);
                     }
                     break;
@@ -84,6 +97,20 @@ public class ReceiveReceiptFragment extends Fragment {
             }
         }
     };
+
+    private void checkChunkNumberToAddReceipt() {
+        if(indexChunk == numberOfChunks) {
+            String receiptTitle = mViewModel.addReceiptFromJsonString(readMessage);
+            if (receiptTitle != null) {
+                bluetoothInformationTextView.setText(getString(R.string.bluetooth_information_reception) + " " + receiptTitle);
+            } else {
+                bluetoothInformationTextView.setText(R.string.bluetooth_information_reception_error);
+            }
+            readMessage = "";
+            indexChunk = 0;
+            numberOfChunks = 0;
+        }
+    }
 
     public static ReceiveReceiptFragment newInstance() {
         return new ReceiveReceiptFragment();
@@ -268,19 +295,18 @@ public class ReceiveReceiptFragment extends Fragment {
         }
 
         public void run() {
-            mmBuffer = new byte[1024];
-            int numBytes;
-
             while (true) {
                 try {
-                    numBytes = mmInStream.read(mmBuffer);
+                    mmBuffer = new byte[1024];
+                    int numBytes = mmInStream.read(mmBuffer);
                     Message readMsg = handler.obtainMessage(
                             MESSAGE_READ, numBytes, -1,
                             mmBuffer);
                     readMsg.sendToTarget();
                 } catch (IOException e) {
                     Log.d("error", "Input stream was disconnected", e);
-                    break;
+                    createBluetoothThread();
+                   break;
                 }
             }
         }

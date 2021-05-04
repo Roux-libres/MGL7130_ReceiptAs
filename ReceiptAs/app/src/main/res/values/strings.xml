@@ -60,12 +60,14 @@
     <string name="bluetooth_state_unavailable">The Bluetooth is UNAVAILABLE.</string>
     <string name="bluetooth_button_activate">Activate Bluetooth</string>
     <string name="bluetooth_information_wait_reception">Waiting for reception...</string>
+    <string name="bluetooth_information_reception_progress"> Reception in progress... </string>
     <string name="bluetooth_information_reception">Receipt added : </string>
     <string name="bluetooth_information_reception_error">Reception error. Please try again.</string>
     <string name="bluetooth_dialog_title">Choose a device :</string>
     <string name="bluetooth_button_select">Select</string>
     <string name="bluetooth_button_send">Send receipt</string>
-    <string name="bluetooth_information_sending_init">Select a destination device to unlock sending.</string>
+    <string name="bluetooth_information_sending_init">Select a destination device to sending.</string>
+    <string name="bluetooth_information_sending"> Sending ...</string>
     <string name="bluetooth_information_device_init">Device name</string>
     <string name="bluetooth_information_sending_error">Sending error. Please try again.</string>
     <string name="bluetooth_information_device_error">Device unavailable. Try again or select an other device.</string>
