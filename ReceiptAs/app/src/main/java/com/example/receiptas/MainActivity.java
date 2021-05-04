@@ -129,13 +129,16 @@ public class MainActivity extends AppCompatActivity {
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
         boolean hasCameraPermission = (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
+        boolean hasBtPermission = (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.BLUETOOTH) == PackageManager.PERMISSION_GRANTED);
 
-        if (!hasReadFilePermission || !hasCameraPermission || !hasWriteFilePermission) {
+        if(!hasReadFilePermission || !hasCameraPermission || !hasWriteFilePermission || !hasBtPermission){
             ActivityCompat.requestPermissions(this,
                     new String[]{
                             Manifest.permission.READ_EXTERNAL_STORAGE,
                             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            Manifest.permission.CAMERA}, PERMISSION_CODE);
+                            Manifest.permission.CAMERA,
+                            Manifest.permission.BLUETOOTH}, PERMISSION_CODE);
         }
     }
 

@@ -113,15 +113,15 @@ public class MainRepository {
     }
 
 
-    public boolean addReceiptFromJsonString(String json, String pathFilesDirectory) {
+    public String addReceiptFromJsonString(String json, String pathFilesDirectory) {
         try {
             ReceiptDataEntity receiptDataEntity = this.receiptDao.createReceiptFromJson(json);
             Receipt receipt = this.dataMapper.mapFromEntity(receiptDataEntity);
             this.addReceipt(receipt, pathFilesDirectory);
-            return true;
+            return receipt.getName();
         } catch (Exception exception) {
             System.out.println(exception);
-            return false;
+            return null;
         }
     }
 

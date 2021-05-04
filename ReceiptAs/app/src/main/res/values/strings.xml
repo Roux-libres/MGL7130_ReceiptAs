@@ -55,12 +55,26 @@
     <string name="menu_receive">Receive receipt</string>
 
     <string name="send_receipt_title">Send receipt</string>
-    <string name="nfc_button_activate">Activate NFC</string>
-    <string name="nfc_button_activated">NFC is activated</string>
-    <string name="nfc_activated_description">Put the other phone in reception mode (Menu) and approach it to this phone.</string>
-    <string name="nfc_disabled_description">NFC is disabled. Please activate it to allow sending.</string>
-    <string name="nfc_unavailable_description">Your phone is not equipped with the NFC service or has a version too old to allow peer to peer sending.</string>
-    <string name="nfc_error_availability">The phone does not have an NFC service. Please return to the receipt.</string>
+    <string name="bluetooth_state_off">The Bluetooth is DISABLED, \n Please activate it to send receipt.</string>
+    <string name="bluetooth_state_on">The Bluetooth is ACTIVATED</string>
+    <string name="bluetooth_state_unavailable">The Bluetooth is UNAVAILABLE.</string>
+    <string name="bluetooth_button_activate">Activate Bluetooth</string>
+    <string name="bluetooth_information_wait_reception">Waiting for reception...</string>
+    <string name="bluetooth_information_reception">Receipt added : </string>
+    <string name="bluetooth_information_reception_error">Reception error. Please try again.</string>
+    <string name="bluetooth_dialog_title">Choose a device :</string>
+    <string name="bluetooth_button_select">Select</string>
+    <string name="bluetooth_button_send">Send receipt</string>
+    <string name="bluetooth_information_sending_init">Select a destination device to unlock sending.</string>
+    <string name="bluetooth_information_device_init">Select a device</string>
+    <string name="bluetooth_information_sending_error">Sending error. Please try again.</string>
+    <string name="bluetooth_information_device_error">Device unavailable. Try again or select an other device.</string>
+    <string name="bluetooth_information_sending_success">Receipt sent successfully.</string>
+
+
+
+
+
 
 
     <string name="menu_settings">Settings</string>
