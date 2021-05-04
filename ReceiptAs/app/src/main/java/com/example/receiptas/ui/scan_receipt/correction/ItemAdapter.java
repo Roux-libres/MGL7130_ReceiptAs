@@ -17,13 +17,13 @@ import java.util.List;
 
 public class ItemAdapter extends RecyclerView.Adapter<ItemViewHolder>{
 
-    private final List<ItemCorrectionViewModel.CorrectableItem> localDataSet;
+    private final List<ReceiptCorrectionViewModel.CorrectableItem> localDataSet;
     private final OnRecyclerViewItemClickListener<View> itemOptionListener;
-    private final OnRecyclerViewItemClickListener<ItemCorrectionViewModel.CorrectableItem> itemClickListener;
+    private final OnRecyclerViewItemClickListener<ReceiptCorrectionViewModel.CorrectableItem> itemClickListener;
     private final Context context;
 
     public ItemAdapter(
-        List<ItemCorrectionViewModel.CorrectableItem> dataSet,
+        List<ReceiptCorrectionViewModel.CorrectableItem> dataSet,
         OnRecyclerViewItemClickListener itemClickListener,
         OnRecyclerViewItemClickListener itemOptionListener,
         Context context

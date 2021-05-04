@@ -99,6 +99,8 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
             this.inputReceiptName.setText(scanReceiptViewModel.getReceipt().getName());
         }
 
+        scanReceiptViewModel.getReceipt().setItems(new ArrayList<>());
+
         this.inputReceiptPrice = root.findViewById(R.id.input_scan_receipt_price);
 
         Float price;
@@ -156,7 +158,7 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
         if (item.getItemId() == R.id.validate_button) {
             if (this.saveInfos()) {
                 NavDirections goToItemCorrection =
-                        ScanReceiptFragmentDirections.actionNavScanReceiptToItemCorrectionFragment();
+                    ScanReceiptFragmentDirections.scanReceiptToCorrection();
                 Navigation.findNavController(getView()).navigate(goToItemCorrection);
             } else {
                 this.openBlockingDialog();
