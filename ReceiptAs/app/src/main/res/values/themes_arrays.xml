@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="settings_themes_translated">
+        <item name="settings_theme_system">@string/settings_theme_system</item>
+        <item name="settings_theme_light">@string/settings_theme_light</item>
+        <item name="settings_theme_dark">@string/settings_theme_dark</item>
+    </string-array>
+
+    <string-array name="settings_themes">
+        <item name="settings_theme_system">System default</item>
+        <item name="settings_theme_light">Light</item>
+        <item name="settings_theme_dark">Dark</item>
+    </string-array>
+</resources>
