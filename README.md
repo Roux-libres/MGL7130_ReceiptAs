@@ -106,15 +106,7 @@ Le traitement des photos se fait en deux étapes, il faut tout d'abord sélectio
 
 Avant de valider la création du reçu, il est possible de modifier les informations entrées et de supprimer les photos traitées. Si tout est bon, il faut cliquer sur le bouton de validation en bas à droite.
 
-
-
-<strong>À MODIFIER UNE FOIS L'ÉCRAN D'OREL FINI</strong>
-
-S'ensuit l'écran de corrections, celui-ci sert à fusionner des noms de produits ou bien à les supprimer. Une fois la correction finie, il faut valider les modifications.
-
-<strong>À MODIFIER UNE FOIS L'ÉCRAN D'OREL FINI</strong>
-
-
+S'ensuit l'écran de corrections, celui-ci sert à fusionner des noms de produits ou bien à les supprimer. Mais aussi à modifier les noms des produits ou leurs prix. Une fois la correction finie, il faut valider les modifications.
 
 Ensuite c'est au tour de l'ajout des participants, il faut rentrer leurs noms dans la zone de texte et cliquer sur le bouton marqué d'un <strong>+</strong>. Une fois tous les participants ajoutés, il faut valider les modifications.
 
