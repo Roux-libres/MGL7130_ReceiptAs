@@ -105,6 +105,8 @@
     <string name="item_correction_popup_menu_combine_below">Combine below</string>
     <string name="item_correction_popup_menu_detach_first">Detach first item</string>
     <string name="item_correction_popup_menu_detach_last">Detach last item</string>
+    <string name="item_placeholder">item</string>
+    <string name="price_placeholder">0.0</string>
 
     <string name="item_correction_dialog_validate_title">Validate items list ?</string>
     <string name="item_correction_dialog_validate">Validate</string>

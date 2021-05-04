@@ -32,8 +32,8 @@ public class ItemViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindItemListener(
-        final int id, ItemCorrectionViewModel.CorrectableItem item,
-        final OnRecyclerViewItemClickListener<ItemCorrectionViewModel.CorrectableItem> listener
+        final int id, ReceiptCorrectionViewModel.CorrectableItem item,
+        final OnRecyclerViewItemClickListener<ReceiptCorrectionViewModel.CorrectableItem> listener
     ) {
         this.itemLabel.setOnClickListener(view -> listener.onItemClick(id, item));
     }

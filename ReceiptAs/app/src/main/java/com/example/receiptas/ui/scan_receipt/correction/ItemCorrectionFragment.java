@@ -28,16 +28,16 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class ItemCorrectionFragment extends Fragment {
 
     private ScanReceiptViewModel scanReceiptViewModel;
-    private ItemCorrectionViewModel itemCorrectionViewModel;
+    private ReceiptCorrectionViewModel receiptCorrectionViewModel;
     private RecyclerView itemRecyclerView;
     private ProgressBar progressBar;
 
-    public ItemCorrectionFragment(ItemCorrectionViewModel itemCorrectionViewModel) {
-        this.itemCorrectionViewModel = itemCorrectionViewModel;
+    public ItemCorrectionFragment(ReceiptCorrectionViewModel receiptCorrectionViewModel) {
+        this.receiptCorrectionViewModel = receiptCorrectionViewModel;
     }
 
-    public static ItemCorrectionFragment newInstance(ItemCorrectionViewModel itemCorrectionViewModel) {
-        return new ItemCorrectionFragment(itemCorrectionViewModel);
+    public static ItemCorrectionFragment newInstance(ReceiptCorrectionViewModel receiptCorrectionViewModel) {
+        return new ItemCorrectionFragment(receiptCorrectionViewModel);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class ItemCorrectionFragment extends Fragment {
         TextView informationMessage = view.findViewById(R.id.information_message);
         informationMessage.setText(getResources().getString(R.string.information_message_item_correction));
 
-        this.itemCorrectionViewModel.getCorrectableItems().observe(this.getViewLifecycleOwner(), correctableItemObserver);
+        this.receiptCorrectionViewModel.getCorrectableItems().observe(this.getViewLifecycleOwner(), correctableItemObserver);
 
         this.itemRecyclerView = view.findViewById(R.id.itemRecyclerView);
         this.configureRecyclerView();
@@ -115,7 +115,7 @@ public class ItemCorrectionFragment extends Fragment {
 
     private void showPopup(View v, int itemId) {
         PopupMenu popup = new PopupMenu(getContext(), v);
-        ItemCorrectionViewModel.CorrectableItem item = itemCorrectionViewModel.getCorrectableItems().getValue().get(itemId);
+        ReceiptCorrectionViewModel.CorrectableItem item = receiptCorrectionViewModel.getCorrectableItems().getValue().get(itemId);
         popup.setOnMenuItemClickListener(menuItem -> {
             switch(menuItem.getItemId()) {
                 case R.id.combineAbove:
@@ -139,7 +139,7 @@ public class ItemCorrectionFragment extends Fragment {
         popup.show();
     }
 
-    private void configurePopupMenuItems(PopupMenu menu, ItemCorrectionViewModel.CorrectableItem item) {
+    private void configurePopupMenuItems(PopupMenu menu, ReceiptCorrectionViewModel.CorrectableItem item) {
         menu.inflate(R.menu.item_correction_popup);
 
         boolean isCombined = item.getCombinedItem() != null;
@@ -148,17 +148,18 @@ public class ItemCorrectionFragment extends Fragment {
     }
 
     private void combineItemIntoRootItem(int rootItemId, int itemId) {
-        ArrayList<ItemCorrectionViewModel.CorrectableItem> items = itemCorrectionViewModel.getCorrectableItems().getValue();
+        ArrayList<ReceiptCorrectionViewModel.CorrectableItem> items = receiptCorrectionViewModel.getCorrectableItems().getValue();
         if(rootItemId >= 0 && itemId < items.size()) {
             items.get(rootItemId).combineItem(items.get(itemId));
             items.remove(itemId);
             itemRecyclerView.getAdapter().notifyItemRemoved(itemId);
             itemRecyclerView.getAdapter().notifyItemRangeChanged(rootItemId, items.size());
+            receiptCorrectionViewModel.setCorrectedItems(this.getContext());
         }
     }
 
     private void detachItemFromRootItem(int rootItemId, boolean detachLast) {
-        ArrayList<ItemCorrectionViewModel.CorrectableItem> items = itemCorrectionViewModel.getCorrectableItems().getValue();
+        ArrayList<ReceiptCorrectionViewModel.CorrectableItem> items = receiptCorrectionViewModel.getCorrectableItems().getValue();
 
         if(detachLast) {
             items.add(rootItemId+1, items.get(rootItemId).popLastCombinedItem());
@@ -168,21 +169,23 @@ public class ItemCorrectionFragment extends Fragment {
         }
         itemRecyclerView.getAdapter().notifyItemInserted(rootItemId);
         itemRecyclerView.getAdapter().notifyItemRangeChanged(rootItemId, items.size());
+        receiptCorrectionViewModel.setCorrectedItems(this.getContext());
     }
 
     private final OnRecyclerViewItemClickListener<View> onItemOptionSelected  = (itemId, view) -> {
         showPopup(view, itemId);
     };
 
-    private final OnRecyclerViewItemClickListener<ItemCorrectionViewModel.CorrectableItem> onItemClick  = (itemId, item) -> {
+    private final OnRecyclerViewItemClickListener<ReceiptCorrectionViewModel.CorrectableItem> onItemClick  = (itemId, item) -> {
             item.setDeleted(!item.isDeleted());
             itemRecyclerView.getAdapter().notifyItemChanged(itemId);
+            receiptCorrectionViewModel.setCorrectedItems(this.getContext());
     };
 
-    private final Observer<ArrayList<ItemCorrectionViewModel.CorrectableItem>> correctableItemObserver =
-        new Observer<ArrayList<ItemCorrectionViewModel.CorrectableItem>>() {
+    private final Observer<ArrayList<ReceiptCorrectionViewModel.CorrectableItem>> correctableItemObserver =
+        new Observer<ArrayList<ReceiptCorrectionViewModel.CorrectableItem>>() {
             @Override
-            public void onChanged(ArrayList<ItemCorrectionViewModel.CorrectableItem> correctableItems) {
+            public void onChanged(ArrayList<ReceiptCorrectionViewModel.CorrectableItem> correctableItems) {
                 itemRecyclerView.setAdapter(new ItemAdapter(correctableItems, onItemClick, onItemOptionSelected, getContext()));
         }
     };

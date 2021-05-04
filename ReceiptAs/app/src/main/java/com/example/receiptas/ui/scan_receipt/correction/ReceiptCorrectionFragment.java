@@ -34,7 +34,7 @@ public class ReceiptCorrectionFragment extends Fragment {
     private ViewPager2 viewPager;
     private String[] tabsNames;
     private ProgressBar progressBar;
-    private ItemCorrectionViewModel itemCorrectionViewModel;
+    private ReceiptCorrectionViewModel receiptCorrectionViewModel;
     private ScanReceiptViewModel scanReceiptViewModel;
 
     @Override
@@ -42,7 +42,7 @@ public class ReceiptCorrectionFragment extends Fragment {
         super.onCreate(savedInstanceState);
         this.setHasOptionsMenu(true);
         this.scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
-        this.itemCorrectionViewModel = new ViewModelProvider(this).get(ItemCorrectionViewModel.class);
+        this.receiptCorrectionViewModel = new ViewModelProvider(this).get(ReceiptCorrectionViewModel.class);
         this.tabsNames = getResources().getStringArray(R.array.receipt_correction_tabs_names);
 
         //TODO adapter à la tablette
@@ -50,9 +50,9 @@ public class ReceiptCorrectionFragment extends Fragment {
             getActivity().getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
                 .add(R.id.include_fragment_item_correction,
-                    ItemCorrectionFragment.newInstance(this.itemCorrectionViewModel))
+                    ItemCorrectionFragment.newInstance(this.receiptCorrectionViewModel))
                 .add(R.id.include_fragment_advanced_correction,
-                    AdvancedCorrectionFragment.newInstance(this.itemCorrectionViewModel))
+                    AdvancedCorrectionFragment.newInstance(this.receiptCorrectionViewModel))
                 .commit();
         }
     }
@@ -79,7 +79,7 @@ public class ReceiptCorrectionFragment extends Fragment {
             viewPager = view.findViewById(R.id.pager);
 
             tabLayout.addOnTabSelectedListener(tabSelectedListener);
-            viewPager.setAdapter(new ReceiptCorrectionAdapter(this, this.itemCorrectionViewModel, tabLayout.getTabCount()));
+            viewPager.setAdapter(new ReceiptCorrectionAdapter(this, this.receiptCorrectionViewModel, tabLayout.getTabCount()));
 
             new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> tab.setText(tabsNames[position])).attach();
         }
@@ -134,7 +134,8 @@ public class ReceiptCorrectionFragment extends Fragment {
         public void onChanged(DataState.State dataState) {
             switch(dataState) {
                 case SUCCESS:
-                    itemCorrectionViewModel.setCorrectableItemsFromList(scanReceiptViewModel.getItems().getValue().getData());
+                    receiptCorrectionViewModel.setCorrectableItemsFromList(scanReceiptViewModel.getItems().getValue().getData(), getContext());
+
                     displayProgressBar(false);
                     break;
                 case ERROR:
@@ -169,7 +170,7 @@ public class ReceiptCorrectionFragment extends Fragment {
             switch(dataState) {
                 case SUCCESS:
                     try {
-                        itemCorrectionViewModel.setPricesFromParsedText(scanReceiptViewModel.getPrices().getValue().getData());
+                        receiptCorrectionViewModel.setPricesFromParsedText(scanReceiptViewModel.getPrices().getValue().getData(), getContext());
                     } catch (Exception e) {
                         scanReceiptViewModel.getPrices().getValue().setError(e);
                     }

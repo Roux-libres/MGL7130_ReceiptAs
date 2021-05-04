@@ -19,15 +19,15 @@ import java.util.ArrayList;
 
 public class AdvancedCorrectionFragment extends Fragment {
 
-    private final ItemCorrectionViewModel itemCorrectionViewModel;
+    private final ReceiptCorrectionViewModel receiptCorrectionViewModel;
     private RecyclerView correctionRecyclerView;
 
-    public AdvancedCorrectionFragment(ItemCorrectionViewModel itemCorrectionViewModel) {
-        this.itemCorrectionViewModel = itemCorrectionViewModel;
+    public AdvancedCorrectionFragment(ReceiptCorrectionViewModel receiptCorrectionViewModel) {
+        this.receiptCorrectionViewModel = receiptCorrectionViewModel;
     }
 
-    public static AdvancedCorrectionFragment newInstance(ItemCorrectionViewModel itemCorrectionViewModel) {
-        return new AdvancedCorrectionFragment(itemCorrectionViewModel);
+    public static AdvancedCorrectionFragment newInstance(ReceiptCorrectionViewModel receiptCorrectionViewModel) {
+        return new AdvancedCorrectionFragment(receiptCorrectionViewModel);
     }
 
     @Override
@@ -47,33 +47,31 @@ public class AdvancedCorrectionFragment extends Fragment {
         this.correctionRecyclerView = view.findViewById(R.id.correction_recycler_view);
 
         this.configureRecyclerView();
-        this.itemCorrectionViewModel.getCorrectableItems().observe(this.getViewLifecycleOwner(), correctableItemObserver);
-        this.itemCorrectionViewModel.getPrices().observe(this.getViewLifecycleOwner(), this.pricesObserver);
+        this.receiptCorrectionViewModel.getCorrectedItems().observe(this.getViewLifecycleOwner(), correctedItemObserver);
+        this.receiptCorrectionViewModel.getPrices().observe(this.getViewLifecycleOwner(), this.pricesObserver);
     }
 
     private void configureRecyclerView() {
-        this.correctionRecyclerView.setAdapter(
-            new CorrectionAdapter(
-                itemCorrectionViewModel.getCorrectableItems().getValue(),
-                itemCorrectionViewModel.getPrices().getValue(),
-                onItemClick,
-                getContext()
-            )
-        );
+        /*this.correctionRecyclerView.setAdapter(new CorrectionAdapter(
+            receiptCorrectionViewModel.getCorrectedItems().getValue(),
+            receiptCorrectionViewModel.getPrices().getValue(),
+            onItemClick,
+            getContext()
+        ));*/
         this.correctionRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
-    private final OnRecyclerViewItemClickListener<ItemCorrectionViewModel.CorrectableItem> onItemClick  = (itemId, item) -> {
+    private final OnRecyclerViewItemClickListener<ReceiptCorrectionViewModel.CorrectableItem> onItemClick  = (itemId, item) -> {
         //TODO ouvrir modal modif
     };
 
-    private final Observer<ArrayList<ItemCorrectionViewModel.CorrectableItem>> correctableItemObserver =
-        new Observer<ArrayList<ItemCorrectionViewModel.CorrectableItem>>() {
+    private final Observer<ArrayList<String>> correctedItemObserver =
+        new Observer<ArrayList<String>>() {
             @Override
-            public void onChanged(ArrayList<ItemCorrectionViewModel.CorrectableItem> correctableItems) {
+            public void onChanged(ArrayList<String> correctedItems) {
                 correctionRecyclerView.setAdapter(new CorrectionAdapter(
-                    correctableItems,
-                    itemCorrectionViewModel.getPrices().getValue(),
+                    correctedItems,
+                    receiptCorrectionViewModel.getPrices().getValue(),
                     onItemClick,
                     getContext()
                 ));
@@ -85,7 +83,7 @@ public class AdvancedCorrectionFragment extends Fragment {
             @Override
             public void onChanged(ArrayList<String> prices) {
                 correctionRecyclerView.setAdapter(new CorrectionAdapter(
-                    itemCorrectionViewModel.getCorrectableItems().getValue(),
+                    receiptCorrectionViewModel.getCorrectedItems().getValue(),
                     prices,
                     onItemClick,
                     getContext()

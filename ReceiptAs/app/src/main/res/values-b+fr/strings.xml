@@ -105,6 +105,8 @@
     <string name="item_correction_popup_menu_combine_below">Combiner avec le suivant</string>
     <string name="item_correction_popup_menu_detach_first">Détacher le premier produit</string>
     <string name="item_correction_popup_menu_detach_last">Détacher le dernier produit</string>
+    <string name="item_placeholder">item</string>
+    <string name="price_placeholder">0.0</string>
 
     <string name="item_correction_dialog_validate_title">Valider la liste des produits ?</string>
     <string name="item_correction_dialog_validate">Valider</string>

@@ -18,42 +18,30 @@ import javax.inject.Inject;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
 @HiltViewModel
-public class ItemCorrectionViewModel extends ViewModel {
+public class ReceiptCorrectionViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<CorrectableItem>> correctableItems = new MutableLiveData<>();
+    private final MutableLiveData<ArrayList<String>> correctedItems = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> prices = new MutableLiveData<>();
 
     @Inject
-    public ItemCorrectionViewModel() {
+    public ReceiptCorrectionViewModel() {
         this.correctableItems.setValue(new ArrayList<>());
+        this.correctedItems.setValue(new ArrayList<>());
         this.prices.setValue(new ArrayList<>());
     }
 
-    public void setCorrectableItemsFromList(ArrayList<String> items) {
+    public void setCorrectableItemsFromList(ArrayList<String> items, Context context) {
         ArrayList<CorrectableItem> correctableItems = new ArrayList<>();
         for(String item : items) {
+            System.out.println(item);
             correctableItems.add(new CorrectableItem(item));
         }
+
         this.correctableItems.setValue(correctableItems);
+        this.setCorrectedItems(correctableItems, this.prices.getValue(), context);
     }
 
-    public MutableLiveData<ArrayList<CorrectableItem>> getCorrectableItems() {
-        return this.correctableItems;
-    }
-
-    public ArrayList<String> getCorrectedItems() {
-        ArrayList<String> correctedItems = new ArrayList<>();
-
-        for(CorrectableItem item : this.correctableItems.getValue()) {
-            if(!item.isDeleted()) {
-                correctedItems.add(item.getLabel());
-            } else {
-                //do nothing
-            }
-        }
-    return correctedItems;
-    }
-
-    public void setPricesFromParsedText(ArrayList<String> parsedText) throws Exception {
+    public void setPricesFromParsedText(ArrayList<String> parsedText, Context context) throws Exception {
         DecimalFormat formatter = new DecimalFormat();
         DecimalFormatSymbols symbol = DecimalFormatSymbols.getInstance();
         symbol.setDecimalSeparator('.');
@@ -67,13 +55,64 @@ public class ItemCorrectionViewModel extends ViewModel {
             text = text.replaceAll(regex, "");
             text = text.replaceAll(regexSeparatorFamily, String.valueOf(formatter.getDecimalFormatSymbols().getDecimalSeparator()));
             if(!TextUtils.isEmpty(text)) {
-                //this.prices.add(formatter.parse(text).floatValue());
                 parsedPrices.add(text);
             } else {
                 //do nothing
             }
         }
-        this.prices.setValue(parsedPrices);
+
+        this.setCorrectedItems(this.getCorrectableItems().getValue(), parsedPrices, context);
+    }
+
+    public void setCorrectedItems(Context context) {
+        this.setCorrectedItems(this.correctableItems.getValue(), this.prices.getValue(), context);
+    }
+
+    public void setCorrectedItems(
+        ArrayList<CorrectableItem> correctableItems,
+        ArrayList<String> prices,
+        Context context
+    ) {
+        ArrayList<String> correctedItems = new ArrayList<>();
+
+        for(CorrectableItem item : correctableItems) {
+            if(!item.isDeleted()) {
+                correctedItems.add(item.getLabel());
+            } else {
+                //do nothing
+            }
+        }
+
+        this.balanceLists(correctedItems, prices, context);
+    }
+
+    public void balanceLists(ArrayList<String> correctedItems, ArrayList<String> prices, Context context) {
+        int itemsSize = correctedItems.size();
+        int pricesSize = prices.size();
+        int referenceSize = Math.max(itemsSize, pricesSize);
+
+        for (int i = 0; i < referenceSize - itemsSize; i++) {
+            correctedItems.add(context.getResources().getString(R.string.item_placeholder));
+        }
+
+        for (int i = 0; i < referenceSize - pricesSize; i++) {
+            prices.add(context.getResources().getString(R.string.price_placeholder));
+        }
+
+        this.correctedItems.setValue(correctedItems);
+        this.prices.setValue(prices);
+    }
+
+    public LiveData<ArrayList<CorrectableItem>> getCorrectableItems() {
+        return this.correctableItems;
+    }
+
+    public LiveData<ArrayList<String>> getPrices() {
+        return this.prices;
+    }
+
+    public LiveData<ArrayList<String>> getCorrectedItems() {
+        return this.correctedItems;
     }
 
     public String getPreview(ArrayList<String> correctedItems, ArrayList<Float> prices, char currencySymbol, Context context) {
@@ -98,11 +137,8 @@ public class ItemCorrectionViewModel extends ViewModel {
         return builder.toString();
     }
 
-    public LiveData<ArrayList<String>> getPrices() {
-        return this.prices;
-    }
-
     public class CorrectableItem {
+        public boolean get;
         private String label;
         private boolean deleted;
         private CorrectableItem combinedItem;
