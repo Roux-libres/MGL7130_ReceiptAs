@@ -8,18 +8,19 @@
     tools:context=".ui.sharing.SendReceiptFragment">
 
     <ImageView
+        android:id="@+id/bt_image"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/nfc_logo"
-        app:layout_constraintBottom_toTopOf="@+id/nfc_textview"
+        android:src="@drawable/ic_baseline_bluetooth_150"
+        app:layout_constraintBottom_toTopOf="@+id/bt_information_textview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
     </ImageView>
 
     <TextView
-        android:id="@+id/nfc_textview"
+        android:id="@+id/bt_information_textview"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/foo"
@@ -32,14 +33,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/activate_nfc_button"
+        android:id="@+id/send_message_button"
         android:layout_width="175dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:textColor="?attr/colorOnPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nfc_textview">
+        app:layout_constraintTop_toBottomOf="@+id/bt_information_textview">
 
     </Button>
 

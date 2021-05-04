@@ -97,8 +97,8 @@ public class SendReceiptFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_send_receipt, container, false);
 
-        this.nfcButton = root.findViewById(R.id.activate_nfc_button);
-        this.nfcTextView = root.findViewById(R.id.nfc_textview);
+        this.nfcButton = root.findViewById(R.id.send_message_button);
+        this.nfcTextView = root.findViewById(R.id.bt_information_textview);
 
         this.initBluetooth();
 
@@ -133,14 +133,14 @@ public class SendReceiptFragment extends Fragment {
 
     private void changeViewBluetoothActivated() {
         this.nfcButton.setEnabled(true);
-        this.nfcButton.setText(R.string.nfc_button_activated);
-        this.nfcTextView.setText(R.string.nfc_activated_description);
+      //  this.nfcButton.setText(R.string.nfc_button_activated);
+        //this.nfcTextView.setText(R.string.nfc_activated_description);
     }
 
     private void changeViewBluetoothDisabled() {
         this.nfcButton.setEnabled(false);
-        this.nfcButton.setText(R.string.nfc_button_activated);
-        this.nfcTextView.setText(R.string.nfc_disabled_description);
+      //  this.nfcButton.setText(R.string.nfc_button_activated);
+      //  this.nfcTextView.setText(R.string.nfc_disabled_description);
     }
 
     private void manageUnavailableBluetooth() {

@@ -23,7 +23,7 @@ public class ReceiveReceiptViewModel extends ViewModel {
 
     }
 
-    public boolean addReceiptFromJsonString(String json) {
+    public String addReceiptFromJsonString(String json) {
         return this.mainRepository.addReceiptFromJsonString(json, this.receiptDirectory);
     }
 
