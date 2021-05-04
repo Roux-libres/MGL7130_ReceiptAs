@@ -46,6 +46,8 @@ public class ReceiveReceiptFragment extends Fragment {
     private Button bluetoothStateButton;
     private TextView bluetoothStateTextView;
     private TextView bluetoothInformationTextView;
+    private ImageView bluetoothImage;
+
     private final Handler handler = new Handler(Looper.getMainLooper(), new Handler.Callback() {
         @Override
         public boolean handleMessage(@NonNull Message message) {
@@ -54,7 +56,7 @@ public class ReceiveReceiptFragment extends Fragment {
                     String readMessage = new String((byte[]) message.obj, 0, message.arg1);
                     String receiptTitle = mViewModel.addReceiptFromJsonString(readMessage);
                     if (receiptTitle != null) {
-                        bluetoothInformationTextView.setText(R.string.bluetooth_information_reception + " " + receiptTitle);
+                        bluetoothInformationTextView.setText(getString(R.string.bluetooth_information_reception) + " " + receiptTitle);
                     } else {
                         bluetoothInformationTextView.setText(R.string.bluetooth_information_reception_error);
                     }
@@ -63,7 +65,6 @@ public class ReceiveReceiptFragment extends Fragment {
             return true;
         }
     });
-    private ImageView bluetoothImage;
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -101,8 +102,8 @@ public class ReceiveReceiptFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_receive_receipt, container, false);
-        this.bluetoothStateButton = root.findViewById(R.id.send_message_button);
-        this.bluetoothInformationTextView = root.findViewById(R.id.bt_information_textview);
+        this.bluetoothStateButton = root.findViewById(R.id.bt_state_button);
+        this.bluetoothInformationTextView = root.findViewById(R.id.bt_information_device);
         this.bluetoothStateTextView = root.findViewById(R.id.bt_state_textview);
         this.bluetoothImage = root.findViewById(R.id.bt_image);
 

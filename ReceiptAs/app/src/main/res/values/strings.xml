@@ -54,6 +54,17 @@
     <string name="bluetooth_information_wait_reception">Waiting for reception...</string>
     <string name="bluetooth_information_reception">Receipt added : </string>
     <string name="bluetooth_information_reception_error">Reception error. Please try again.</string>
+    <string name="bluetooth_dialog_title">Choose a device :</string>
+    <string name="bluetooth_button_select">Select</string>
+    <string name="bluetooth_button_send">Send receipt</string>
+    <string name="bluetooth_information_sending_init">Select a destination device to unlock sending.</string>
+    <string name="bluetooth_information_device_init">Select a device</string>
+    <string name="bluetooth_information_sending_error">Sending error. Please try again.</string>
+    <string name="bluetooth_information_device_error">Device unavailable. Try again or select an other device.</string>
+    <string name="bluetooth_information_sending_success">Receipt sent successfully.</string>
+
+
+
 
 
 
