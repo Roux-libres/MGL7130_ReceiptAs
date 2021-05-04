@@ -47,7 +47,6 @@ public class CorrectionDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().setTitle(R.string.correction_modal_title);
 
         this.inputItemLabel = view.findViewById(R.id.input_item_label);
         this.inputItemPrice = view.findViewById(R.id.input_item_price);
