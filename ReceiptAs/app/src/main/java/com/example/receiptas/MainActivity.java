@@ -2,13 +2,11 @@ package com.example.receiptas;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Path;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
@@ -25,7 +23,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
-import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -37,7 +34,6 @@ import com.google.android.material.navigation.NavigationView;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Locale;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -45,16 +41,14 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
+    private static final int PERMISSION_CODE = 101;
+    public int currentFragmentId;
     private MainViewModel mainViewModel;
     private AppBarConfiguration mAppBarConfiguration;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
-    public int currentFragmentId;
     private SharedPreferences sharedPref;
-
     private boolean isTablet;
-
-    private static final int PERMISSION_CODE = 101;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
         this.isTablet = getResources().getBoolean(R.bool.isTablet);
 
-        if(this.isTablet()){
+        if (this.isTablet()) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             this.lockDrawerOpen();
         } else {
@@ -91,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 .setDrawerLayout(this.drawerLayout)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener(){
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
             public void onDestinationChanged(@NonNull NavController controller,
                                              @NonNull NavDestination destination, @Nullable Bundle arguments) {
@@ -103,17 +97,17 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        if(getIntent().getBooleanExtra("fromSettings", false)){
+        if (getIntent().getBooleanExtra("fromSettings", false)) {
             navController.navigate(R.id.nav_settings);
         }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(this.isTablet() && (this.currentFragmentId == R.id.nav_history ||
-                               this.currentFragmentId == R.id.nav_scan_receipt ||
-                               this.currentFragmentId == R.id.nav_receive ||
-                               this.currentFragmentId == R.id.nav_settings)){
+        if (this.isTablet() && (this.currentFragmentId == R.id.nav_history ||
+                this.currentFragmentId == R.id.nav_scan_receipt ||
+                this.currentFragmentId == R.id.nav_receive ||
+                this.currentFragmentId == R.id.nav_settings)) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         } else {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -128,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration) || super.onSupportNavigateUp();
     }
 
-    public void requestPermissions(){
+    public void requestPermissions() {
         boolean hasReadFilePermission = (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
         boolean hasWriteFilePermission = (ContextCompat.checkSelfPermission(this,
@@ -136,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         boolean hasCameraPermission = (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
 
-        if(!hasReadFilePermission || !hasCameraPermission || !hasWriteFilePermission){
+        if (!hasReadFilePermission || !hasCameraPermission || !hasWriteFilePermission) {
             ActivityCompat.requestPermissions(this,
                     new String[]{
                             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -146,21 +140,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if(requestCode == PERMISSION_CODE){
-            if(grantResults[0] == PackageManager.PERMISSION_DENIED){
+        if (requestCode == PERMISSION_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 new MaterialAlertDialogBuilder(this)
                         .setTitle(getString(R.string.request_permission_title))
                         .setMessage(getString(R.string.request_permission_message))
-                        .setNeutralButton(R.string.request_permission_button_neutral, new DialogInterface.OnClickListener(){
+                        .setNeutralButton(R.string.request_permission_button_neutral, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 finishAffinity();
                             }
                         })
-                        .setPositiveButton(R.string.request_permission_button_accept, new DialogInterface.OnClickListener(){
+                        .setPositiveButton(R.string.request_permission_button_accept, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 requestPermissions();
@@ -171,27 +165,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void hideKeyboard(){
+    public void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         View view = getCurrentFocus();
-        if(view != null){
+        if (view != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
-    public boolean isTablet(){
+    public boolean isTablet() {
         return this.isTablet;
     }
 
-    public void lockDrawerOpen(){
+    public void lockDrawerOpen() {
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
     }
 
-    public void lockDrawerClosed(){
+    public void lockDrawerClosed() {
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
-    public void unlockDrawer(){
+    public void unlockDrawer() {
         this.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
@@ -199,21 +193,22 @@ public class MainActivity extends AppCompatActivity {
         return toolbar;
     }
 
-    public void loadThemePreference(){
+    public void loadThemePreference() {
+        String[] themes = getResources().getStringArray(R.array.settings_themes);
+
         String favoriteThemeDefault = getResources().getString(R.string.settings_favorite_theme_default);
         String favoriteTheme = this.sharedPref.getString(getString(R.string.settings_favorite_theme), favoriteThemeDefault);
 
         int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        String[] themes = getResources().getStringArray(R.array.settings_themes);
         int nightMode;
 
-        if(favoriteTheme.equals(themes[0])){
+        if (favoriteTheme.equals(themes[0])) {
             nightMode = AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
-        } else if(favoriteTheme.equals(themes[1]) &&
-                nightModeFlags == Configuration.UI_MODE_NIGHT_YES){
+        } else if (favoriteTheme.equals(themes[1]) &&
+                nightModeFlags == Configuration.UI_MODE_NIGHT_YES) {
             nightMode = AppCompatDelegate.MODE_NIGHT_NO;
-        } else if(favoriteTheme.equals(themes[2]) &&
-                nightModeFlags == Configuration.UI_MODE_NIGHT_NO){
+        } else if (favoriteTheme.equals(themes[2]) &&
+                nightModeFlags == Configuration.UI_MODE_NIGHT_NO) {
             nightMode = AppCompatDelegate.MODE_NIGHT_YES;
         } else {
             return;
@@ -222,16 +217,16 @@ public class MainActivity extends AppCompatActivity {
         AppCompatDelegate.setDefaultNightMode(nightMode);
     }
 
-    public void loadLanguagePreference(){
+    public void loadLanguagePreference() {
         String favoriteLanguageDefault = getResources().getString(R.string.settings_favorite_language_default);
         String favoriteLanguage = this.sharedPref.getString(getString(R.string.settings_favorite_language), favoriteLanguageDefault);
         Locale locale;
 
         String[] languages = getResources().getStringArray(R.array.settings_languages);
 
-        if(favoriteLanguage.equals(languages[0])){
+        if (favoriteLanguage.equals(languages[0])) {
             locale = new Locale("en");
-        } else if(favoriteLanguage.equals(languages[1])){
+        } else if (favoriteLanguage.equals(languages[1])) {
             locale = new Locale("fr");
         } else {
             return;
@@ -244,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                 getBaseContext().getResources().getDisplayMetrics());
     }
 
-    private void writeFakeJson(){
+    private void writeFakeJson() {
         String json = "[\n" +
                 "   {\n" +
                 "      \"name\":\"Example\",\n" +
@@ -301,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
         String path = getFilesDir() + "/receipts.json";
 
         File json_file = new File(path);
-        if(!json_file.exists()){
+        if (!json_file.exists()) {
             try {
                 json_file.createNewFile();
 
