@@ -86,15 +86,19 @@ Les éléments suivant doivent être installés pour faire fonctionner l'applica
 
 ## Utilisation
 
-<strong>L'application est en phase de développement et toutes les fonctionnalités ne sont pas encore implémentées.</strong>
-
 Receipt'As s'oriente automatiquement en fonction de la taille de l'écran de l'appareil, ainsi elle s'exécute en mode portrait sur un téléphone mobile et en mode paysage sur une tablette.
 
-La navigation dans l’application se fait au travers d’un menu Navigation Drawer. Sur un téléphone mobile, le menu est accessible depuis n’importe quel écran avec l’icône « Hamburger » en haut à gauche. Ce menu permet d’accéder à l’historique des reçus, à l’écran de création d’un nouveau reçu et aux paramètres. Il est possible de fermer le menu sans changer d’écran en appuyant à l’extérieur du Drawer.
+La navigation dans l’application se fait au travers d’un menu Navigation Drawer. Sur un téléphone mobile, le menu est accessible depuis n’importe quel écran avec l’icône « Hamburger » en haut à gauche. Ce menu permet d’accéder à l’historique des reçus, à l’écran de création d’un nouveau reçu, à l'écran de réception de reçu et aux paramètres de l'application. Il est possible de fermer le menu sans changer d’écran en appuyant à l’extérieur du Drawer.
 
-L'écran d'historique comporte un reçu artificiel sur lequel il est possible de cliquer afin de voir le détail de celui-ci.
+L'écran d'historique comporte un reçu artificiel sur lequel il est possible de cliquer afin de voir le détail de celui-ci. Les reçus créés se retrouvent sur cet écran.
 
-L'écran de paramètres est présent, mais ne présente aucune information importante.
+L'écran de paramètres permet de modifier divers paramètres de l'application qui sont :
+* La monnaie a utiliser par défaut (CAD, EUR, GBP, USD), si aucune préférence n'est attribuée alors la valeur par défaut est la monnaie locale en fonction de la langue du téléphone.
+* Le thème de l'application (Thème système, Clair, Sombre), le thème système s'adapte au thème du téléphone et changera avec celui-ci.
+* La langue utilisée dans l'application (Anglais, Français).
+
+La version de l'application est affichée à la fin de cet écran de paramètres.
+
 
 L’écran de création d’un nouveau reçu ("Scan receipt") est composé de deux zones de texte, une pour nommer le reçu et l’autre pour saisir le prix total du reçu, d’une liste déroulante permettant de sélectionner la devise utilisée ainsi qu’une icône permettant de sélectionner une ou plusieurs photos de la galerie ou bien de directement prendre une photo à l'aide de l’appareil photo. Il faut ensuite cliquer sur le bouton de validation (situé en haut à droite de la galerie) pour traiter les photos.
 
@@ -102,21 +106,32 @@ Le traitement des photos se fait en deux étapes, il faut tout d'abord sélectio
 
 Avant de valider la création du reçu, il est possible de modifier les informations entrées et de supprimer les photos traitées. Si tout est bon, il faut cliquer sur le bouton de validation en bas à droite.
 
+<strong>À MODIFIER UNE FOIS L'ÉCRAN D'OREL FINI</strong>
 S'ensuit l'écran de corrections, celui-ci sert à fusionner des noms de produits ou bien à les supprimer. Une fois la correction finie, il faut valider les modifications.
+<strong>À MODIFIER UNE FOIS L'ÉCRAN D'OREL FINI</strong>
 
-Enfin, il faut ajouter les participants au reçu. Une fois tous les participants ajoutés, il faut valider les modifications.
+Ensuite c'est au tour de l'ajout des participants, il faut rentrer leurs noms dans la zone de texte et cliquer sur le bouton marqué d'un <strong>+</strong>. Une fois tous les participants ajoutés, il faut valider les modifications.
 
-Il n'y a pour l'instant pas de suite à cette dernière étape.
+Il faut ensuite que chaque participant sélectionne les produits auxquels il a participé pour l'achat. Une fois que le dernier participant a fini il faut valider.
+
+Enfin l'écran de finalisation apparait, les informations suivantes sont affichés :
+* Le titre du reçu
+* Le prix total du reçu
+* Le prix total des articles qui n'ont pas de participant
+* les participants et le montant qu'il doivent rembourser au payeur.
+
+Il faut enfin sélectionner le payeur et valider le reçu. Le détail du reçu s'affiche et vous pouvez revenir à l'historique à l'aide de la flèche de retour en haut à gauche.
+
+Sur le détail du reçu, tous les articles sont affichés avec les couleurs des participants et leurs prix. Le récapitulatif du reçu est aussi accessible.
+
+
+Pour envoyer le reçu vers un autre appareil, il faut cliquer sur le bouton partage (représenté par une icône de partage) puis sélectionner le nom de l'appareil et cliquer sur "<strong>Envoyer un reçu</strong>". Pendant ce temps, l'autre appareil doit accéder à l'écran de réception en cliquant sur "<strong>Réception reçu</strong>" à l'aide du menu tiroir. Une fois le reçu recu, un message apparaît en indiquant le nom du reçu.
 
 
 
 ## Écart avec le plan de projet
 
-* L'écran des paramètres ne comporte aucune information modifiable par l'utilisateur.
-* Les reçus de l'historique ne peuvent pas être ordonnés.
-* Le deuxième écran de correction n'est pas encore implémenté.
-* L'écran récapitulatif à la fin de la création d'un reçu n'est pas encore implémenté.
-* L'option NFC n'est pas implémentée.
+* L'option du capteur NFC a été remplacée par la technologie Bluetooth pour l'envoi et la réception de reçu.
 
 
 
@@ -128,9 +143,9 @@ Voir les [questions non résolues](https://github.com/Roux-libres/MGL7130_Receip
 
 ## Contacts
 
-* DELLAC Aurélien - aurelien.dellac@viacesi.fr
-* DEREN Nelson - nelson.deren@viacesi.fr
-* PEYRET Romain - romain.peyret@viacesi.fr
+* Aurélien Dellac - aurelien.dellac@viacesi.fr
+* Nelson Deren - nelson.deren@viacesi.fr
+* Romain Peyret - romain.peyret@viacesi.fr
 
 Lien du projet: [https://github.com/Roux-libres/MGL7130_ReceiptAs](https://github.com/Roux-libres/MGL7130_ReceiptAs)
 
