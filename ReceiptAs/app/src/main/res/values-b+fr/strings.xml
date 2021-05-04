@@ -74,6 +74,7 @@
     <string name="bluetooth_information_device_error"> Périphérique indisponible. Réessayez ou sélectionnez un autre appareil. </string>
     <string name="bluetooth_information_sending_success"> Reçu envoyé avec succès. </string>
 
+
     <string name="menu_settings">Paramètres</string>
     <string name="settings_category_general">Paramètres généraux</string>
 
