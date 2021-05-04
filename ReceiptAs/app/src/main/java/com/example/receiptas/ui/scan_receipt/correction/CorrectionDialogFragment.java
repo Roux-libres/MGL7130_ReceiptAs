@@ -75,7 +75,7 @@ public class CorrectionDialogFragment extends DialogFragment {
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.copyFrom(getDialog().getWindow().getAttributes());
         layoutParams.width = displayWidth * 80 / 100;
-        layoutParams.height = displayHeight * 60 / 100;
+        layoutParams.height = displayHeight * 80 / 100;
         getDialog().getWindow().setAttributes(layoutParams);
     }
 }
