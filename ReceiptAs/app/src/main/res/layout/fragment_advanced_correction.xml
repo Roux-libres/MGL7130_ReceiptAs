@@ -6,14 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".ui.scan_receipt.correction.AdvancedCorrectionFragment">
 
+    <include
+        android:id="@+id/information_message"
+        layout="@layout/information_message_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/correction_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0px"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/information_message" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

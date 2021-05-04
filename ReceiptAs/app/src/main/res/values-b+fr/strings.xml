@@ -88,6 +88,7 @@
 
     <string name="information_message_adding_participants">Saisissez les noms des différents participants.\n(8 participants max)</string>
     <string name="information_message_item_correction">Sélectionnez les lignes à supprimer/rétablir ou utilisez le menu optionnel pour combiner/détacher</string>
+    <string name="information_message_advanced_correction">Sélectionnez une ligne afin de modifier ses valeurs : label et prix</string>
     <string name="information_message_division_participant">, sélectionnez vos produits.</string>
     <string name="information_message_choose_payer">Sélectionner la personne ayant payé.</string>
     <string name="foo">element</string>
@@ -107,13 +108,17 @@
     <string name="item_correction_popup_menu_detach_last">Détacher le dernier produit</string>
     <string name="item_placeholder">item</string>
     <string name="price_placeholder">0.0</string>
+    <string name="correction_modal_title">Correction avancée produit</string>
+    <string name="correction_modal_item_label">Label du produit</string>
+    <string name="correction_modal_item_price">Prix du produit</string>
 
+    <string name="receipt_correction_save_error">Erreur de conversion des prix</string>
+    <string name="receipt_correction_save_error_help">Les prix écrits en rouge doivent être corrigés avant d`\'aller plus loin</string>
     <string name="item_correction_dialog_validate_title">Valider la liste des produits ?</string>
     <string name="item_correction_dialog_validate">Valider</string>
     <string name="dialog_positive">Gotcha !</string>
     <string name="dialog_negative">Annuler</string>
-    <string name="item_correction_dialog_quantity_caution">ATTENTION !! - LA QUANTITÉ DES ARTICLES NE CORRESPOND PAS À LA QUANTITÉ DES PRIX\n\n</string>
-    <string name="item_correction_dialog_preview">"[ Produit - Prix apercu ] :\n"</string>
+    <string name="receipt_correction_dialog_total_caution">ATTENTION !! - LE TOTAL CALCULE DU RECU NE CORRESPOND PAS AU TOTAL SPECIFIE DANS L\'ECRAN PRECEDENT\n\n</string>
 
     <string name="scan_receipt_missing_payer_title">Il manque un payeur</string>
     <string name="scan_receipt_missing_payer_description">Aucun payeur n\'a été spécifié. Veuillez en sélectionner un.</string>

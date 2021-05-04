@@ -33,7 +33,6 @@ public class ReceiptCorrectionViewModel extends ViewModel {
     public void setCorrectableItemsFromList(ArrayList<String> items, Context context) {
         ArrayList<CorrectableItem> correctableItems = new ArrayList<>();
         for(String item : items) {
-            System.out.println(item);
             correctableItems.add(new CorrectableItem(item));
         }
 
@@ -56,6 +55,7 @@ public class ReceiptCorrectionViewModel extends ViewModel {
             text = text.replaceAll(regexSeparatorFamily, String.valueOf(formatter.getDecimalFormatSymbols().getDecimalSeparator()));
             if(!TextUtils.isEmpty(text)) {
                 parsedPrices.add(text);
+                formatter.parse("0.0");
             } else {
                 //do nothing
             }
@@ -103,6 +103,21 @@ public class ReceiptCorrectionViewModel extends ViewModel {
         this.prices.setValue(prices);
     }
 
+    public void changeLabel(int index, String newLabel) {
+        this.correctedItems.getValue().set(index, newLabel);
+        this.correctedItems.setValue(this.correctedItems.getValue());
+
+        if(index < this.correctableItems.getValue().size()) {
+            this.correctableItems.getValue().get(index).setLabel(newLabel);
+            this.correctableItems.setValue(this.correctableItems.getValue());
+        }
+    }
+
+    public void changePrice(int index, String newPrice) {
+        this.prices.getValue().set(index, newPrice);
+        this.prices.setValue(this.prices.getValue());
+    }
+
     public LiveData<ArrayList<CorrectableItem>> getCorrectableItems() {
         return this.correctableItems;
     }
@@ -115,42 +130,31 @@ public class ReceiptCorrectionViewModel extends ViewModel {
         return this.correctedItems;
     }
 
-    public String getPreview(ArrayList<String> correctedItems, ArrayList<Float> prices, char currencySymbol, Context context) {
-        StringBuilder builder = new StringBuilder();
-
-        if (correctedItems.size() != prices.size()) {
-            builder.append(context.getResources().getString(R.string.item_correction_dialog_quantity_caution));
-        }
-        int referenceSize = Math.max(correctedItems.size(), prices.size());
-
-        builder.append(context.getResources().getString(R.string.item_correction_dialog_preview));
-        for (int i = 0; i < referenceSize; i++) {
-            builder
-                .append("---------------\n")
-                .append(i < correctedItems.size() ? correctedItems.get(i) : "no item")
-                .append(" : ")
-                .append(i < prices.size() ? prices.get(i) : "0")
-                .append(currencySymbol)
-                .append("\n");
-        }
-
-        return builder.toString();
-    }
-
     public class CorrectableItem {
         public boolean get;
         private String label;
         private boolean deleted;
         private CorrectableItem combinedItem;
+        private boolean hasBeenModifiedCombined;
 
         public CorrectableItem(String label) {
             this.label = label;
             this.deleted = false;
+            this.hasBeenModifiedCombined = false;
+        }
+
+        public void setLabel(String label) {
+            this.label = label;
+            if(this.combinedItem != null) {
+                this.hasBeenModifiedCombined = true;
+            } else {
+                //do nothing
+            }
         }
 
         public String getLabel() {
             String completeLabel = this.label;
-            if(this.combinedItem != null) {
+            if(this.combinedItem != null && !this.hasBeenModifiedCombined) {
                 completeLabel = new StringBuilder(completeLabel)
                     .append(" ")
                     .append(combinedItem.getLabel()).toString();
@@ -175,6 +179,7 @@ public class ReceiptCorrectionViewModel extends ViewModel {
         public CorrectableItem popCombinedItem() {
             CorrectableItem item = this.combinedItem;
             this.combinedItem = null;
+            this.hasBeenModifiedCombined = false;
             return item;
         }
 
@@ -185,9 +190,10 @@ public class ReceiptCorrectionViewModel extends ViewModel {
                     item = this.combinedItem.popLastCombinedItem();
                 } else {
                     this.combinedItem = null;
+                    this.hasBeenModifiedCombined = false;
                 }
             } else {
-                //do nothing
+                this.hasBeenModifiedCombined = false;
             }
             return item;
         }

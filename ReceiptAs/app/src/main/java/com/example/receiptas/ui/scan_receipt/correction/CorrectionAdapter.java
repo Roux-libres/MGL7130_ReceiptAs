@@ -1,6 +1,7 @@
 package com.example.receiptas.ui.scan_receipt.correction;
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 public class CorrectionAdapter extends RecyclerView.Adapter<CorrectionViewHolder>{
     private final ArrayList<String> correctedItems;
     private final ArrayList<String> prices;
+    private final OnRecyclerViewItemClickListener listener;
+    private final Context context;
 
     public CorrectionAdapter(
         ArrayList<String> dataSet,
@@ -25,6 +28,8 @@ public class CorrectionAdapter extends RecyclerView.Adapter<CorrectionViewHolder
     ) {
         this.correctedItems = dataSet;
         this.prices = prices;
+        this.listener = itemClickListener;
+        this.context = context;
     }
 
     @NonNull
@@ -36,9 +41,22 @@ public class CorrectionAdapter extends RecyclerView.Adapter<CorrectionViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull CorrectionViewHolder holder, int position) {
-        System.out.println(this.correctedItems.size() + " : " + this.prices.size());
-        holder.getLeftTextView().setText(correctedItems.get(position));
-        holder.getRightTextView().setText(prices.get(position));
+        TypedValue textColor = new TypedValue();
+
+        holder.getLeftTextView().setText(this.correctedItems.get(position));
+
+        try {
+            Float.parseFloat(this.prices.get(position));
+            context.getTheme().resolveAttribute(R.attr.correctionItemColor, textColor, true);
+
+        }catch (Exception e) {
+            System.out.println(e);
+            context.getTheme().resolveAttribute(R.attr.correctionItemDeletedColor, textColor, true);
+        }
+
+        holder.getRightTextView().setTextColor(context.getResources().getColor(textColor.resourceId));
+        holder.getRightTextView().setText(this.prices.get(position));
+        holder.bindListener(position, this.correctedItems.get(position), this.listener);
     }
 
     @Override

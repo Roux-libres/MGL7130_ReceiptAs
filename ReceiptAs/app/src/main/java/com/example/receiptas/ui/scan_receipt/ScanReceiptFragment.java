@@ -99,6 +99,8 @@ public class ScanReceiptFragment extends Fragment implements View.OnClickListene
             this.inputReceiptName.setText(scanReceiptViewModel.getReceipt().getName());
         }
 
+        scanReceiptViewModel.getReceipt().setItems(new ArrayList<>());
+
         this.inputReceiptPrice = root.findViewById(R.id.input_scan_receipt_price);
 
         Float price;

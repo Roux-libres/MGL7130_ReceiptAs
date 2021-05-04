@@ -23,10 +23,13 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.receiptas.MainActivity;
 import com.example.receiptas.R;
+import com.example.receiptas.model.domain_model.Item;
 import com.example.receiptas.model.util.DataState;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.util.ArrayList;
 
 public class ReceiptCorrectionFragment extends Fragment {
 
@@ -44,17 +47,6 @@ public class ReceiptCorrectionFragment extends Fragment {
         this.scanReceiptViewModel = new ViewModelProvider(getActivity()).get(ScanReceiptViewModel.class);
         this.receiptCorrectionViewModel = new ViewModelProvider(this).get(ReceiptCorrectionViewModel.class);
         this.tabsNames = getResources().getStringArray(R.array.receipt_correction_tabs_names);
-
-        //TODO adapter à la tablette
-        if(((MainActivity) getActivity()).isTablet()) {
-            getActivity().getSupportFragmentManager().beginTransaction()
-                .setReorderingAllowed(true)
-                .add(R.id.include_fragment_item_correction,
-                    ItemCorrectionFragment.newInstance(this.receiptCorrectionViewModel))
-                .add(R.id.include_fragment_advanced_correction,
-                    AdvancedCorrectionFragment.newInstance(this.receiptCorrectionViewModel))
-                .commit();
-        }
     }
 
     @Override
@@ -67,8 +59,15 @@ public class ReceiptCorrectionFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO adapter à la tablette
         if(((MainActivity) getActivity()).isTablet()) {
+            getActivity().getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .add(R.id.include_fragment_item_correction,
+                    ItemCorrectionFragment.newInstance(this.receiptCorrectionViewModel))
+                .add(R.id.include_fragment_advanced_correction,
+                    AdvancedCorrectionFragment.newInstance(this.receiptCorrectionViewModel))
+                .commit();
+
             TextView itemCorrectionHeader = view.findViewById(R.id.item_correction_header);
             itemCorrectionHeader.setText(this.tabsNames[0]);
 
@@ -103,13 +102,70 @@ public class ReceiptCorrectionFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.validate_button) {
-            NavDirections action = ReceiptCorrectionFragmentDirections.correctionToParticipant();
-            Navigation.findNavController(getView()).navigate(action);
+        if (item.getItemId() == R.id.validate_button
+            && scanReceiptViewModel.getPrices().getValue().getState().getValue() == DataState.State.SUCCESS
+            && scanReceiptViewModel.getItems().getValue().getState().getValue() == DataState.State.SUCCESS
+        ) {
+            boolean receiptSaved = this.saveCorrections();
+
+            float calculatedTotal = scanReceiptViewModel.getReceipt().getTotalAmount();
+            if (!receiptSaved){
+                openBlockingDialog(
+                    R.string.receipt_correction_save_error,
+                    getContext().getResources().getString(R.string.receipt_correction_save_error_help),
+                    R.string.item_correction_dialog_validate,
+                    null,
+                    R.string.dialog_negative,
+                    null,
+                    false
+                );
+            } else if(calculatedTotal == scanReceiptViewModel.getReceiptSpecifiedPrice().getValue()) {
+                NavDirections action = ReceiptCorrectionFragmentDirections.correctionToParticipant();
+                Navigation.findNavController(getView()).navigate(action);
+            } else {
+                openBlockingDialog(
+                    R.string.item_correction_dialog_validate_title,
+                    getContext().getResources().getString(R.string.receipt_correction_dialog_total_caution)
+                        .concat("\n\nCalculated total = " + calculatedTotal)
+                        .concat("\n\nSpecified total = " + scanReceiptViewModel.getReceiptSpecifiedPrice().getValue()),
+                    R.string.item_correction_dialog_validate,
+                    (dialog, which) -> {
+                        NavDirections action = ReceiptCorrectionFragmentDirections.correctionToParticipant();
+                        Navigation.findNavController(getView()).navigate(action);
+                    },
+                    R.string.dialog_negative,
+                    null,
+                    false
+                );
+            }
             return true;
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    private boolean saveCorrections() {
+        boolean allRight = false;
+
+        try {
+            ArrayList<Item> items = new ArrayList<>();
+            for(int i = 0; i < this.receiptCorrectionViewModel.getCorrectedItems().getValue().size(); i++) {
+                items.add(
+                    new Item(
+                        this.receiptCorrectionViewModel.getCorrectedItems().getValue().get(i),
+                        Float.parseFloat(this.receiptCorrectionViewModel.getPrices().getValue().get(i)),
+                        new ArrayList<>()
+                    )
+                );
+            }
+            this.scanReceiptViewModel.getReceipt().setItems(items);
+            allRight = true;
+        } catch(Exception e) {
+            System.out.println(e);
+            this.scanReceiptViewModel.getReceipt().setItems(new ArrayList<>());
+        }
+
+        return allRight;
     }
 
     private final TabLayout.OnTabSelectedListener tabSelectedListener = new TabLayout.OnTabSelectedListener() {
@@ -134,7 +190,17 @@ public class ReceiptCorrectionFragment extends Fragment {
         public void onChanged(DataState.State dataState) {
             switch(dataState) {
                 case SUCCESS:
-                    receiptCorrectionViewModel.setCorrectableItemsFromList(scanReceiptViewModel.getItems().getValue().getData(), getContext());
+
+                    if(scanReceiptViewModel.getReceipt().getItems().isEmpty()) {
+                        receiptCorrectionViewModel.setCorrectableItemsFromList(scanReceiptViewModel.getItems().getValue().getData(), getContext());
+                    } else {
+                        ArrayList<String> items = new ArrayList<>();
+                        for(Item item : scanReceiptViewModel.getReceipt().getItems()) {
+                            items.add(item.getName());
+                        }
+                        receiptCorrectionViewModel.setCorrectableItemsFromList(items, getContext());
+                    }
+
 
                     displayProgressBar(false);
                     break;
@@ -160,17 +226,21 @@ public class ReceiptCorrectionFragment extends Fragment {
         }
     };
 
-    private void displayProgressBar(boolean isDisplayed) {
-        this.progressBar.setVisibility(isDisplayed ? View.VISIBLE : View.GONE);
-    }
-
     private final Observer<DataState.State> pricesObserver = new Observer<DataState.State>() {
         @Override
         public void onChanged(DataState.State dataState) {
             switch(dataState) {
                 case SUCCESS:
                     try {
-                        receiptCorrectionViewModel.setPricesFromParsedText(scanReceiptViewModel.getPrices().getValue().getData(), getContext());
+                        if(scanReceiptViewModel.getReceipt().getItems().isEmpty()) {
+                            receiptCorrectionViewModel.setPricesFromParsedText(scanReceiptViewModel.getPrices().getValue().getData(), getContext());
+                        } else {
+                            ArrayList<String> prices = new ArrayList<>();
+                            for(Item item : scanReceiptViewModel.getReceipt().getItems()) {
+                                prices.add(Float.toString(item.getPrice()));
+                            }
+                            receiptCorrectionViewModel.setPricesFromParsedText(prices, getContext());
+                        }
                     } catch (Exception e) {
                         scanReceiptViewModel.getPrices().getValue().setError(e);
                     }
@@ -192,6 +262,10 @@ public class ReceiptCorrectionFragment extends Fragment {
             }
         }
     };
+
+    private void displayProgressBar(boolean isDisplayed) {
+        this.progressBar.setVisibility(isDisplayed ? View.VISIBLE : View.GONE);
+    }
 
     private void openBlockingDialog(
         int titleId,

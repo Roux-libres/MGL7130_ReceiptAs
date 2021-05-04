@@ -74,23 +74,23 @@ public class ItemCorrectionFragment extends Fragment {
             && scanReceiptViewModel.getPrices().getValue().getState().getValue() == DataState.State.SUCCESS
             && scanReceiptViewModel.getItems().getValue().getState().getValue() == DataState.State.SUCCESS
         ) {
-            ArrayList<String> correctedItems = itemCorrectionViewModel.getCorrectedItems();
+            ArrayList<String> correctedItems = receiptCorrectionViewModel.getCorrectedItems();
             openBlockingDialog(
                 R.string.item_correction_dialog_validate_title,
-                itemCorrectionViewModel.getPreview(
+                receiptCorrectionViewModel.getPreview(
                     correctedItems,
-                    itemCorrectionViewModel.getPrices(),
+                    receiptCorrectionViewModel.getPrices(),
                     scanReceiptViewModel.getReceipt().getCurrency().getSymbol().charAt(0),
                     this.getContext()
                 ),
                 R.string.item_correction_dialog_validate,
                 (dialog, which) -> {
-                    int referenceSize = Math.max(correctedItems.size(), itemCorrectionViewModel.getPrices().size());
+                    int referenceSize = Math.max(correctedItems.size(), receiptCorrectionViewModel.getPrices().size());
                     ArrayList<Item> items = new ArrayList<>();
                     for(int i = 0; i < referenceSize; i++) {
                         items.add(new Item(
                             i < correctedItems.size() ? correctedItems.get(i) : "no item",
-                            i < itemCorrectionViewModel.getPrices().size() ? itemCorrectionViewModel.getPrices().get(i) : 0,
+                            i < receiptCorrectionViewModel.getPrices().size() ? receiptCorrectionViewModel.getPrices().get(i) : 0,
                             new ArrayList<>()
                         ));
                     }

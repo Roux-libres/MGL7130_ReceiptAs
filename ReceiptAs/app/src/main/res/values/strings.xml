@@ -88,6 +88,7 @@
 
     <string name="information_message_adding_participants">Enter the names of different participants. \n (8 participants max)</string>
     <string name="information_message_item_correction">Select the lines to delete/undelete or use option menu to combine/detach</string>
+    <string name="information_message_advanced_correction">Select a line to modify its values : label and price</string>
     <string name="information_message_division_participant">, select your items.</string>
     <string name="information_message_choose_payer">Select the person who paid.</string>
     <string name="foo">element</string>
@@ -107,14 +108,20 @@
     <string name="item_correction_popup_menu_detach_last">Detach last item</string>
     <string name="item_placeholder">item</string>
     <string name="price_placeholder">0.0</string>
+    <string name="correction_modal_title">Advanced item correction</string>
+    <string name="correction_modal_item_label">Item label</string>
+    <string name="correction_modal_item_price">Item price</string>
 
-    <string name="item_correction_dialog_validate_title">Validate items list ?</string>
+    <string name="receipt_correction_save_error">Prices parsing error</string>
+    <string name="receipt_correction_save_error_help">Prices written in red must be corrected before going further</string>
+    <string name="item_correction_dialog_validate_title">Validate current receipt ?</string>
     <string name="item_correction_dialog_validate">Validate</string>
     <string name="dialog_positive">Gotcha !</string>
     <string name="dialog_negative">Cancel</string>
-    <string name="item_correction_dialog_quantity_caution">CAUTION !! - ITEMS QUANTITY DOESN\'T MATCH PRICES QUANTITY\n\n</string>
-    <string name="item_correction_dialog_preview">"[ Item - price mapping preview ] :\n"</string>
+    <string name="receipt_correction_dialog_total_caution">CAUTION !! - RECEIPT CALCULATED TOTAL DOES NOT MATCH SPECIFIED TOTAL IN FORMER SCREEN\n\n</string>
 
     <string name="scan_receipt_missing_payer_title">Payer is missing</string>
     <string name="scan_receipt_missing_payer_description">No payer has been specified. Please select one.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
