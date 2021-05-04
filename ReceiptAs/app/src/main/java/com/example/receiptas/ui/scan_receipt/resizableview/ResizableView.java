@@ -51,8 +51,8 @@ public class ResizableView extends View {
         this.horizontalDifference = (imageView.getWidth() - imageBitmap.getWidth()) / 2;
         this.verticalDifference = (imageView.getHeight() - imageBitmap.getHeight()) / 2;
 
-        int paddingX = 50;
-        int paddingY = 50;
+        int paddingX = 100;
+        int paddingY = 100;
 
         int minX = imageView.getWidth() / 2 - paddingX;
         int maxX = imageView.getWidth() / 2 + paddingX;
