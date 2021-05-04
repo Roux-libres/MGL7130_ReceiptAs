@@ -95,7 +95,7 @@
     <fragment
         android:id="@+id/itemCorrectionFragment"
         android:name="com.example.receiptas.ui.scan_receipt.correction.ItemCorrectionFragment"
-        android:label="Correction"
+        android:label="@string/scan_receipt_correction_label"
         tools:layout="@layout/fragment_item_correction" >
         <action
             android:id="@+id/action_to_addingParticipantsFragment"
@@ -105,7 +105,7 @@
     <fragment
         android:id="@+id/addingParticipantsFragment"
         android:name="com.example.receiptas.ui.scan_receipt.division.AddingParticipantsFragment"
-        android:label="Participants"
+        android:label="@string/scan_receipt_participant_label"
         tools:layout="@layout/fragment_division_adding_participants" >
         <action
             android:id="@+id/action_addingParticipantsFragment_to_itemDivision"
@@ -115,7 +115,7 @@
     <fragment
         android:id="@+id/itemDivision"
         android:name="com.example.receiptas.ui.scan_receipt.division.ItemDivisionFragment"
-        android:label="Division"
+        android:label="@string/scan_receipt_division_label"
         tools:layout="@layout/fragment_item_divison">
         <argument
             android:name="participantIndex"
@@ -128,10 +128,11 @@
             android:id="@+id/action_itemDivision_to_finalizationFragment"
             app:destination="@id/finalizationFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/finalizationFragment"
         android:name="com.example.receiptas.ui.scan_receipt.division.FinalizationFragment"
-        android:label="Finalization"
+        android:label="@string/scan_receipt_finalization_label"
         tools:layout="@layout/fragment_finalization">
 
         <action

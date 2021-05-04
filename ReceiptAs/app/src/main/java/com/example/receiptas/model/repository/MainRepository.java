@@ -6,10 +6,11 @@ import com.example.receiptas.model.data_model.ReceiptDataEntity;
 import com.example.receiptas.model.domain_model.Receipt;
 import com.example.receiptas.model.service.OCRService;
 import com.example.receiptas.model.util.DataState;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
@@ -18,7 +19,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class MainRepository {
     private static final String API_KEY = "a4e5461ff488957";
     private static int OCR_ENGINE = 2;
-    private static boolean IS_TABLE = false;
+    private static boolean IS_TABLE = true;
 
     private final ReceiptDao receiptDao;
     private final OCRService ocrService;
@@ -64,15 +65,19 @@ public class MainRepository {
     }
 
     private ArrayList<String> parseJsonObjectParsedText(JsonObject jsonObject) {
-        //TODO REFACTO WITH IS TABLE TRUE
-        return new ArrayList<>(
-                Arrays.asList(
-                        jsonObject.get("ParsedResults")
-                                .getAsJsonArray().get(0)
-                                .getAsJsonObject().get("ParsedText")
-                                .getAsString().split(OCR_ENGINE == 1 ? "\r\n" : "\n")
-                )
-        );
+        ArrayList<String> lines = new ArrayList<>();
+
+        JsonArray jsonLines = jsonObject.get("ParsedResults")
+                .getAsJsonArray().get(0)
+                .getAsJsonObject().get("TextOverlay")
+                .getAsJsonObject().get("Lines")
+                .getAsJsonArray();
+
+        for (JsonElement line : jsonLines) {
+            lines.add(line.getAsJsonObject().get("LineText").getAsString());
+        }
+
+        return lines;
     }
 
     public ArrayList<Receipt> loadReceipts(String pathFilesDirectory) {
@@ -120,7 +125,7 @@ public class MainRepository {
         }
     }
 
-    public void saveReceipts(String pathFilesDirectory){
+    public void saveReceipts(String pathFilesDirectory) {
         try {
             this.receiptDao.setAll(pathFilesDirectory, this.dataMapper.mapToEntities(this.receipts));
         } catch (Exception exception) {

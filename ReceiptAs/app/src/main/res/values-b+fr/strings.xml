@@ -39,9 +39,18 @@
     <string name="scan_receipt_title">Titre du reçu</string>
     <string name="scan_receipt_price">Prix du reçu</string>
 
+    <string name="scan_receipt_correction_label">Correction</string>
+
+    <string name="scan_receipt_participant_label">Participants</string>
+
     <string name="name_input">Nom</string>
     <string name="adding_button_description">Ajouter</string>
-    <string name="validation_button_description">Valider</string>
+    <string name="adding_participant_dialog_no_participant_title">Pas de participant</string>
+    <string name="adding_participant_dialog_no_participant_message">Veuillez ajouter au moins un participant</string>
+
+    <string name="scan_receipt_division_label">Division</string>
+
+    <string name="scan_receipt_finalization_label">Finalisation</string>
 
 
     <string name="menu_receive">Réception reçu</string>
@@ -67,19 +76,18 @@
     <string name="settings_category_general">Paramètres généraux</string>
 
     <string name="settings_favorite_currency">settings_favorite_currency</string>
-    <string name="settings_favorite_currency_default">None</string>
+    <string name="settings_favorite_currency_default">Aucune</string>
     <string name="settings_favorite_currency_title">Devise par défaut</string>
     <string name="settings_favorite_currency_summary">Choisir la devise par défaut pour les nouveaux reçus</string>
 
-    <string name="settings_favorite_theme_default">System default</string>
     <string name="settings_favorite_theme">settings_favorite_theme</string>
+    <string name="settings_favorite_theme_default">@string/settings_theme_system</string>
     <string name="settings_favorite_theme_title">Thème de l\'application</string>
     <string name="settings_favorite_theme_summary">Choisissez un thème pour l\'application</string>
-    <string-array name="settings_themes">
-        <item name="settings_theme_system">System default</item>
-        <item name="settings_theme_light">Light</item>
-        <item name="settings_theme_dark">Dark</item>
-    </string-array>
+
+    <string name="settings_theme_system">Thème système</string>
+    <string name="settings_theme_light">Clair</string>
+    <string name="settings_theme_dark">Sombre</string>
 
     <string name="settings_favorite_language_default">English</string>
     <string name="settings_favorite_language">settings_favorite_language</string>

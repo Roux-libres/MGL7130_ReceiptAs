@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="currency_array">
-        <item>None</item>
+        <item>@string/settings_favorite_currency_default</item>
         <item>CAD</item>
         <item>EUR</item>
         <item>GBP</item>

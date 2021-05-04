@@ -7,18 +7,18 @@ import android.graphics.drawable.Drawable;
 
 public class ImagePoint {
 
+    static int count = 0;
     private Drawable drawable;
     private Point point;
     private int id;
-    static int count = 0;
 
-    public ImagePoint(Context context, int resourceId, Point point){
+    public ImagePoint(Context context, int resourceId, Point point) {
         this.id = count++;
         this.drawable = context.getDrawable(resourceId);
         this.point = point;
     }
 
-    public static void resetCount(){
+    public static void resetCount() {
         count = 0;
     }
 
@@ -44,23 +44,23 @@ public class ImagePoint {
         return this.point.x;
     }
 
-    public int getY() {
-        return this.point.y;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
     public void setX(int x) {
         this.point.x = x;
+    }
+
+    public int getY() {
+        return this.point.y;
     }
 
     public void setY(int y) {
         this.point.y = y;
     }
 
-    public Point getPoint(){
+    public int getId() {
+        return this.id;
+    }
+
+    public Point getPoint() {
         return this.point;
     }
 }

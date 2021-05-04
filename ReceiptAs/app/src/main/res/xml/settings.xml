@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory android:title="@string/settings_category_general"
-        app:iconSpaceReserved="false" >
+    <PreferenceCategory
+        android:title="@string/settings_category_general"
+        app:iconSpaceReserved="false">
 
         <ListPreference
-            android:key="@string/settings_favorite_currency"
+            android:defaultValue="@string/settings_favorite_currency_default"
             android:entries="@array/currency_array"
             android:entryValues="@array/currency_array"
-            android:title="@string/settings_favorite_currency_title"
+            android:key="@string/settings_favorite_currency"
             android:summary="@string/settings_favorite_currency_summary"
-            android:defaultValue="@string/settings_favorite_currency_default"
+            android:title="@string/settings_favorite_currency_title"
             app:iconSpaceReserved="false" />
 
         <ListPreference
-            android:key="@string/settings_favorite_theme"
-            android:entries="@array/settings_themes"
-            android:entryValues="@array/settings_themes"
-            android:title="@string/settings_favorite_theme_title"
-            android:summary="@string/settings_favorite_theme_summary"
             android:defaultValue="@string/settings_favorite_theme_default"
+            android:entries="@array/settings_themes_translated"
+            android:entryValues="@array/settings_themes"
+            android:key="@string/settings_favorite_theme"
+            android:summary="@string/settings_favorite_theme_summary"
+            android:title="@string/settings_favorite_theme_title"
             app:iconSpaceReserved="false" />
 
         <ListPreference
-            android:key="@string/settings_favorite_language"
+            android:defaultValue="@string/settings_favorite_language_default"
             android:entries="@array/settings_languages"
             android:entryValues="@array/settings_languages"
-            android:title="@string/settings_favorite_language_title"
+            android:key="@string/settings_favorite_language"
             android:summary="@string/settings_favorite_language_summary"
-            android:defaultValue="@string/settings_favorite_language_default"
+            android:title="@string/settings_favorite_language_title"
             app:iconSpaceReserved="false" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="@string/settings_category_about"
-        app:iconSpaceReserved="false" >
+    <PreferenceCategory
+        android:title="@string/settings_category_about"
+        app:iconSpaceReserved="false">
 
         <Preference
-            android:title="@string/settings_version_title"
             android:key="@string/settings_version"
+            android:title="@string/settings_version_title"
             app:iconSpaceReserved="false" />
 
     </PreferenceCategory>
-
 
 </androidx.preference.PreferenceScreen>
