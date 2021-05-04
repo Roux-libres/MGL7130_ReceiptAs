@@ -3,6 +3,7 @@ package com.example.receiptas.ui.scan_receipt.correction;
 import android.content.Context;
 import android.text.TextUtils;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -19,11 +20,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class ItemCorrectionViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<CorrectableItem>> correctableItems = new MutableLiveData<>();
-    private final ArrayList<Float> prices = new ArrayList<>();
+    private final MutableLiveData<ArrayList<String>> prices = new MutableLiveData<>();
 
     @Inject
     public ItemCorrectionViewModel() {
-
+        this.correctableItems.setValue(new ArrayList<>());
+        this.prices.setValue(new ArrayList<>());
     }
 
     public void setCorrectableItemsFromList(ArrayList<String> items) {
@@ -56,6 +58,7 @@ public class ItemCorrectionViewModel extends ViewModel {
         DecimalFormatSymbols symbol = DecimalFormatSymbols.getInstance();
         symbol.setDecimalSeparator('.');
         formatter.setDecimalFormatSymbols(symbol);
+        ArrayList<String> parsedPrices = new ArrayList();
 
         String separatorFamily = ".,;:!?'\"";
         String regexSeparatorFamily = "[" + separatorFamily + "]";
@@ -64,11 +67,13 @@ public class ItemCorrectionViewModel extends ViewModel {
             text = text.replaceAll(regex, "");
             text = text.replaceAll(regexSeparatorFamily, String.valueOf(formatter.getDecimalFormatSymbols().getDecimalSeparator()));
             if(!TextUtils.isEmpty(text)) {
-                this.prices.add(formatter.parse(text).floatValue());
+                //this.prices.add(formatter.parse(text).floatValue());
+                parsedPrices.add(text);
             } else {
                 //do nothing
             }
         }
+        this.prices.setValue(parsedPrices);
     }
 
     public String getPreview(ArrayList<String> correctedItems, ArrayList<Float> prices, char currencySymbol, Context context) {
@@ -93,7 +98,7 @@ public class ItemCorrectionViewModel extends ViewModel {
         return builder.toString();
     }
 
-    public ArrayList<Float> getPrices() {
+    public LiveData<ArrayList<String>> getPrices() {
         return this.prices;
     }
 

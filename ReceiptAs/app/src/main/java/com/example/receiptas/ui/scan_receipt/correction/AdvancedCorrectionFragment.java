@@ -8,12 +8,19 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.receiptas.R;
+import com.example.receiptas.ui.history.OnRecyclerViewItemClickListener;
+
+import java.util.ArrayList;
 
 public class AdvancedCorrectionFragment extends Fragment {
 
     private final ItemCorrectionViewModel itemCorrectionViewModel;
+    private RecyclerView correctionRecyclerView;
 
     public AdvancedCorrectionFragment(ItemCorrectionViewModel itemCorrectionViewModel) {
         this.itemCorrectionViewModel = itemCorrectionViewModel;
@@ -33,4 +40,45 @@ public class AdvancedCorrectionFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_advanced_correction, container, false);
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        this.correctionRecyclerView = view.findViewById(R.id.correction_recycler_view);
+        this.itemCorrectionViewModel.getCorrectableItems().observe(this.getViewLifecycleOwner(), correctableItemObserver);
+        this.itemCorrectionViewModel.getPrices().observe(this.getViewLifecycleOwner(), this.pricesObserver);
+        this.configureRecyclerView();
+    }
+
+    private void configureRecyclerView() {
+        this.correctionRecyclerView.setAdapter(
+            new CorrectionAdapter(
+                itemCorrectionViewModel.getCorrectableItems().getValue(),
+                itemCorrectionViewModel.getPrices().getValue(),
+                onItemClick,
+                getContext()
+            )
+        );
+        this.correctionRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
+
+    private final OnRecyclerViewItemClickListener<ItemCorrectionViewModel.CorrectableItem> onItemClick  = (itemId, item) -> {
+        //TODO ouvrir modal modif
+    };
+
+    private final Observer<ArrayList<ItemCorrectionViewModel.CorrectableItem>> correctableItemObserver =
+        new Observer<ArrayList<ItemCorrectionViewModel.CorrectableItem>>() {
+            @Override
+            public void onChanged(ArrayList<ItemCorrectionViewModel.CorrectableItem> correctableItems) {
+                correctionRecyclerView.getAdapter().notifyItemRangeChanged(0, correctableItems.size());
+            }
+        };
+
+    private final Observer<ArrayList<String>> pricesObserver =
+        new Observer<ArrayList<String>>() {
+            @Override
+            public void onChanged(ArrayList<String> prices) {
+                correctionRecyclerView.getAdapter().notifyItemRangeChanged(0, prices.size());
+            }
+        };
 }

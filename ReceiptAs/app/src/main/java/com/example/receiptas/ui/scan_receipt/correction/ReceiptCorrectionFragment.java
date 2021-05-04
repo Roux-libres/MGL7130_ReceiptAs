@@ -24,8 +24,6 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.receiptas.MainActivity;
 import com.example.receiptas.R;
 import com.example.receiptas.model.util.DataState;
-import com.example.receiptas.ui.history.receipt_detail.ReceiptDetailProductsFragment;
-import com.example.receiptas.ui.history.receipt_detail.ReceiptDetailSummaryFragment;
 import com.example.receiptas.ui.scan_receipt.ScanReceiptViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -49,17 +47,12 @@ public class ReceiptCorrectionFragment extends Fragment {
 
         //TODO adapter à la tablette
         if(((MainActivity) getActivity()).isTablet()) {
-            Bundle arguments = new Bundle();
-            //arguments.putInt();
-
             getActivity().getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .add(R.id.include_fragment_receipt_detail_products,
-                    ReceiptDetailProductsFragment.class,
-                    arguments)
-                .add(R.id.include_fragment_receipt_detail_summary,
-                    ReceiptDetailSummaryFragment.class,
-                    arguments)
+                .add(R.id.include_fragment_item_correction,
+                    ItemCorrectionFragment.newInstance(this.itemCorrectionViewModel))
+                .add(R.id.include_fragment_advanced_correction,
+                    AdvancedCorrectionFragment.newInstance(this.itemCorrectionViewModel))
                 .commit();
         }
     }

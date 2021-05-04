@@ -114,7 +114,7 @@
     <fragment
         android:id="@+id/receiptCorrectionFragment"
         android:name="com.example.receiptas.ui.scan_receipt.correction.ReceiptCorrectionFragment"
-        android:label="ReceiptCorrectionFragment" >
+        android:label="@string/menu_correction">
         <action
             android:id="@+id/correction_to_participant"
             app:destination="@id/addingParticipantsFragment" />
