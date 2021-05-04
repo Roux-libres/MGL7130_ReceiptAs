@@ -45,9 +45,10 @@ public class AdvancedCorrectionFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         this.correctionRecyclerView = view.findViewById(R.id.correction_recycler_view);
+
+        this.configureRecyclerView();
         this.itemCorrectionViewModel.getCorrectableItems().observe(this.getViewLifecycleOwner(), correctableItemObserver);
         this.itemCorrectionViewModel.getPrices().observe(this.getViewLifecycleOwner(), this.pricesObserver);
-        this.configureRecyclerView();
     }
 
     private void configureRecyclerView() {
@@ -70,7 +71,12 @@ public class AdvancedCorrectionFragment extends Fragment {
         new Observer<ArrayList<ItemCorrectionViewModel.CorrectableItem>>() {
             @Override
             public void onChanged(ArrayList<ItemCorrectionViewModel.CorrectableItem> correctableItems) {
-                correctionRecyclerView.getAdapter().notifyItemRangeChanged(0, correctableItems.size());
+                correctionRecyclerView.setAdapter(new CorrectionAdapter(
+                    correctableItems,
+                    itemCorrectionViewModel.getPrices().getValue(),
+                    onItemClick,
+                    getContext()
+                ));
             }
         };
 
@@ -78,7 +84,12 @@ public class AdvancedCorrectionFragment extends Fragment {
         new Observer<ArrayList<String>>() {
             @Override
             public void onChanged(ArrayList<String> prices) {
-                correctionRecyclerView.getAdapter().notifyItemRangeChanged(0, prices.size());
+                correctionRecyclerView.setAdapter(new CorrectionAdapter(
+                    itemCorrectionViewModel.getCorrectableItems().getValue(),
+                    prices,
+                    onItemClick,
+                    getContext()
+                ));
             }
         };
 }

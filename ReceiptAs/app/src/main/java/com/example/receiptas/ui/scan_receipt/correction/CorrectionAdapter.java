@@ -36,8 +36,11 @@ public class CorrectionAdapter extends RecyclerView.Adapter<CorrectionViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull CorrectionViewHolder holder, int position) {
+        System.out.println("coucou");
+        System.out.println(this.localDataSet);
+        System.out.println(this.prices);
         holder.getLeftTextView().setText(localDataSet.get(position).getLabel());
-        holder.getRightTextView().setText(prices.get(position).toString());
+        holder.getRightTextView().setText(prices.get(position));
     }
 
     @Override
