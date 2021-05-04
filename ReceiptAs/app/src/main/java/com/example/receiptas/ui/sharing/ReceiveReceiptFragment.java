@@ -106,10 +106,15 @@ public class ReceiveReceiptFragment extends Fragment {
             } else {
                 bluetoothInformationTextView.setText(R.string.bluetooth_information_reception_error);
             }
-            readMessage = "";
-            indexChunk = 0;
-            numberOfChunks = 0;
+            reinitializeReceiveAttributes();
+            this.createBluetoothThread();
         }
+    }
+
+    private void reinitializeReceiveAttributes() {
+        readMessage = "";
+        indexChunk = 0;
+        numberOfChunks = 0;
     }
 
     public static ReceiveReceiptFragment newInstance() {
@@ -305,7 +310,6 @@ public class ReceiveReceiptFragment extends Fragment {
                     readMsg.sendToTarget();
                 } catch (IOException e) {
                     Log.d("error", "Input stream was disconnected", e);
-                    createBluetoothThread();
                    break;
                 }
             }
@@ -314,6 +318,7 @@ public class ReceiveReceiptFragment extends Fragment {
         public void cancel() {
             try {
                 mmSocket.close();
+                reinitializeReceiveAttributes();
             } catch (IOException e) {
                 Log.e("error", "Could not close the connect socket", e);
             }

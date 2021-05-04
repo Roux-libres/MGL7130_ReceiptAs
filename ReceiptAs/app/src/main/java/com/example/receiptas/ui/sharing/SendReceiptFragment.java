@@ -263,7 +263,6 @@ public class SendReceiptFragment extends Fragment {
         int size = receiptAsJson.getBytes().length;
         int numberOfChunks = 1 + size / 1024;
         receiptAsJson = String.valueOf(numberOfChunks) + receiptAsJson;
-        System.out.println(receiptAsJson);
         this.connectedThread.write(receiptAsJson.getBytes());
     }
 
@@ -336,9 +335,8 @@ public class SendReceiptFragment extends Fragment {
 
         public void write(byte[] bytes) {
             try {
-                System.out.println(bytes.length);
-                mmOutStream.write(4);
                 mmOutStream.write(bytes);
+                mmOutStream.flush();
                 Message writtenMsg = handler.obtainMessage(
                         MESSAGE_WRITE, -1, -1, bytes);
                 writtenMsg.sendToTarget();
