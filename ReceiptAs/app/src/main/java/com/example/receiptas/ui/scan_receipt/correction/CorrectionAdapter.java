@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.receiptas.R;
 import com.example.receiptas.ui.history.OnRecyclerViewItemClickListener;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class CorrectionAdapter extends RecyclerView.Adapter<CorrectionViewHolder>{
@@ -19,17 +20,20 @@ public class CorrectionAdapter extends RecyclerView.Adapter<CorrectionViewHolder
     private final ArrayList<String> prices;
     private final OnRecyclerViewItemClickListener listener;
     private final Context context;
+    private final DecimalFormat formatter;
 
     public CorrectionAdapter(
         ArrayList<String> dataSet,
         ArrayList<String> prices,
         OnRecyclerViewItemClickListener itemClickListener,
-        Context context
+        Context context,
+        DecimalFormat formatter
     ) {
         this.correctedItems = dataSet;
         this.prices = prices;
         this.listener = itemClickListener;
         this.context = context;
+        this.formatter = formatter;
     }
 
     @NonNull
@@ -42,11 +46,10 @@ public class CorrectionAdapter extends RecyclerView.Adapter<CorrectionViewHolder
     @Override
     public void onBindViewHolder(@NonNull CorrectionViewHolder holder, int position) {
         TypedValue textColor = new TypedValue();
-
         holder.getLeftTextView().setText(this.correctedItems.get(position));
 
         try {
-            Float.parseFloat(this.prices.get(position));
+            this.formatter.parse(this.formatter.format(this.formatter.parse(this.prices.get(position)).floatValue())).floatValue();
             context.getTheme().resolveAttribute(R.attr.correctionItemColor, textColor, true);
 
         }catch (Exception e) {

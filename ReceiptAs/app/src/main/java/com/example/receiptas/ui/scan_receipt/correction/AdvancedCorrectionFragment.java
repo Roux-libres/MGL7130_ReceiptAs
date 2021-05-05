@@ -76,7 +76,8 @@ public class AdvancedCorrectionFragment extends Fragment {
                     correctedItems,
                     receiptCorrectionViewModel.getPrices().getValue(),
                     onItemClick,
-                    getContext()
+                    getContext(),
+                    receiptCorrectionViewModel.getFormatter()
                 ));
             }
         };
@@ -89,7 +90,8 @@ public class AdvancedCorrectionFragment extends Fragment {
                     receiptCorrectionViewModel.getCorrectedItems().getValue(),
                     prices,
                     onItemClick,
-                    getContext()
+                    getContext(),
+                    receiptCorrectionViewModel.getFormatter()
                 ));
             }
         };

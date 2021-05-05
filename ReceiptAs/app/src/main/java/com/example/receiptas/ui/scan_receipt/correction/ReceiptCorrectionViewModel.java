@@ -11,6 +11,7 @@ import com.example.receiptas.R;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.ParseException;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -22,12 +23,18 @@ public class ReceiptCorrectionViewModel extends ViewModel {
     private final MutableLiveData<ArrayList<CorrectableItem>> correctableItems = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> correctedItems = new MutableLiveData<>();
     private final MutableLiveData<ArrayList<String>> prices = new MutableLiveData<>();
+    private final DecimalFormat formatter;
 
     @Inject
     public ReceiptCorrectionViewModel() {
         this.correctableItems.setValue(new ArrayList<>());
         this.correctedItems.setValue(new ArrayList<>());
         this.prices.setValue(new ArrayList<>());
+
+       this.formatter = new DecimalFormat("#.##");
+        DecimalFormatSymbols symbol = DecimalFormatSymbols.getInstance();
+        symbol.setDecimalSeparator('.');
+        this.formatter.setDecimalFormatSymbols(symbol);
     }
 
     public void setCorrectableItemsFromList(ArrayList<String> items, Context context) {
@@ -41,10 +48,6 @@ public class ReceiptCorrectionViewModel extends ViewModel {
     }
 
     public void setPricesFromParsedText(ArrayList<String> parsedText, Context context) throws Exception {
-        DecimalFormat formatter = new DecimalFormat();
-        DecimalFormatSymbols symbol = DecimalFormatSymbols.getInstance();
-        symbol.setDecimalSeparator('.');
-        formatter.setDecimalFormatSymbols(symbol);
         ArrayList<String> parsedPrices = new ArrayList();
 
         String separatorFamily = ".,;:!?'\"";
@@ -52,7 +55,7 @@ public class ReceiptCorrectionViewModel extends ViewModel {
         String regex = "[^0-9" + separatorFamily + "]";
         for(String text : parsedText) {
             text = text.replaceAll(regex, "");
-            text = text.replaceAll(regexSeparatorFamily, String.valueOf(formatter.getDecimalFormatSymbols().getDecimalSeparator()));
+            text = text.replaceAll(regexSeparatorFamily, String.valueOf(this.formatter.getDecimalFormatSymbols().getDecimalSeparator()));
             if(!TextUtils.isEmpty(text)) {
                 parsedPrices.add(text);
             } else {
@@ -61,6 +64,10 @@ public class ReceiptCorrectionViewModel extends ViewModel {
         }
 
         this.setCorrectedItems(this.getCorrectableItems().getValue(), parsedPrices, context);
+    }
+
+    public float parseStringPrice(String price) throws ParseException {
+        return this.formatter.parse(this.formatter.format(this.formatter.parse(price).floatValue())).floatValue();
     }
 
     public void setCorrectedItems(Context context) {
@@ -139,6 +146,10 @@ public class ReceiptCorrectionViewModel extends ViewModel {
 
     public LiveData<ArrayList<String>> getCorrectedItems() {
         return this.correctedItems;
+    }
+
+    public DecimalFormat getFormatter() {
+        return this.formatter;
     }
 
     public class CorrectableItem {
