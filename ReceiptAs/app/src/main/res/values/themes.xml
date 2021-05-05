@@ -28,6 +28,8 @@
         <item name="participantFillColor">@color/purple_50</item>
         <item name="payerStrokeColor">@color/teal_500</item>
         <item name="payerFillColor">@color/teal_50</item>
+
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="Theme.ReceiptAs.NoActionBar">

@@ -47,7 +47,6 @@ public class CorrectionDialogFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getDialog().setTitle(R.string.correction_modal_title);
 
         this.inputItemLabel = view.findViewById(R.id.input_item_label);
         this.inputItemPrice = view.findViewById(R.id.input_item_price);
@@ -75,7 +74,7 @@ public class CorrectionDialogFragment extends DialogFragment {
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.copyFrom(getDialog().getWindow().getAttributes());
         layoutParams.width = displayWidth * 80 / 100;
-        layoutParams.height = displayHeight * 50 / 100;
+        layoutParams.height = displayHeight * 80 / 100;
         getDialog().getWindow().setAttributes(layoutParams);
     }
 }
