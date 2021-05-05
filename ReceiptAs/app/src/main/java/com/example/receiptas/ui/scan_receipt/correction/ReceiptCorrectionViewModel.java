@@ -55,7 +55,6 @@ public class ReceiptCorrectionViewModel extends ViewModel {
             text = text.replaceAll(regexSeparatorFamily, String.valueOf(formatter.getDecimalFormatSymbols().getDecimalSeparator()));
             if(!TextUtils.isEmpty(text)) {
                 parsedPrices.add(text);
-                formatter.parse("0.0");
             } else {
                 //do nothing
             }
@@ -97,6 +96,18 @@ public class ReceiptCorrectionViewModel extends ViewModel {
 
         for (int i = 0; i < referenceSize - pricesSize; i++) {
             prices.add(context.getResources().getString(R.string.price_placeholder));
+        }
+
+
+        for (int i = 0; i < correctedItems.size(); i++) {
+            if(correctedItems.get(i).equals(context.getResources().getString(R.string.item_placeholder))
+                && prices.get(i).equals(context.getResources().getString(R.string.price_placeholder))) {
+                correctedItems.remove(i);
+                prices.remove(i);
+                i--;
+            } else {
+                //do nothing
+            }
         }
 
         this.correctedItems.setValue(correctedItems);
