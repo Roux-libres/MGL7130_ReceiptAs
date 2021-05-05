@@ -153,7 +153,7 @@ public class ReceiptCorrectionFragment extends Fragment {
                 items.add(
                     new Item(
                         this.receiptCorrectionViewModel.getCorrectedItems().getValue().get(i),
-                        Float.parseFloat(this.receiptCorrectionViewModel.getPrices().getValue().get(i)),
+                        receiptCorrectionViewModel.parseStringPrice(this.receiptCorrectionViewModel.getPrices().getValue().get(i)),
                         new ArrayList<>()
                     )
                 );
